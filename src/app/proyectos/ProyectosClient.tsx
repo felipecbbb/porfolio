@@ -1,437 +1,790 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import type { ProjectDetail } from "@/data/projects";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
+const INK = "#0a0a0a";
+const BG = "#ffffff";
+const MUTED = "#949494";
+const LINE = "#e5e5e5";
+const ACCENT = "#f6f361";
+const CORAL = "#c65248";
 
-function normalize(s: string) {
-  return s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+interface Props {
+  projects: ProjectDetail[];
 }
 
-export default function ProyectosClient({
-  projects,
-}: {
-  projects: ProjectDetail[];
-}) {
-  const [query, setQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string>("Todos");
-  const [activeTag, setActiveTag] = useState<string | null>(null);
-  const [activeYear, setActiveYear] = useState<string | null>(null);
+function getCategories(projects: ProjectDetail[]) {
+  const cats = new Set<string>();
+  projects.forEach((p) => {
+    const main = p.category.split("—")[0]?.trim() || p.category;
+    cats.add(main);
+  });
+  return ["Todos", ...Array.from(cats)];
+}
 
-  const categories = useMemo(() => {
-    const set = new Set<string>();
-    projects.forEach((p) => {
-      const main = p.category.split("—")[0].trim();
-      if (main) set.add(main);
-    });
-    return ["Todos", ...Array.from(set).sort()];
-  }, [projects]);
+export default function ProyectosClient({ projects }: Props) {
+  const [filter, setFilter] = useState("Todos");
 
-  const tags = useMemo(() => {
-    const set = new Set<string>();
-    projects.forEach((p) => p.tags.forEach((t) => set.add(t)));
-    return Array.from(set).sort();
-  }, [projects]);
+  const filtered = useMemo(
+    () =>
+      filter === "Todos"
+        ? projects
+        : projects.filter((p) => p.category.startsWith(filter)),
+    [filter, projects]
+  );
 
-  const years = useMemo(() => {
-    const set = new Set<string>();
-    projects.forEach((p) => set.add(p.year));
-    return Array.from(set).sort().reverse();
-  }, [projects]);
-
-  const filtered = useMemo(() => {
-    const q = normalize(query.trim());
-    return projects.filter((p) => {
-      if (
-        activeCategory !== "Todos" &&
-        p.category.split("—")[0].trim() !== activeCategory
-      )
-        return false;
-      if (activeTag && !p.tags.includes(activeTag)) return false;
-      if (activeYear && p.year !== activeYear) return false;
-      if (q) {
-        const haystack = normalize(
-          [
-            p.title,
-            p.description,
-            p.category,
-            p.client ?? "",
-            p.tags.join(" "),
-          ].join(" "),
-        );
-        if (!haystack.includes(q)) return false;
-      }
-      return true;
-    });
-  }, [projects, query, activeCategory, activeTag, activeYear]);
-
-  const hasFilters =
-    !!query ||
-    activeCategory !== "Todos" ||
-    !!activeTag ||
-    !!activeYear;
+  const featured = filtered[0];
+  const rest = filtered.slice(1);
 
   return (
-    <div className="min-h-screen pt-28 md:pt-32 pb-24 bg-background text-foreground">
-      {/* Header */}
-      <section className="px-6 md:px-12 pb-10 md:pb-14">
-        <div className="flex items-baseline justify-between mb-6">
-          <Link
-            href="/"
-            data-hover
-            className="text-xs font-mono uppercase tracking-widest text-foreground/50 hover:text-foreground transition-colors"
+    <main
+      style={{
+        background: BG,
+        color: INK,
+        minHeight: "100vh",
+        fontFamily:
+          "'Inter', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif",
+        letterSpacing: "-0.005em",
+      }}
+    >
+      <BlendNav />
+      <HeroBlock count={filtered.length} />
+      <FilterBar
+        categories={getCategories(projects)}
+        active={filter}
+        onChange={setFilter}
+      />
+
+      <div style={{ padding: "0 clamp(20px, 5vw, 77px) 80px" }}>
+        {featured && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+            style={{ marginBottom: 100 }}
           >
-            ← Volver
-          </Link>
-          <span className="text-xs font-mono uppercase tracking-widest text-foreground/40">
-            {projects.length.toString().padStart(2, "0")} proyectos
-          </span>
-        </div>
+            <FeatureCard project={featured} />
+          </motion.div>
+        )}
 
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <div className="overflow-hidden">
-            <motion.h1
-              initial={{ y: "100%" }}
-              animate={{ y: "0%" }}
-              transition={{ duration: 0.8, ease: EASE }}
-              className="text-[clamp(3rem,10vw,9rem)] font-bold leading-[0.88] tracking-tighter"
-            >
-              Proyectos<span className="text-foreground/30">.</span>
-            </motion.h1>
-          </div>
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.7 }}
-            className="max-w-md text-sm font-mono text-foreground/50 leading-relaxed"
-          >
-            Catálogo completo. SaaS, webs, e-commerce, plataformas. Busca por
-            nombre, filtra por categoría o por tecnología.
-          </motion.p>
-        </div>
-      </section>
-
-      {/* Search + filters */}
-      <section className="px-6 md:px-12 pb-10 border-b border-foreground/10">
-        {/* Search */}
-        <div className="relative mb-8 max-w-3xl">
-          <div className="flex items-center gap-4 border border-foreground/15 focus-within:border-foreground/50 transition-colors py-4 px-5">
-            <svg
-              aria-hidden
-              viewBox="0 0 24 24"
-              className="w-5 h-5 shrink-0 text-foreground/40"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="11" cy="11" r="7" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Buscar proyecto, cliente, tecnología…"
-              aria-label="Buscar proyectos"
-              className="flex-1 bg-transparent outline-none text-base md:text-lg placeholder:text-foreground/30 font-mono"
-            />
-            {query && (
-              <button
-                data-hover
-                onClick={() => setQuery("")}
-                aria-label="Limpiar búsqueda"
-                className="text-foreground/40 hover:text-foreground transition-colors"
-              >
-                ✕
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Categories */}
-        <div className="mb-5">
-          <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-foreground/40 mb-3">
-            Categoría
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {categories.map((cat) => {
-              const active = activeCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  data-hover
-                  onClick={() => setActiveCategory(cat)}
-                  className={`text-xs uppercase tracking-[0.2em] font-mono px-4 py-2 border transition-colors ${
-                    active
-                      ? "bg-foreground text-background border-foreground"
-                      : "border-foreground/20 text-foreground/70 hover:border-foreground/60"
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Tech tags */}
-        <div className="mb-5">
-          <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-foreground/40 mb-3">
-            Stack / tecnología
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {tags.map((t) => {
-              const active = activeTag === t;
-              return (
-                <button
-                  key={t}
-                  data-hover
-                  onClick={() => setActiveTag(active ? null : t)}
-                  className={`text-[11px] font-mono px-3 py-1.5 border transition-colors ${
-                    active
-                      ? "bg-foreground text-background border-foreground"
-                      : "border-foreground/15 text-foreground/60 hover:border-foreground/40 hover:text-foreground"
-                  }`}
-                >
-                  {t}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Year + clear */}
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-foreground/40 mb-3">
-              Año
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {years.map((y) => {
-                const active = activeYear === y;
-                return (
-                  <button
-                    key={y}
-                    data-hover
-                    onClick={() => setActiveYear(active ? null : y)}
-                    className={`text-[11px] font-mono px-3 py-1.5 border transition-colors ${
-                      active
-                        ? "bg-foreground text-background border-foreground"
-                        : "border-foreground/15 text-foreground/60 hover:border-foreground/40 hover:text-foreground"
-                    }`}
-                  >
-                    {y}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {hasFilters && (
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              data-hover
-              onClick={() => {
-                setQuery("");
-                setActiveCategory("Todos");
-                setActiveTag(null);
-                setActiveYear(null);
-              }}
-              className="text-[11px] font-mono uppercase tracking-[0.2em] text-foreground/60 hover:text-foreground transition-colors underline underline-offset-4"
-            >
-              Limpiar filtros
-            </motion.button>
-          )}
-        </div>
-      </section>
-
-      {/* Results count */}
-      <section className="px-6 md:px-12 pt-8 pb-4 flex items-baseline justify-between">
-        <p className="text-[11px] font-mono uppercase tracking-[0.25em] text-foreground/50">
-          {filtered.length === projects.length
-            ? "Mostrando todos"
-            : `${filtered.length} de ${projects.length}`}
-        </p>
-        <span
-          aria-hidden
-          className="flex-1 mx-4 border-b border-foreground/10"
-        />
-        <p className="text-[11px] font-mono uppercase tracking-[0.25em] text-foreground/30">
-          ({filtered.length.toString().padStart(2, "0")})
-        </p>
-      </section>
-
-      {/* Cards grid */}
-      <section className="px-6 md:px-12">
-        <LayoutGroup>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "clamp(30px, 5vw, 80px) clamp(20px, 3vw, 40px)",
+          }}
+          className="proy-grid"
+        >
           <AnimatePresence mode="popLayout">
-            {filtered.length > 0 ? (
+            {rest.map((p, i) => (
               <motion.div
-                key="grid"
+                key={p.slug}
                 layout
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10%" }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{
+                  duration: 0.65,
+                  delay: i * 0.06,
+                  ease: [0.2, 0.8, 0.2, 1],
+                }}
               >
-                {filtered.map((p, i) => (
-                  <ProjectCard key={p.slug} project={p} index={i} />
-                ))}
+                <ProjectCard project={p} />
               </motion.div>
-            ) : (
-              <motion.div
-                key="empty"
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
-                className="py-20 md:py-28 text-center"
-              >
-                <p className="text-6xl md:text-7xl font-bold tracking-tighter text-foreground/10">
-                  ∅
-                </p>
-                <p className="mt-6 text-base font-mono text-foreground/50">
-                  Nada por aquí con esos filtros.
-                </p>
-                <button
-                  data-hover
-                  onClick={() => {
-                    setQuery("");
-                    setActiveCategory("Todos");
-                    setActiveTag(null);
-                    setActiveYear(null);
-                  }}
-                  className="mt-6 text-[11px] font-mono uppercase tracking-[0.2em] underline underline-offset-4 hover:text-foreground/80"
-                >
-                  Limpiar y volver
-                </button>
-              </motion.div>
-            )}
+            ))}
           </AnimatePresence>
-        </LayoutGroup>
-      </section>
+        </div>
+
+        {filtered.length === 0 && (
+          <div
+            style={{
+              textAlign: "center",
+              padding: "140px 20px",
+              color: MUTED,
+              fontSize: 18,
+            }}
+          >
+            No hay proyectos en esta categoría.
+          </div>
+        )}
+      </div>
+
+      <Marquee />
+
+      <footer
+        style={{
+          borderTop: `1px solid ${LINE}`,
+          padding: "30px clamp(20px, 5vw, 77px)",
+          display: "flex",
+          justifyContent: "space-between",
+          fontSize: 13,
+          color: MUTED,
+          letterSpacing: "0.02em",
+          flexWrap: "wrap",
+          gap: 16,
+        }}
+      >
+        <span>© 2026 Felipe Cámara</span>
+        <Link
+          href="/"
+          style={{ color: INK, textDecoration: "none", fontWeight: 500 }}
+        >
+          ← Volver a inicio
+        </Link>
+      </footer>
+
+      <style jsx global>{`
+        @media (max-width: 860px) {
+          .proy-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
+    </main>
+  );
+}
+
+function BlendNav() {
+  const [hidden, setHidden] = useState(false);
+  const lastScroll = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const s = window.scrollY;
+      if (s > 200 && s > lastScroll.current) setHidden(true);
+      else setHidden(false);
+      lastScroll.current = s;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <header
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        padding: "24px clamp(20px, 5vw, 77px)",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        zIndex: 100,
+        mixBlendMode: "difference",
+        color: "#fff",
+        transform: hidden ? "translateY(-100%)" : "translateY(0)",
+        transition: "transform 0.5s cubic-bezier(.2,.8,.2,1)",
+        pointerEvents: hidden ? "none" : "auto",
+      }}
+    >
+      <Link
+        href="/"
+        style={{
+          color: "#fff",
+          textDecoration: "none",
+          fontFamily: "'Inter', sans-serif",
+          fontWeight: 600,
+          fontSize: 16,
+          letterSpacing: "-0.01em",
+        }}
+      >
+        Felipe Cámara
+      </Link>
+      <nav
+        style={{
+          display: "flex",
+          gap: 32,
+          fontSize: 14,
+          fontWeight: 500,
+          letterSpacing: "0.01em",
+        }}
+      >
+        <Link href="/" style={{ color: "#fff", textDecoration: "none" }}>
+          Inicio
+        </Link>
+        <Link
+          href="/proyectos"
+          style={{
+            color: "#fff",
+            textDecoration: "none",
+            borderBottom: "1px solid #fff",
+            paddingBottom: 2,
+          }}
+        >
+          Proyectos
+        </Link>
+      </nav>
+    </header>
+  );
+}
+
+function HeroBlock({ count }: { count: number }) {
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 500], [0, -100]);
+  const opacity = useTransform(scrollY, [0, 400], [1, 0.3]);
+
+  return (
+    <section
+      style={{
+        padding: "clamp(140px, 18vh, 220px) clamp(20px, 5vw, 77px) 40px",
+        position: "relative",
+      }}
+    >
+      <motion.div style={{ y, opacity }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            gap: 40,
+            marginBottom: 20,
+            flexWrap: "wrap",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 13,
+              fontWeight: 500,
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              color: MUTED,
+            }}
+          >
+            · 01 / Portfolio
+          </div>
+          <div
+            style={{
+              fontSize: 13,
+              fontWeight: 500,
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              color: MUTED,
+            }}
+          >
+            {String(count).padStart(2, "0")} proyectos seleccionados
+          </div>
+        </div>
+
+        <h1
+          style={{
+            fontSize: "clamp(80px, 14vw, 220px)",
+            lineHeight: 0.9,
+            fontWeight: 500,
+            letterSpacing: "-0.06em",
+            margin: 0,
+          }}
+        >
+          Proyectos
+          <span style={{ color: CORAL, fontStyle: "italic" }}>.</span>
+        </h1>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 40,
+            marginTop: 48,
+            paddingTop: 40,
+            borderTop: `1px solid ${LINE}`,
+            maxWidth: 1200,
+          }}
+          className="proy-hero-bottom"
+        >
+          <div
+            style={{
+              fontSize: 14,
+              fontWeight: 500,
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              color: MUTED,
+            }}
+          >
+            Selección 2024 — 2026
+          </div>
+          <p
+            style={{
+              fontSize: "clamp(18px, 1.4vw, 22px)",
+              lineHeight: 1.4,
+              margin: 0,
+              maxWidth: 620,
+              fontWeight: 400,
+            }}
+          >
+            Webs, SaaS, landings y plataformas. Cada una hecha a medida,
+            pensada para convertir y para durar.{" "}
+            <span style={{ color: MUTED }}>
+              Haz click en cualquier proyecto para ver el detalle.
+            </span>
+          </p>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+function FilterBar({
+  categories,
+  active,
+  onChange,
+}: {
+  categories: string[];
+  active: string;
+  onChange: (c: string) => void;
+}) {
+  return (
+    <div
+      style={{
+        padding: "30px clamp(20px, 5vw, 77px) 80px",
+        display: "flex",
+        gap: 10,
+        flexWrap: "wrap",
+        alignItems: "center",
+      }}
+    >
+      <span
+        style={{
+          fontSize: 12,
+          fontWeight: 500,
+          letterSpacing: "0.2em",
+          textTransform: "uppercase",
+          color: MUTED,
+          marginRight: 12,
+        }}
+      >
+        Filtrar
+      </span>
+      {categories.map((c) => (
+        <button
+          key={c}
+          onClick={() => onChange(c)}
+          style={{
+            padding: "8px 18px",
+            borderRadius: 999,
+            border: `1px solid ${active === c ? INK : LINE}`,
+            background: active === c ? INK : "transparent",
+            color: active === c ? BG : INK,
+            fontSize: 13,
+            fontWeight: 500,
+            letterSpacing: "0.02em",
+            cursor: "pointer",
+            transition: "all 0.3s ease",
+            fontFamily: "inherit",
+          }}
+          onMouseEnter={(e) => {
+            if (active !== c) e.currentTarget.style.borderColor = INK;
+          }}
+          onMouseLeave={(e) => {
+            if (active !== c) e.currentTarget.style.borderColor = LINE;
+          }}
+        >
+          {c}
+        </button>
+      ))}
     </div>
   );
 }
 
-/* ─── Project card ─── */
-function ProjectCard({
-  project,
-  index,
-}: {
-  project: ProjectDetail;
-  index: number;
-}) {
-  const hasImage = !!project.featuredImage;
+function FeatureCard({ project }: { project: ProjectDetail }) {
+  const theme = project.theme;
   return (
-    <motion.article
-      layout
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.6, ease: EASE, delay: (index % 6) * 0.05 }}
-      className="group relative"
+    <Link
+      href={`/proyecto/${project.slug}`}
+      style={{ textDecoration: "none", color: "inherit", display: "block" }}
     >
-      <Link
-        href={`/proyecto/${project.slug}`}
-        data-hover
-        className="block relative overflow-hidden aspect-[4/5] border border-foreground/10"
+      <div
         style={{
-          background: hasImage ? "#111" : project.theme.heroGradient,
+          display: "grid",
+          gridTemplateColumns: "1.3fr 1fr",
+          gap: "clamp(20px, 3vw, 60px)",
+          alignItems: "center",
+        }}
+        className="proy-feature"
+      >
+        <MagneticMedia
+          image={project.featuredImage}
+          themeBg={theme.bg}
+          themeFg={theme.fg}
+          title={project.title}
+          large
+        />
+        <div>
+          <div
+            style={{
+              fontSize: 13,
+              fontWeight: 500,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: MUTED,
+              marginBottom: 20,
+            }}
+          >
+            · Proyecto destacado · {project.year}
+          </div>
+          <h2
+            style={{
+              fontSize: "clamp(40px, 5vw, 72px)",
+              lineHeight: 0.95,
+              fontWeight: 500,
+              letterSpacing: "-0.03em",
+              margin: "0 0 24px",
+            }}
+          >
+            {project.title}
+            <ArrowInline />
+          </h2>
+          <p
+            style={{
+              fontSize: 18,
+              lineHeight: 1.5,
+              color: "#333",
+              marginBottom: 28,
+              maxWidth: 520,
+            }}
+          >
+            {project.description}
+          </p>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 8,
+            }}
+          >
+            {project.tags.slice(0, 5).map((t) => (
+              <Tag key={t}>{t}</Tag>
+            ))}
+          </div>
+        </div>
+      </div>
+      <style jsx>{`
+        @media (max-width: 860px) {
+          :global(.proy-feature) {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
+    </Link>
+  );
+}
+
+function ProjectCard({ project }: { project: ProjectDetail }) {
+  const theme = project.theme;
+  return (
+    <Link
+      href={`/proyecto/${project.slug}`}
+      style={{ textDecoration: "none", color: "inherit", display: "block" }}
+    >
+      <MagneticMedia
+        image={project.featuredImage}
+        themeBg={theme.bg}
+        themeFg={theme.fg}
+        title={project.title}
+      />
+      <div
+        style={{
+          marginTop: 20,
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
         }}
       >
-        {hasImage ? (
-          <Image
-            src={project.featuredImage!}
-            alt={`Foto destacada de ${project.title}`}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            quality={85}
-            className="object-cover transition-transform duration-[1.1s] ease-out group-hover:scale-[1.04]"
-          />
-        ) : (
-          <div
-            className="absolute inset-0 flex items-end p-8"
-            style={{ color: project.theme.fg }}
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
+          <h3
+            style={{
+              fontSize: "clamp(24px, 2.2vw, 34px)",
+              lineHeight: 1,
+              fontWeight: 500,
+              letterSpacing: "-0.02em",
+              margin: 0,
+              display: "flex",
+              alignItems: "center",
+            }}
           >
-            <p
-              className="text-[clamp(2.5rem,7vw,4.5rem)] font-bold leading-[0.9] tracking-tighter"
-              style={{ fontFamily: project.theme.font }}
-            >
-              {project.title}
-            </p>
-          </div>
-        )}
-
-        {/* Gradient overlay on hover */}
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.75) 100%)",
-          }}
-        />
-
-        {/* Top tags */}
-        <div className="absolute top-4 left-4 right-4 flex items-start justify-between gap-3">
+            {project.title}
+            <ArrowInline />
+          </h3>
           <span
-            className="text-[10px] font-mono uppercase tracking-[0.25em] px-2.5 py-1 bg-white/90 text-black backdrop-blur"
-          >
-            {project.id}
-          </span>
-          <span
-            className="text-[10px] font-mono uppercase tracking-[0.25em] px-2.5 py-1 bg-white/90 text-black backdrop-blur"
+            style={{
+              fontSize: 12,
+              fontWeight: 500,
+              color: MUTED,
+              letterSpacing: "0.1em",
+              whiteSpace: "nowrap",
+              alignSelf: "flex-start",
+              marginTop: 8,
+            }}
           >
             {project.year}
           </span>
         </div>
-
-        {/* Bottom reveal on hover */}
-        <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-          <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-white/70 mb-1">
-            Ver proyecto ↗
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {project.tags.slice(0, 4).map((t) => (
-              <span
-                key={t}
-                className="text-[10px] font-mono px-2 py-0.5 bg-white/15 text-white backdrop-blur-sm border border-white/20"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
+        <div
+          style={{
+            fontSize: 13,
+            letterSpacing: "0.05em",
+            color: MUTED,
+          }}
+        >
+          {project.category}
         </div>
-      </Link>
-
-      {/* Caption */}
-      <div className="mt-4">
-        <div className="flex items-baseline justify-between gap-3">
-          <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-tight">
-            {project.title}
-          </h3>
-          <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-foreground/40 shrink-0">
-            {project.category.split("—")[0].trim()}
-          </span>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+          {project.tags.slice(0, 4).map((t) => (
+            <Tag key={t} small>
+              {t}
+            </Tag>
+          ))}
         </div>
-        {project.client && (
-          <p className="mt-1 text-[11px] font-mono text-foreground/40">
-            {project.client}
-          </p>
-        )}
-        <p className="mt-2 text-sm text-foreground/60 leading-relaxed line-clamp-2">
-          {project.description}
-        </p>
       </div>
-    </motion.article>
+    </Link>
+  );
+}
+
+function MagneticMedia({
+  image,
+  themeBg,
+  themeFg,
+  title,
+  large,
+}: {
+  image?: string;
+  themeBg: string;
+  themeFg: string;
+  title: string;
+  large?: boolean;
+}) {
+  const wrap = useRef<HTMLDivElement>(null);
+  const btn = useRef<HTMLDivElement>(null);
+  const [hover, setHover] = useState(false);
+
+  const onMove = (e: React.MouseEvent) => {
+    if (!wrap.current || !btn.current) return;
+    const r = wrap.current.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    btn.current.style.left = `${x}px`;
+    btn.current.style.top = `${y}px`;
+  };
+
+  return (
+    <div
+      ref={wrap}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onMouseMove={onMove}
+      style={{
+        position: "relative",
+        borderRadius: 20,
+        overflow: "hidden",
+        aspectRatio: large ? "16 / 11" : "4 / 3",
+        background: themeBg || "#f0f0f0",
+        cursor: "none",
+      }}
+    >
+      {image ? (
+        <Image
+          src={image}
+          alt={title}
+          fill
+          sizes={
+            large
+              ? "(max-width: 860px) 100vw, 60vw"
+              : "(max-width: 860px) 100vw, 45vw"
+          }
+          style={{
+            objectFit: "cover",
+            transition: "transform 1s cubic-bezier(.2,.8,.2,1)",
+            transform: hover ? "scale(1.04)" : "scale(1)",
+          }}
+        />
+      ) : (
+        <TypographicPlaceholder title={title} bg={themeBg} fg={themeFg} />
+      )}
+
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.5) 100%)",
+          opacity: hover ? 1 : 0,
+          transition: "opacity 0.65s ease",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div
+        ref={btn}
+        style={{
+          position: "absolute",
+          width: large ? 220 : 160,
+          height: large ? 220 : 160,
+          borderRadius: "50%",
+          border: "1.5px solid #fff",
+          color: "#fff",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          transform: `translate(-50%, -50%) scale(${hover ? 1 : 0})`,
+          transition: "transform 0.4s cubic-bezier(.2,.8,.2,1)",
+          pointerEvents: "none",
+          fontSize: large ? 14 : 12,
+          fontWeight: 500,
+          letterSpacing: "0.25em",
+          textTransform: "uppercase",
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(6px)",
+          background: "rgba(0,0,0,0.15)",
+          zIndex: 2,
+        }}
+      >
+        Ver proyecto →
+      </div>
+    </div>
+  );
+}
+
+function TypographicPlaceholder({
+  title,
+  bg,
+  fg,
+}: {
+  title: string;
+  bg: string;
+  fg: string;
+}) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        background: bg || "#111",
+        color: fg || "#fff",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 40,
+      }}
+    >
+      <span
+        style={{
+          fontSize: "clamp(40px, 7vw, 100px)",
+          fontWeight: 500,
+          letterSpacing: "-0.04em",
+          lineHeight: 0.95,
+          textAlign: "center",
+        }}
+      >
+        {title}
+      </span>
+    </div>
+  );
+}
+
+function Tag({
+  children,
+  small,
+}: {
+  children: React.ReactNode;
+  small?: boolean;
+}) {
+  return (
+    <span
+      style={{
+        padding: small ? "4px 10px" : "6px 14px",
+        borderRadius: 999,
+        border: `1px solid ${LINE}`,
+        fontSize: small ? 11 : 12,
+        fontWeight: 500,
+        letterSpacing: "0.03em",
+        color: "#555",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function ArrowInline() {
+  return (
+    <span
+      aria-hidden
+      style={{
+        display: "inline-block",
+        marginLeft: "0.3em",
+        color: CORAL,
+        fontWeight: 400,
+      }}
+    >
+      ↗
+    </span>
+  );
+}
+
+function Marquee() {
+  const items = [
+    "Desarrollo",
+    "Diseño",
+    "Estrategia",
+    "SaaS",
+    "Web",
+    "E-commerce",
+    "Landing",
+    "Automatización",
+  ];
+  const row = [...items, ...items, ...items];
+  return (
+    <div
+      style={{
+        borderTop: `1px solid ${LINE}`,
+        borderBottom: `1px solid ${LINE}`,
+        overflow: "hidden",
+        padding: "30px 0",
+        background: INK,
+        color: BG,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          gap: 60,
+          whiteSpace: "nowrap",
+          animation: "proy-scroll 40s linear infinite",
+          fontSize: "clamp(36px, 6vw, 72px)",
+          fontWeight: 500,
+          letterSpacing: "-0.03em",
+        }}
+      >
+        {row.map((t, i) => (
+          <span
+            key={i}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 60,
+            }}
+          >
+            {t}
+            <span style={{ color: CORAL }}>·</span>
+          </span>
+        ))}
+      </div>
+      <style jsx>{`
+        @keyframes proy-scroll {
+          from {
+            transform: translateX(0);
+          }
+          to {
+            transform: translateX(-33.333%);
+          }
+        }
+      `}</style>
+    </div>
   );
 }
