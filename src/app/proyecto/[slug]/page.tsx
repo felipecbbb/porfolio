@@ -10,6 +10,7 @@ const CUSTOM_SLUGS = new Set([
   "entre-olas-surf",
   "samba-trips",
   "alma-de-nomada",
+  "la-inquieta",
 ]);
 
 export function generateStaticParams() {
