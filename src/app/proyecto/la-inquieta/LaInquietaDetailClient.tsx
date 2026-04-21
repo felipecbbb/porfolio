@@ -321,6 +321,8 @@ export default function LaInquietaDetailClient() {
                   alt="La Inquieta - Vista desktop"
                   width={1440}
                   height={900}
+                  unoptimized
+                  priority
                   style={{
                     width: "100%",
                     height: "auto",
@@ -338,6 +340,7 @@ export default function LaInquietaDetailClient() {
                   alt="La Inquieta - Vista mobile"
                   width={390}
                   height={844}
+                  unoptimized
                   style={{
                     width: "100%",
                     height: "auto",
@@ -1256,6 +1259,7 @@ function SectionPreview({
             alt={title}
             width={1440}
             height={900}
+            unoptimized
             style={{
               width: "100%",
               height: "auto",

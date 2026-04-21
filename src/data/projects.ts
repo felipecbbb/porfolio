@@ -33,8 +33,74 @@ export interface ProjectDetail {
 
 export const projects: ProjectDetail[] = [
   {
-    slug: "wavepanel",
+    slug: "la-inquieta",
     id: "01",
+    title: "La Inquieta",
+    category: "Web — Caseta de Feria",
+    description:
+      "Landing informativa para La Inquieta · Caseta Nº154 de la Feria de Jerez 2026. Transporte, bebidas, itinerario y reservas por WhatsApp.",
+    tags: ["HTML", "CSS", "JavaScript", "SVG", "Landing"],
+    year: "2026",
+    featuredImage: "/projects/la-inquieta/cartel.png",
+    client: "La Inquieta · Caseta Nº154 · Feria de Jerez",
+    liveUrl: "https://felipecbbb.github.io/la-inquieta/",
+    longDescription:
+      "Un site vertical que respira feria: arco mozárabe, patrón andalusí de fondo, cartel heredado del original y tipografía editorial. Cuatro bloques — hero, transporte, bebidas e itinerario — pensados para que quien entra sepa en un scroll dónde coger el autobús, cuánto cuesta la pulsera y qué DJ pincha cada noche. Reservas por WhatsApp con un solo toque, desde cualquier punto de la página.",
+    challenge:
+      "La Inquieta llevaba años vendiéndose solo con carteles impresos y stories. El problema: la información estaba dispersa, los precios de los autobuses cambiaban por trayecto y nadie tenía claro dónde se cogía cada bus. Hacía falta una web simple, muy visual, que resolviera dudas sin perder la estética del cartel.",
+    solution:
+      "Landing de una página con el cartel SVG original como hero, puntos de salida geolocalizados, tabla de precios completa (ida / vuelta / ida-y-vuelta × con copa / sin copa), pack de bebidas con pulsera destacada (descuento de 1€ por copa) y timeline de los 8 días de feria en formato tarjeta postal. Widget flotante de WhatsApp que abre chat directo con Javi (autobuses) o con el grupo (mesas y pulseras).",
+    results: [
+      "Landing 100% responsive con cartel SVG original del cliente",
+      "WhatsApp integrado con mensajes prellenados según contexto",
+      "Tabla de precios completa con 6 combinaciones de trayecto",
+      "Timeline de 8 días con slots de programación DJ + animador",
+      "Widget flotante de reserva siempre accesible",
+      "Desplegada en GitHub Pages · sin servidor, sin coste",
+    ],
+    features: [
+      "Hero con patrón mozárabe y arco SVG del cartel oficial",
+      "Strips laterales fijos con background-attachment para continuidad",
+      "Puntos de salida con pin dorado por ciudad",
+      "Autobús de calidad en SVG con animación roll-in",
+      "Pulsera de caseta destacada (3 beneficios: descuento, acceso prioritario, reservados)",
+      "Itinerario como tarjetas postales cream sobre fondo teal",
+      "FAB flotante con menú expandible y pulso animado",
+      "Tipografía Fontuna + Yanone Kaffeesatz",
+    ],
+    theme: {
+      bg: "#f3e7cf",
+      fg: "#0d4a42",
+      accent: "#c65248",
+      accentLight: "#ead5b0",
+      font: "'Playfair Display', Georgia, serif",
+      tagBg: "#ead5b0",
+      tagText: "#0d4a42",
+      heroGradient:
+        "linear-gradient(135deg, #0d4a42 0%, #13625a 50%, #c6524830 100%)",
+    },
+    gallery: [
+      {
+        label: "Hero",
+        description: "Cartel SVG original dentro de arco mozárabe con patrón andalusí de fondo",
+      },
+      {
+        label: "Transporte",
+        description: "Puntos de salida, autobús ilustrado y tabla completa de precios",
+      },
+      {
+        label: "Bebidas",
+        description: "Packs de rebujito y copas + pulsera de caseta con 3 beneficios",
+      },
+      {
+        label: "Itinerario",
+        description: "8 días como tarjetas postales cream con slots de programación",
+      },
+    ],
+  },
+  {
+    slug: "wavepanel",
+    id: "02",
     title: "WavePanel",
     category: "SaaS — Escuelas deportivas",
     description:
@@ -100,7 +166,7 @@ export const projects: ProjectDetail[] = [
   },
   {
     slug: "grupo-axial",
-    id: "02",
+    id: "03",
     title: "Grupo Axial",
     category: "Web — Grupo retail",
     description:
@@ -173,7 +239,7 @@ export const projects: ProjectDetail[] = [
   },
   {
     slug: "noa",
-    id: "03",
+    id: "04",
     title: "Noa",
     category: "SaaS — Asistente financiero IA",
     description:
@@ -242,7 +308,7 @@ export const projects: ProjectDetail[] = [
   },
   {
     slug: "lorena-amadio",
-    id: "04",
+    id: "05",
     title: "Lorena Amadio",
     category: "Web — Psicología",
     description:
@@ -304,7 +370,7 @@ export const projects: ProjectDetail[] = [
   },
   {
     slug: "entre-olas-surf",
-    id: "05",
+    id: "06",
     title: "Entre Olas Surf",
     category: "Web — Escuela de Surf",
     description:
@@ -368,7 +434,7 @@ export const projects: ProjectDetail[] = [
   },
   {
     slug: "samba-trips",
-    id: "06",
+    id: "07",
     title: "Samba Trips",
     category: "Web — Viajes en grupo",
     description:
@@ -431,7 +497,7 @@ export const projects: ProjectDetail[] = [
   },
   {
     slug: "alma-de-nomada",
-    id: "07",
+    id: "08",
     title: "Alma de Nómada",
     category: "Web — Travel Coaching",
     description:
@@ -490,72 +556,6 @@ export const projects: ProjectDetail[] = [
       {
         label: "Contacto",
         description: "Formulario honesto — dime qué necesitas y te respondo",
-      },
-    ],
-  },
-  {
-    slug: "la-inquieta",
-    id: "08",
-    title: "La Inquieta",
-    category: "Web — Caseta de Feria",
-    description:
-      "Landing informativa para La Inquieta · Caseta Nº154 de la Feria de Jerez 2026. Transporte, bebidas, itinerario y reservas por WhatsApp.",
-    tags: ["HTML", "CSS", "JavaScript", "SVG", "Landing"],
-    year: "2026",
-    featuredImage: "/projects/la-inquieta/cartel.png",
-    client: "La Inquieta · Caseta Nº154 · Feria de Jerez",
-    liveUrl: "https://felipecbbb.github.io/la-inquieta/",
-    longDescription:
-      "Un site vertical que respira feria: arco mozárabe, patrón andalusí de fondo, cartel heredado del original y tipografía editorial. Cuatro bloques — hero, transporte, bebidas e itinerario — pensados para que quien entra sepa en un scroll dónde coger el autobús, cuánto cuesta la pulsera y qué DJ pincha cada noche. Reservas por WhatsApp con un solo toque, desde cualquier punto de la página.",
-    challenge:
-      "La Inquieta llevaba años vendiéndose solo con carteles impresos y stories. El problema: la información estaba dispersa, los precios de los autobuses cambiaban por trayecto y nadie tenía claro dónde se cogía cada bus. Hacía falta una web simple, muy visual, que resolviera dudas sin perder la estética del cartel.",
-    solution:
-      "Landing de una página con el cartel SVG original como hero, puntos de salida geolocalizados, tabla de precios completa (ida / vuelta / ida-y-vuelta × con copa / sin copa), pack de bebidas con pulsera destacada (descuento de 1€ por copa) y timeline de los 8 días de feria en formato tarjeta postal. Widget flotante de WhatsApp que abre chat directo con Javi (autobuses) o con el grupo (mesas y pulseras).",
-    results: [
-      "Landing 100% responsive con cartel SVG original del cliente",
-      "WhatsApp integrado con mensajes prellenados según contexto",
-      "Tabla de precios completa con 6 combinaciones de trayecto",
-      "Timeline de 8 días con slots de programación DJ + animador",
-      "Widget flotante de reserva siempre accesible",
-      "Desplegada en GitHub Pages · sin servidor, sin coste",
-    ],
-    features: [
-      "Hero con patrón mozárabe y arco SVG del cartel oficial",
-      "Strips laterales fijos con background-attachment para continuidad",
-      "Puntos de salida con pin dorado por ciudad",
-      "Autobús de calidad en SVG con animación roll-in",
-      "Pulsera de caseta destacada (3 beneficios: descuento, acceso prioritario, reservados)",
-      "Itinerario como tarjetas postales cream sobre fondo teal",
-      "FAB flotante con menú expandible y pulso animado",
-      "Tipografía Fontuna + Yanone Kaffeesatz",
-    ],
-    theme: {
-      bg: "#f3e7cf",
-      fg: "#0d4a42",
-      accent: "#c65248",
-      accentLight: "#ead5b0",
-      font: "'Playfair Display', Georgia, serif",
-      tagBg: "#ead5b0",
-      tagText: "#0d4a42",
-      heroGradient:
-        "linear-gradient(135deg, #0d4a42 0%, #13625a 50%, #c6524830 100%)",
-    },
-    gallery: [
-      {
-        label: "Hero",
-        description: "Cartel SVG original dentro de arco mozárabe con patrón andalusí de fondo",
-      },
-      {
-        label: "Transporte",
-        description: "Puntos de salida, autobús ilustrado y tabla completa de precios",
-      },
-      {
-        label: "Bebidas",
-        description: "Packs de rebujito y copas + pulsera de caseta con 3 beneficios",
-      },
-      {
-        label: "Itinerario",
-        description: "8 días como tarjetas postales cream con slots de programación",
       },
     ],
   },
