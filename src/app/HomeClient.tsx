@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import type { ProjectDetail } from "@/data/projects";
+import { useLang, LANGS, type Lang } from "@/lib/i18n";
 
 const INK = "#0a0a0a";
 const BG = "#ffffff";
@@ -41,10 +42,73 @@ export default function HomeClient({ projects }: { projects: ProjectDetail[] }) 
 }
 
 /* =========================================
+   LANGUAGE SWITCHER (compact, three pills)
+   ========================================= */
+function LangSwitcher({ tone = "light" }: { tone?: "light" | "dark" }) {
+  const { lang, setLang } = useLang();
+  const fg = tone === "light" ? "#fff" : INK;
+  const dim = tone === "light" ? "rgba(255,255,255,0.55)" : "#949494";
+
+  return (
+    <div
+      role="group"
+      aria-label="Language"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 2,
+        fontSize: 12,
+        fontWeight: 500,
+        letterSpacing: "0.18em",
+        textTransform: "uppercase",
+      }}
+    >
+      {LANGS.map((l, i) => {
+        const active = l.code === lang;
+        return (
+          <span key={l.code} style={{ display: "inline-flex", alignItems: "center" }}>
+            {i > 0 && (
+              <span aria-hidden style={{ color: dim, padding: "0 6px" }}>
+                /
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => setLang(l.code as Lang)}
+              aria-pressed={active}
+              aria-label={l.label}
+              style={{
+                background: "transparent",
+                border: 0,
+                padding: "4px 2px",
+                color: active ? fg : dim,
+                cursor: "pointer",
+                fontFamily: "inherit",
+                fontSize: "inherit",
+                fontWeight: active ? 600 : 500,
+                letterSpacing: "inherit",
+                textTransform: "inherit",
+                borderBottom: active ? `1px solid ${fg}` : "1px solid transparent",
+                paddingBottom: 2,
+                transition: "color 0.2s ease, border-color 0.2s ease",
+              }}
+            >
+              {l.short}
+            </button>
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
+/* =========================================
    HEADER mix-blend-mode difference
    ========================================= */
 function BlendNav() {
+  const { t } = useLang();
   const [hidden, setHidden] = useState(false);
+  const [open, setOpen] = useState(false);
   const lastScroll = useRef(0);
 
   useEffect(() => {
@@ -58,44 +122,35 @@ function BlendNav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
-    <header
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        padding: "24px clamp(20px, 5vw, 77px)",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        zIndex: 100,
-        mixBlendMode: "difference",
-        color: "#fff",
-        transform: hidden ? "translateY(-100%)" : "translateY(0)",
-        transition: "transform 0.5s cubic-bezier(.2,.8,.2,1)",
-        pointerEvents: hidden ? "none" : "auto",
-      }}
-    >
-      <Link
-        href="/"
+    <>
+      <header
         style={{
-          color: "#fff",
-          textDecoration: "none",
-          fontWeight: 600,
-          fontSize: 16,
-          letterSpacing: "-0.01em",
-        }}
-      >
-        Felipe Cámara
-      </Link>
-      <nav
-        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          padding: "20px clamp(16px, 5vw, 77px)",
           display: "flex",
-          gap: 32,
-          fontSize: 14,
-          fontWeight: 500,
-          letterSpacing: "0.01em",
+          justifyContent: "space-between",
+          alignItems: "center",
+          zIndex: 100,
+          mixBlendMode: open ? "normal" : "difference",
+          color: "#fff",
+          transform: hidden ? "translateY(-100%)" : "translateY(0)",
+          transition: "transform 0.5s cubic-bezier(.2,.8,.2,1)",
+          pointerEvents: hidden ? "none" : "auto",
         }}
       >
         <Link
@@ -103,20 +158,191 @@ function BlendNav() {
           style={{
             color: "#fff",
             textDecoration: "none",
-            borderBottom: "1px solid #fff",
-            paddingBottom: 2,
+            fontWeight: 600,
+            fontSize: 16,
+            letterSpacing: "-0.01em",
           }}
         >
-          Inicio
+          Felipe Cámara
         </Link>
-        <Link href="/proyectos" style={{ color: "#fff", textDecoration: "none" }}>
-          Proyectos
-        </Link>
-        <a href="#contacto" style={{ color: "#fff", textDecoration: "none" }}>
-          Contacto
-        </a>
-      </nav>
-    </header>
+
+        <nav
+          className="blendnav-desktop"
+          style={{
+            display: "flex",
+            gap: 28,
+            alignItems: "center",
+            fontSize: 14,
+            fontWeight: 500,
+            letterSpacing: "0.01em",
+          }}
+        >
+          <Link
+            href="/"
+            style={{
+              color: "#fff",
+              textDecoration: "none",
+              borderBottom: "1px solid #fff",
+              paddingBottom: 2,
+            }}
+          >
+            {t.nav.home}
+          </Link>
+          <Link href="/proyectos" style={{ color: "#fff", textDecoration: "none" }}>
+            {t.nav.projects}
+          </Link>
+          <a href="#contacto" style={{ color: "#fff", textDecoration: "none" }}>
+            {t.nav.contact}
+          </a>
+          <span
+            aria-hidden
+            style={{
+              width: 1,
+              height: 16,
+              background: "rgba(255,255,255,0.35)",
+              display: "inline-block",
+            }}
+          />
+          <LangSwitcher tone="light" />
+        </nav>
+
+        <button
+          type="button"
+          aria-label="Menu"
+          aria-expanded={open}
+          onClick={() => setOpen((o) => !o)}
+          className="blendnav-burger"
+          style={{
+            display: "none",
+            background: "transparent",
+            border: 0,
+            color: "#fff",
+            padding: 8,
+            cursor: "pointer",
+          }}
+        >
+          <span
+            style={{
+              display: "block",
+              width: 22,
+              height: 2,
+              background: "currentColor",
+              transform: open ? "translateY(5px) rotate(45deg)" : "none",
+              transition: "transform 0.3s ease",
+            }}
+          />
+          <span
+            style={{
+              display: "block",
+              width: 22,
+              height: 2,
+              background: "currentColor",
+              marginTop: 6,
+              opacity: open ? 0 : 1,
+              transition: "opacity 0.2s ease",
+            }}
+          />
+          <span
+            style={{
+              display: "block",
+              width: 22,
+              height: 2,
+              background: "currentColor",
+              marginTop: 6,
+              transform: open ? "translateY(-9px) rotate(-45deg)" : "none",
+              transition: "transform 0.3s ease",
+            }}
+          />
+        </button>
+      </header>
+
+      {/* Mobile drawer */}
+      <div
+        aria-hidden={!open}
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: INK,
+          color: BG,
+          zIndex: 99,
+          padding: "100px 28px 40px",
+          display: "flex",
+          flexDirection: "column",
+          gap: 32,
+          transform: open ? "translateY(0)" : "translateY(-100%)",
+          transition: "transform 0.5s cubic-bezier(.2,.8,.2,1)",
+          overflowY: "auto",
+        }}
+      >
+        <nav
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 4,
+            fontSize: 36,
+            fontWeight: 500,
+            letterSpacing: "-0.03em",
+            lineHeight: 1.1,
+          }}
+        >
+          <Link
+            onClick={() => setOpen(false)}
+            href="/"
+            style={{ color: BG, textDecoration: "none", padding: "10px 0" }}
+          >
+            {t.nav.home}
+            <span style={{ color: CORAL }}>.</span>
+          </Link>
+          <Link
+            onClick={() => setOpen(false)}
+            href="/proyectos"
+            style={{ color: BG, textDecoration: "none", padding: "10px 0" }}
+          >
+            {t.nav.projects}
+            <span style={{ color: CORAL }}>.</span>
+          </Link>
+          <a
+            onClick={() => setOpen(false)}
+            href="#contacto"
+            style={{ color: BG, textDecoration: "none", padding: "10px 0" }}
+          >
+            {t.nav.contact}
+            <span style={{ color: CORAL }}>.</span>
+          </a>
+        </nav>
+        <div
+          style={{
+            marginTop: "auto",
+            paddingTop: 24,
+            borderTop: "1px solid rgba(255,255,255,0.15)",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 12,
+            flexWrap: "wrap",
+          }}
+        >
+          <span
+            style={{
+              fontSize: 11,
+              letterSpacing: "0.25em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.55)",
+            }}
+          >
+            Lang / Sprache
+          </span>
+          <LangSwitcher tone="light" />
+        </div>
+      </div>
+
+      <style jsx global>{`
+        @media (max-width: 760px) {
+          .blendnav-desktop { display: none !important; }
+          .blendnav-burger { display: inline-flex !important; flex-direction: column; align-items: center; justify-content: center; }
+        }
+      `}</style>
+    </>
   );
 }
 
@@ -124,6 +350,7 @@ function BlendNav() {
    HERO XXL
    ========================================= */
 function HeroXXL() {
+  const { t } = useLang();
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, -80]);
   const opacity = useTransform(scrollY, [0, 400], [1, 0.2]);
@@ -131,7 +358,7 @@ function HeroXXL() {
   return (
     <section
       style={{
-        padding: "clamp(140px, 18vh, 220px) clamp(20px, 5vw, 77px) 60px",
+        padding: "clamp(120px, 18vh, 220px) clamp(20px, 5vw, 77px) 60px",
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
@@ -159,7 +386,7 @@ function HeroXXL() {
               color: MUTED,
             }}
           >
-            · Felipe Cámara / Portfolio 2026
+            {t.hero.badge}
           </span>
           <span
             style={{
@@ -182,7 +409,7 @@ function HeroXXL() {
                 boxShadow: "0 0 0 4px rgba(21,194,139,.2)",
               }}
             />
-            Disponible para proyectos
+            {t.hero.available}
           </span>
         </div>
 
@@ -191,18 +418,20 @@ function HeroXXL() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1] }}
           style={{
-            fontSize: "clamp(68px, 12vw, 200px)",
-            lineHeight: 0.88,
+            fontSize: "clamp(54px, 12vw, 200px)",
+            lineHeight: 0.9,
             fontWeight: 500,
             letterSpacing: "-0.06em",
             margin: 0,
+            wordBreak: "break-word",
+            hyphens: "auto",
           }}
         >
-          Desarrollo.
+          {t.hero.line1}
           <br />
-          <span style={{ color: MUTED }}>Diseño.</span>
+          <span style={{ color: MUTED }}>{t.hero.line2}</span>
           <br />
-          Estrategia
+          {t.hero.line3}
           <span style={{ color: CORAL, fontStyle: "italic" }}>.</span>
         </motion.h1>
 
@@ -227,21 +456,19 @@ function HeroXXL() {
               color: MUTED,
             }}
           >
-            Freelance · España
+            {t.hero.location}
           </div>
           <p
             style={{
-              fontSize: "clamp(17px, 1.3vw, 20px)",
-              lineHeight: 1.4,
+              fontSize: "clamp(16px, 1.3vw, 20px)",
+              lineHeight: 1.45,
               margin: 0,
               maxWidth: 560,
               fontWeight: 400,
             }}
           >
-            No solo diseño, no solo programo, no solo estrategia.{" "}
-            <span style={{ color: MUTED }}>
-              Las tres cosas: entiendo el negocio, diseño la solución y la construyo.
-            </span>
+            {t.hero.bodyA}{" "}
+            <span style={{ color: MUTED }}>{t.hero.bodyB}</span>
           </p>
         </div>
       </motion.div>
@@ -252,6 +479,8 @@ function HeroXXL() {
           :global(.hero-foot) {
             grid-template-columns: 1fr !important;
             gap: 16px !important;
+            margin-top: 36px !important;
+            padding-top: 24px !important;
           }
         }
       `}</style>
@@ -260,6 +489,7 @@ function HeroXXL() {
 }
 
 function ScrollHint() {
+  const { t } = useLang();
   return (
     <div
       style={{
@@ -284,7 +514,7 @@ function ScrollHint() {
           display: "inline-block",
         }}
       />
-      Desliza
+      {t.hero.scroll}
     </div>
   );
 }
@@ -298,7 +528,7 @@ function NameMarquee() {
     <div
       style={{
         overflow: "hidden",
-        padding: "24px 0",
+        padding: "20px 0",
         background: INK,
         color: BG,
         borderTop: `1px solid ${INK}`,
@@ -311,7 +541,7 @@ function NameMarquee() {
           gap: 50,
           whiteSpace: "nowrap",
           animation: "home-mq-a 28s linear infinite",
-          fontSize: "clamp(48px, 8vw, 100px)",
+          fontSize: "clamp(40px, 8vw, 100px)",
           fontWeight: 500,
           letterSpacing: "-0.04em",
           lineHeight: 1,
@@ -337,10 +567,11 @@ function NameMarquee() {
    FEATURED PROJECTS (preview of 4)
    ========================================= */
 function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
+  const { t } = useLang();
   return (
     <section
       style={{
-        padding: "120px clamp(20px, 5vw, 77px)",
+        padding: "clamp(80px, 12vw, 120px) clamp(20px, 5vw, 77px)",
       }}
     >
       <div
@@ -364,19 +595,19 @@ function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
               marginBottom: 14,
             }}
           >
-            · 02 / Proyectos
+            {t.projects.label}
           </div>
           <h2
             style={{
-              fontSize: "clamp(56px, 10vw, 160px)",
+              fontSize: "clamp(48px, 10vw, 160px)",
               lineHeight: 0.9,
               fontWeight: 500,
               letterSpacing: "-0.06em",
               margin: 0,
             }}
           >
-            Últimos
-            <span style={{ color: CORAL, fontStyle: "italic" }}>.</span>
+            {t.projects.title}
+            <span style={{ color: CORAL, fontStyle: "italic" }}>{t.projects.titleAccent}</span>
           </h2>
         </div>
         <Link
@@ -405,7 +636,7 @@ function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
             e.currentTarget.style.color = INK;
           }}
         >
-          Ver todos <span>→</span>
+          {t.projects.seeAll} <span>→</span>
         </Link>
       </div>
 
@@ -434,6 +665,7 @@ function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
         @media (max-width: 860px) {
           :global(.home-proj-grid) {
             grid-template-columns: 1fr !important;
+            gap: 50px !important;
           }
         }
       `}</style>
@@ -442,6 +674,7 @@ function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
 }
 
 function FeaturedCard({ project }: { project: ProjectDetail }) {
+  const { t } = useLang();
   const wrap = useRef<HTMLDivElement>(null);
   const btn = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState(false);
@@ -499,7 +732,7 @@ function FeaturedCard({ project }: { project: ProjectDetail }) {
           >
             <span
               style={{
-                fontSize: "clamp(40px, 7vw, 100px)",
+                fontSize: "clamp(36px, 7vw, 100px)",
                 fontWeight: 500,
                 letterSpacing: "-0.04em",
                 lineHeight: 0.95,
@@ -545,17 +778,17 @@ function FeaturedCard({ project }: { project: ProjectDetail }) {
             zIndex: 2,
           }}
         >
-          Ver →
+          {t.projects.seeOne}
         </div>
       </div>
       <div style={{ marginTop: 20, display: "flex", justifyContent: "space-between", gap: 16 }}>
         <h3
           style={{
-            fontSize: "clamp(24px, 2.4vw, 36px)",
+            fontSize: "clamp(22px, 2.4vw, 36px)",
             fontWeight: 500,
             letterSpacing: "-0.02em",
             margin: 0,
-            lineHeight: 1,
+            lineHeight: 1.05,
           }}
         >
           {project.title}
@@ -591,13 +824,19 @@ function FeaturedCard({ project }: { project: ProjectDetail }) {
    WORD MARQUEE (second, lighter)
    ========================================= */
 function WordMarquee() {
-  const words = ["desarrollo", "diseño", "estrategia", "producto", "growth"];
+  const { lang } = useLang();
+  const wordsByLang: Record<Lang, string[]> = {
+    es: ["desarrollo", "diseño", "estrategia", "producto", "growth"],
+    en: ["development", "design", "strategy", "product", "growth"],
+    de: ["entwicklung", "design", "strategie", "produkt", "growth"],
+  };
+  const words = wordsByLang[lang];
   const row = [...words, ...words, ...words, ...words];
   return (
     <div
       style={{
         overflow: "hidden",
-        padding: "30px 0",
+        padding: "26px 0",
         borderTop: `1px solid ${LINE}`,
         borderBottom: `1px solid ${LINE}`,
       }}
@@ -608,7 +847,7 @@ function WordMarquee() {
           gap: 40,
           whiteSpace: "nowrap",
           animation: "home-mq-b 38s linear infinite",
-          fontSize: "clamp(42px, 6vw, 80px)",
+          fontSize: "clamp(36px, 6vw, 80px)",
           fontWeight: 500,
           letterSpacing: "-0.04em",
           lineHeight: 1,
@@ -635,42 +874,16 @@ function WordMarquee() {
    SERVICES (editorial list)
    ========================================= */
 function ServicesList() {
-  const services = [
-    {
-      id: "01",
-      title: "Desarrollo de Software",
-      desc: "SaaS, apps web, plataformas, automatizaciones. Código limpio, escalable, con tests.",
-      includes: ["Arquitectura técnica", "Desarrollo full-stack", "Base de datos y API", "Deploy y mantenimiento", "Tests automatizados"],
-    },
-    {
-      id: "02",
-      title: "Desarrollo Web",
-      desc: "Webs que convierten. Rápidas, responsive, optimizadas para SEO y pensadas para vender.",
-      includes: ["Diseño UI/UX", "Desarrollo responsive", "SEO técnico", "Optimización de velocidad", "Analytics"],
-    },
-    {
-      id: "03",
-      title: "Gestión de Redes Sociales",
-      desc: "Estrategia, contenido y gestión completa. Para empresas e influencers que quieren crecer de verdad.",
-      includes: ["Estrategia de contenido", "Creación de publicaciones", "Gestión de comunidad", "Informes mensuales", "Crecimiento orgánico"],
-    },
-    {
-      id: "04",
-      title: "Consultoría Digital",
-      desc: "Te digo lo que necesitas oír, no lo que quieres escuchar. Análisis, plan de acción, ejecución.",
-      includes: ["Auditoría digital", "Plan de acción", "Recomendaciones técnicas", "Seguimiento"],
-    },
-  ];
-
+  const { t } = useLang();
   return (
     <section
       style={{
-        padding: "140px clamp(20px, 5vw, 77px)",
+        padding: "clamp(90px, 14vw, 140px) clamp(20px, 5vw, 77px)",
         background: INK,
         color: BG,
       }}
     >
-      <div style={{ marginBottom: 80, maxWidth: 1200 }}>
+      <div style={{ marginBottom: 60, maxWidth: 1200 }}>
         <div
           style={{
             fontSize: 13,
@@ -681,24 +894,24 @@ function ServicesList() {
             marginBottom: 20,
           }}
         >
-          · 03 / Servicios
+          {t.services.label}
         </div>
         <h2
           style={{
-            fontSize: "clamp(56px, 10vw, 160px)",
+            fontSize: "clamp(48px, 10vw, 160px)",
             lineHeight: 0.9,
             fontWeight: 500,
             letterSpacing: "-0.06em",
             margin: 0,
           }}
         >
-          Lo que hago
+          {t.services.title}
           <span style={{ color: CORAL, fontStyle: "italic" }}>.</span>
         </h2>
       </div>
 
       <div>
-        {services.map((s, i) => (
+        {t.services.list.map((s, i) => (
           <ServiceRow key={s.id} index={i} {...s} />
         ))}
       </div>
@@ -728,9 +941,10 @@ function ServiceRow({
       transition={{ duration: 0.6, delay: index * 0.08, ease: [0.2, 0.8, 0.2, 1] }}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
+      onClick={() => setOpen((o) => !o)}
       style={{
         borderTop: `1px solid rgba(255,255,255,0.12)`,
-        padding: "36px 0",
+        padding: "28px 0",
         cursor: "pointer",
         position: "relative",
       }}
@@ -739,14 +953,14 @@ function ServiceRow({
         style={{
           display: "grid",
           gridTemplateColumns: "80px 1fr auto",
-          gap: "clamp(20px, 3vw, 60px)",
+          gap: "clamp(16px, 3vw, 60px)",
           alignItems: "baseline",
         }}
         className="home-svc-row"
       >
         <span
           style={{
-            fontSize: 14,
+            fontSize: 13,
             color: MUTED,
             letterSpacing: "0.15em",
             fontWeight: 500,
@@ -756,8 +970,8 @@ function ServiceRow({
         </span>
         <h3
           style={{
-            fontSize: "clamp(32px, 5vw, 68px)",
-            lineHeight: 1,
+            fontSize: "clamp(26px, 5vw, 68px)",
+            lineHeight: 1.05,
             fontWeight: 500,
             letterSpacing: "-0.03em",
             margin: 0,
@@ -771,7 +985,7 @@ function ServiceRow({
           animate={{ rotate: open ? 45 : 0 }}
           transition={{ duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }}
           style={{
-            fontSize: 24,
+            fontSize: 22,
             fontWeight: 300,
             color: BG,
             display: "inline-block",
@@ -791,16 +1005,16 @@ function ServiceRow({
           style={{
             display: "grid",
             gridTemplateColumns: "80px 1fr 1fr",
-            gap: "clamp(20px, 3vw, 60px)",
-            paddingTop: 32,
+            gap: "clamp(16px, 3vw, 60px)",
+            paddingTop: 28,
             paddingBottom: 8,
           }}
-          className="home-svc-row"
+          className="home-svc-row-open"
         >
           <div />
           <p
             style={{
-              fontSize: 18,
+              fontSize: 17,
               lineHeight: 1.5,
               margin: 0,
               color: "rgba(255,255,255,0.75)",
@@ -833,7 +1047,11 @@ function ServiceRow({
       <style jsx>{`
         @media (max-width: 720px) {
           :global(.home-svc-row) {
-            grid-template-columns: 50px 1fr auto !important;
+            grid-template-columns: 36px 1fr auto !important;
+          }
+          :global(.home-svc-row-open) {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
           }
         }
       `}</style>
@@ -845,10 +1063,11 @@ function ServiceRow({
    ABOUT SPLIT 60/40
    ========================================= */
 function AboutSplit() {
+  const { t } = useLang();
   return (
     <section
       style={{
-        padding: "140px clamp(20px, 5vw, 77px)",
+        padding: "clamp(90px, 14vw, 140px) clamp(20px, 5vw, 77px)",
       }}
     >
       <div
@@ -861,7 +1080,7 @@ function AboutSplit() {
           marginBottom: 20,
         }}
       >
-        · 04 / Sobre mí
+        {t.about.label}
       </div>
       <div
         style={{
@@ -869,7 +1088,7 @@ function AboutSplit() {
           gridTemplateColumns: "1.5fr 1fr",
           gap: "clamp(40px, 6vw, 100px)",
           alignItems: "end",
-          marginBottom: 80,
+          marginBottom: 60,
         }}
         className="home-about-grid"
       >
@@ -879,30 +1098,30 @@ function AboutSplit() {
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
           style={{
-            fontSize: "clamp(38px, 5.5vw, 88px)",
-            lineHeight: 1,
+            fontSize: "clamp(34px, 5.5vw, 88px)",
+            lineHeight: 1.05,
             fontWeight: 500,
             letterSpacing: "-0.03em",
             margin: 0,
           }}
         >
-          Soy Felipe.
+          {t.about.headlineA}
           <br />
-          <span style={{ color: MUTED }}>Desarrollo software,</span>
+          <span style={{ color: MUTED }}>{t.about.headlineB}</span>
           <br />
-          diseño webs y
+          {t.about.headlineC}
           <br />
-          <span style={{ color: MUTED }}>gestiono redes sociales</span>
+          <span style={{ color: MUTED }}>{t.about.headlineD}</span>
           <span style={{ color: CORAL, fontStyle: "italic" }}>.</span>
         </motion.h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <p style={{ fontSize: 17, lineHeight: 1.55, margin: 0 }}>
-            Mi diferencial es que no solo hago una cosa. Entiendo el negocio, diseño la
-            solución y la construyo. Sin intermediarios, sin teléfono roto, sin excusas.
+            <strong style={{ fontWeight: 600 }}>{t.about.body1Strong}</strong> {t.about.body1}
           </p>
           <p style={{ fontSize: 17, lineHeight: 1.55, margin: 0, color: MUTED }}>
-            Fundé <strong style={{ color: INK }}>Kujme</strong>, un SaaS de email marketing con IA. Gestiono marcas en
-            redes sociales. Y estoy construyendo en público todo lo que hago.
+            {t.about.body2Pre}
+            <strong style={{ color: INK }}>{t.about.body2Mid}</strong>
+            {t.about.body2Post}
           </p>
         </div>
       </div>
@@ -917,10 +1136,9 @@ function AboutSplit() {
         }}
         className="home-stats-grid"
       >
-        <Stat num="15+" label="Proyectos entregados" />
-        <Stat num="10+" label="Clientes" />
-        <Stat num="102" label="Tests escritos" />
-        <Stat num="∞" label="Cafés" />
+        {t.about.stats.map((s) => (
+          <Stat key={s.label} num={s.num} label={s.label} />
+        ))}
       </div>
 
       <div style={{ marginTop: 60 }}>
@@ -934,13 +1152,13 @@ function AboutSplit() {
             marginBottom: 16,
           }}
         >
-          Stack principal
+          {t.about.stack}
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
           {["React", "Next.js", "Node.js", "TypeScript", "Tailwind", "Supabase", "PostgreSQL", "Stripe", "OpenAI"].map(
-            (t) => (
+            (tag) => (
               <span
-                key={t}
+                key={tag}
                 style={{
                   padding: "8px 16px",
                   borderRadius: 999,
@@ -951,7 +1169,7 @@ function AboutSplit() {
                   color: "#444",
                 }}
               >
-                {t}
+                {tag}
               </span>
             )
           )}
@@ -965,6 +1183,7 @@ function AboutSplit() {
           }
           :global(.home-stats-grid) {
             grid-template-columns: repeat(2, 1fr) !important;
+            gap: 28px 20px !important;
           }
         }
       `}</style>
@@ -977,7 +1196,7 @@ function Stat({ num, label }: { num: string; label: string }) {
     <div>
       <div
         style={{
-          fontSize: "clamp(44px, 6vw, 80px)",
+          fontSize: "clamp(38px, 6vw, 80px)",
           fontWeight: 500,
           letterSpacing: "-0.03em",
           lineHeight: 1,
@@ -988,7 +1207,7 @@ function Stat({ num, label }: { num: string; label: string }) {
       <div
         style={{
           fontSize: 12,
-          letterSpacing: "0.2em",
+          letterSpacing: "0.18em",
           textTransform: "uppercase",
           color: MUTED,
           marginTop: 10,
@@ -1005,25 +1224,11 @@ function Stat({ num, label }: { num: string; label: string }) {
    TESTIMONIALS
    ========================================= */
 function TestimonialsBlock() {
-  const items = [
-    {
-      quote:
-        "Felipe no solo ejecuta, entiende lo que necesitas antes de que tú mismo lo sepas. El mejor profesional con el que he trabajado.",
-      name: "Cliente Savanna",
-      role: "Marca de lifestyle",
-    },
-    {
-      quote:
-        "La diferencia de trabajar con alguien que programa, diseña y entiende de negocio es brutal. Todo encaja.",
-      name: "Próximo testimonio",
-      role: "¿Serás tú?",
-    },
-  ];
-
+  const { t } = useLang();
   return (
     <section
       style={{
-        padding: "140px clamp(20px, 5vw, 77px)",
+        padding: "clamp(90px, 14vw, 140px) clamp(20px, 5vw, 77px)",
         background: "#f7f7f7",
       }}
     >
@@ -1037,31 +1242,31 @@ function TestimonialsBlock() {
           marginBottom: 20,
         }}
       >
-        · 05 / Lo que dicen
+        {t.testimonials.label}
       </div>
       <h2
         style={{
-          fontSize: "clamp(48px, 8vw, 120px)",
-          lineHeight: 0.9,
+          fontSize: "clamp(40px, 8vw, 120px)",
+          lineHeight: 0.95,
           fontWeight: 500,
           letterSpacing: "-0.05em",
-          margin: "0 0 80px",
+          margin: "0 0 60px",
         }}
       >
-        Palabra de
+        {t.testimonials.titleA}
         <br />
-        <span style={{ color: MUTED }}>quien lo</span> usa
+        <span style={{ color: MUTED }}>{t.testimonials.titleB}</span> {t.testimonials.titleC}
         <span style={{ color: CORAL, fontStyle: "italic" }}>.</span>
       </h2>
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
-          gap: "clamp(30px, 4vw, 60px)",
+          gap: "clamp(24px, 4vw, 60px)",
         }}
         className="home-t-grid"
       >
-        {items.map((t, i) => (
+        {t.testimonials.items.map((it, i) => (
           <motion.blockquote
             key={i}
             initial={{ opacity: 0, y: 30 }}
@@ -1070,7 +1275,7 @@ function TestimonialsBlock() {
             transition={{ duration: 0.7, delay: i * 0.12, ease: [0.2, 0.8, 0.2, 1] }}
             style={{
               margin: 0,
-              padding: "40px 0",
+              padding: "32px 0",
               borderTop: `1px solid ${LINE}`,
               borderBottom: `1px solid ${LINE}`,
             }}
@@ -1078,7 +1283,7 @@ function TestimonialsBlock() {
             <span
               style={{
                 display: "block",
-                fontSize: 72,
+                fontSize: 64,
                 fontWeight: 500,
                 color: CORAL,
                 lineHeight: 0.5,
@@ -1090,17 +1295,17 @@ function TestimonialsBlock() {
             </span>
             <p
               style={{
-                fontSize: "clamp(22px, 2vw, 30px)",
-                lineHeight: 1.3,
+                fontSize: "clamp(19px, 2vw, 30px)",
+                lineHeight: 1.35,
                 fontWeight: 400,
                 letterSpacing: "-0.01em",
-                margin: "0 0 40px",
+                margin: "0 0 32px",
               }}
             >
-              {t.quote}
+              {it.quote}
             </p>
             <footer style={{ fontSize: 14, color: MUTED }}>
-              <strong style={{ color: INK, fontWeight: 600 }}>{t.name}</strong> · {t.role}
+              <strong style={{ color: INK, fontWeight: 600 }}>{it.name}</strong> · {it.role}
             </footer>
           </motion.blockquote>
         ))}
@@ -1120,11 +1325,12 @@ function TestimonialsBlock() {
    CONTACT CTA
    ========================================= */
 function ContactCTA() {
+  const { t } = useLang();
   return (
     <section
       id="contacto"
       style={{
-        padding: "160px clamp(20px, 5vw, 77px)",
+        padding: "clamp(110px, 16vw, 160px) clamp(20px, 5vw, 77px)",
         background: INK,
         color: BG,
         position: "relative",
@@ -1170,7 +1376,7 @@ function ContactCTA() {
             marginBottom: 24,
           }}
         >
-          · 06 / Contacto
+          {t.contact.label}
         </div>
         <motion.h2
           initial={{ opacity: 0, y: 40 }}
@@ -1178,23 +1384,26 @@ function ContactCTA() {
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
           style={{
-            fontSize: "clamp(60px, 12vw, 200px)",
-            lineHeight: 0.9,
+            fontSize: "clamp(48px, 12vw, 200px)",
+            lineHeight: 0.95,
             fontWeight: 500,
             letterSpacing: "-0.06em",
-            margin: "0 0 60px",
+            margin: "0 0 50px",
+            wordBreak: "break-word",
           }}
         >
-          ¿Tienes un<br />proyecto?
+          {t.contact.titleA}
           <br />
-          <span style={{ fontStyle: "italic", color: CORAL }}>Hablemos.</span>
+          {t.contact.titleB}
+          <br />
+          <span style={{ fontStyle: "italic", color: CORAL }}>{t.contact.titleAccent}</span>
         </motion.h2>
 
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "clamp(30px, 5vw, 80px)",
+            gap: "clamp(28px, 5vw, 80px)",
             maxWidth: 1200,
           }}
           className="home-contact-grid"
@@ -1206,16 +1415,18 @@ function ContactCTA() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 14,
-                padding: "22px 36px",
+                padding: "20px 28px",
                 borderRadius: 999,
                 background: CORAL,
                 color: BG,
                 textDecoration: "none",
-                fontSize: 17,
+                fontSize: 16,
                 fontWeight: 500,
                 letterSpacing: "0.02em",
                 transition: "transform 0.3s ease, background 0.3s ease",
                 marginBottom: 24,
+                maxWidth: "100%",
+                wordBreak: "break-all",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-3px)";
@@ -1235,8 +1446,7 @@ function ContactCTA() {
                 maxWidth: 440,
               }}
             >
-              Respuesta en menos de 24h. Cuéntame qué necesitas y te digo si soy la
-              persona indicada — o te mando a alguien que sí.
+              {t.contact.body}
             </p>
           </div>
           <div>
@@ -1250,7 +1460,7 @@ function ContactCTA() {
                 marginBottom: 20,
               }}
             >
-              Sígueme
+              {t.contact.follow}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <SocialLink
@@ -1294,7 +1504,7 @@ function SocialLink({ label, handle, href }: { label: string; handle: string; hr
         borderBottom: "1px solid rgba(255,255,255,0.12)",
         color: BG,
         textDecoration: "none",
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: 500,
         letterSpacing: "-0.01em",
         transition: "color 0.3s ease, padding-left 0.3s ease",
@@ -1308,7 +1518,7 @@ function SocialLink({ label, handle, href }: { label: string; handle: string; hr
         e.currentTarget.style.paddingLeft = "0";
       }}
     >
-      <span>
+      <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis" }}>
         <span style={{ color: MUTED, fontSize: 13, letterSpacing: "0.15em", textTransform: "uppercase", marginRight: 14 }}>
           {label}
         </span>
@@ -1323,10 +1533,11 @@ function SocialLink({ label, handle, href }: { label: string; handle: string; hr
    FOOTER
    ========================================= */
 function Footer() {
+  const { t } = useLang();
   return (
     <footer
       style={{
-        padding: "30px clamp(20px, 5vw, 77px)",
+        padding: "26px clamp(20px, 5vw, 77px)",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
@@ -1339,10 +1550,13 @@ function Footer() {
         borderTop: "1px solid rgba(255,255,255,0.1)",
       }}
     >
-      <span style={{ color: MUTED }}>© 2026 Felipe Cámara — Todos los derechos reservados</span>
-      <Link href="/proyectos" style={{ color: BG, textDecoration: "none", fontWeight: 500 }}>
-        Ver proyectos →
-      </Link>
+      <span style={{ color: MUTED }}>{t.footer.rights}</span>
+      <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+        <LangSwitcher tone="light" />
+        <Link href="/proyectos" style={{ color: BG, textDecoration: "none", fontWeight: 500 }}>
+          {t.footer.seeProjects}
+        </Link>
+      </div>
     </footer>
   );
 }
