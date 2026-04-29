@@ -1,17 +1,12 @@
 "use client";
 
-import {
-  motion,
-  useInView,
-  useScroll,
-  useTransform,
-  type Variants,
-} from "framer-motion";
+import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useLang, type Lang } from "@/lib/i18n";
+import BlendNav from "@/components/BlendNav";
 
-/* ─── Palette (real from entreolasurf.com CSS vars) ─── */
 const BG = "#fffdf7";
 const SAND = "#f3ecdd";
 const YELLOW = "#f3c900";
@@ -27,7 +22,349 @@ const DISPLAY = "var(--font-bebas), 'Impact', sans-serif";
 const SANS = "var(--font-manrope), system-ui, sans-serif";
 const MONO = "var(--font-space), monospace";
 
-/* ─── Sun SVG (rotating) ─── */
+const T: Record<Lang, {
+  badge: string;
+  status: string;
+  hero1: string;
+  hero2: string;
+  heroP: string;
+  marqueeItems: string[];
+  sceneLabel: string;
+  sceneA: string;
+  sceneHl: string;
+  scenePhotos: string;
+  capTeam: string;
+  capVilla: string;
+  capRooftop: string;
+  proj: string;
+  projA: string;
+  projHl: string;
+  projP: string;
+  builtList: string[];
+  bonosLabel: string;
+  bonosA: string;
+  bonosHl: string;
+  bonosP: string;
+  bonosBono: string;
+  bonosClasses: string;
+  bonosDiscount: string;
+  expA: string;
+  expHl: string;
+  services: { title: string; blurb: string; key: keyof typeof serviceIcons }[];
+  villaCapA: string;
+  villaCapB: string;
+  campLabel: string;
+  campA: string;
+  campHl: string;
+  campP: string;
+  campStats: { n: string; u: string }[];
+  editions: string;
+  camps: { dates: string; tag: string; nights: string }[];
+  reviewsLabel: string;
+  reviewsA: string;
+  reviewsHl: string;
+  reviews: { who: string; meta: string; text: string; initials: string }[];
+  bookingA: string;
+  bookingHl: string;
+  bookingSteps: { n: string; title: string; desc: string }[];
+  step: string;
+  hood: string;
+  hoodA: string;
+  hoodHl: string;
+  closingA: string;
+  closingHl: string;
+  closingP: string;
+  visit: string;
+  back: string;
+  footerNote: string;
+}> = {
+  es: {
+    badge: "Playa de Roche · Cádiz",
+    status: "En vivo · entreolasurf.com",
+    hero1: "ENTRE",
+    hero2: "OLAS.",
+    heroP:
+      "Escuela de surf con alma. Diseñé y construí la web entera — clases con sistema de bonos, e-commerce, reservas online y 4 ediciones de surf camp en villa privada.",
+    marqueeItems: ["ROCHE", "CÁDIZ", "SURF CAMP", "VILLA PRIVADA", "+18", "BONOS -30%", "ROCHE", "CONIL"],
+    sceneLabel: "La escena",
+    sceneA: "Playa de Roche.",
+    sceneHl: "Gente real.",
+    scenePhotos: "Fotos del cliente",
+    capTeam: "Equipo · Roche",
+    capVilla: "Villa · drone",
+    capRooftop: "Terraza · golden hour",
+    proj: "El proyecto",
+    projA: "Una web que",
+    projHl: "vende surf.",
+    projP:
+      "Había escuela, había olas, había reputación. Faltaba la web que cerrase el círculo. La construí.",
+    builtList: [
+      "Diseño y desarrollo full-stack de todo el site",
+      "Sistema de bonos con descuento progresivo (-7% a -30%)",
+      "Reservas online con disponibilidad real por fechas",
+      "E-commerce para merchandising con checkout completo",
+      "4 ediciones de surf camp gestionables con plazas y reservas",
+      "Hero con vídeo integrado y estética de Playa de Roche",
+      "SEO técnico: OG, Schema, sitemap, canonical",
+      "Integración con WhatsApp, Instagram y TikTok",
+    ],
+    bonosLabel: "El sistema de bonos",
+    bonosA: "Cuantas más clases,",
+    bonosHl: "más ahorras.",
+    bonosP:
+      "Packs de 2 a 7 sesiones con descuento progresivo. Motor propio con válidez de 180 días por bono comprado.",
+    bonosBono: "Bono",
+    bonosClasses: "clases",
+    bonosDiscount: "Descuento",
+    expA: "La experiencia",
+    expHl: "completa.",
+    services: [
+      { key: "group", title: "Clases Grupales", blurb: "90 minutos. Máx. 6 personas. Material y seguro incluidos. Niveles desde cero." },
+      { key: "individual", title: "Clases Individuales", blurb: "90 minutos. Atención 100% personalizada. Progresa el doble de rápido." },
+      { key: "yoga", title: "Clases de Yoga", blurb: "Sesiones al aire libre para complementar la evolución en el agua." },
+      { key: "paddle", title: "Paddle Surf", blurb: "Clases y rutas en aguas tranquilas de Conil. Todos los niveles." },
+      { key: "skate", title: "Surf Skate", blurb: "Entrenamiento técnico en tierra para mejorar maniobras y equilibrio." },
+      { key: "rental", title: "Alquiler de Material", blurb: "Tablas, neoprenos, paddle, bodyboard y skate. Sin complicaciones." },
+    ],
+    villaCapA: "Villa · +1000 m²",
+    villaCapB: "Entre Olas Surf Camp",
+    campLabel: "Surf Camp · +18",
+    campA: "LA EXPERIENCIA",
+    campHl: "QUE NO OLVIDARÁS.",
+    campP:
+      "Villa privada de +1000 m², piscina, pensión completa, transporte, surf todos los días, aventura y fiestas. Plazas limitadas por edición.",
+    campStats: [
+      { n: "1000", u: "m² villa" },
+      { n: "4", u: "días / 3 noches" },
+      { n: "+18", u: "solo adultos" },
+      { n: "∞", u: "olas" },
+    ],
+    editions: "Ediciones gestionables",
+    camps: [
+      { dates: "20–23 Marzo", tag: "XXL", nights: "4 días / 3 noches" },
+      { dates: "10–13 Abril", tag: "XXL", nights: "4 días / 3 noches" },
+      { dates: "16–19 Abril", tag: "Sambatrips", nights: "4 días / 3 noches" },
+      { dates: "9–13 Septiembre", tag: "Sambatrips", nights: "5 días / 4 noches" },
+    ],
+    reviewsLabel: "Opiniones reales",
+    reviewsA: "Lo que dicen",
+    reviewsHl: "sus alumnos.",
+    reviews: [
+      { who: "Laura García", meta: "Clase grupal · Roche", text: "Una experiencia increíble. Los instructores son muy profesionales y pacientes. Conseguí ponerme de pie en la tabla el primer día.", initials: "LG" },
+      { who: "Carlos Martínez", meta: "Surf Camp · Conil", text: "El campamento de surf fue lo mejor de mis vacaciones. Aprendí mucho y conocí gente increíble. Ambiente inmejorable.", initials: "CM" },
+      { who: "Familia Rodríguez", meta: "Clase grupal · Roche", text: "Hicimos el curso familiar y fue perfecto. Los niños se lo pasaron genial y los instructores se adaptaron a cada edad.", initials: "FR" },
+    ],
+    bookingA: "Reservar es",
+    bookingHl: "así de rápido.",
+    bookingSteps: [
+      { n: "01", title: "Elige tu pack", desc: "Clase suelta, bono de 2-7 sesiones o surf camp. Disponibilidad en tiempo real." },
+      { n: "02", title: "Reserva y paga", desc: "Checkout completo con carrito, cuenta de usuario y confirmación por email." },
+      { n: "03", title: "Surfea", desc: "Te esperamos en Playa de Roche. Material y seguro incluidos." },
+    ],
+    step: "PASO",
+    hood: "Bajo el capó",
+    hoodA: "Stack pensado para",
+    hoodHl: "cargar rápido.",
+    closingA: "NOS VEMOS",
+    closingHl: "EN EL AGUA.",
+    closingP:
+      "La web está viva. Cada fin de semana entran reservas y el sistema de bonos convierte sin intermediarios.",
+    visit: "Visitar entreolasurf.com",
+    back: "← Volver al portfolio",
+    footerNote: "Entre Olas · Caso de estudio",
+  },
+  en: {
+    badge: "Playa de Roche · Cádiz",
+    status: "Live · entreolasurf.com",
+    hero1: "BETWEEN",
+    hero2: "WAVES.",
+    heroP:
+      "A surf school with soul. I designed and built the entire site — classes with bundle pricing, e-commerce, online bookings and 4 editions of surf camp in a private villa.",
+    marqueeItems: ["ROCHE", "CÁDIZ", "SURF CAMP", "PRIVATE VILLA", "18+", "BUNDLES -30%", "ROCHE", "CONIL"],
+    sceneLabel: "The scene",
+    sceneA: "Playa de Roche.",
+    sceneHl: "Real people.",
+    scenePhotos: "Client photos",
+    capTeam: "Team · Roche",
+    capVilla: "Villa · drone",
+    capRooftop: "Terrace · golden hour",
+    proj: "The project",
+    projA: "A site that",
+    projHl: "sells surf.",
+    projP:
+      "There was a school, there were waves, there was reputation. The website was missing. I built it.",
+    builtList: [
+      "Full-stack design and development of the whole site",
+      "Bundle system with progressive discount (-7% to -30%)",
+      "Online bookings with real per-date availability",
+      "E-commerce for merchandise with full checkout",
+      "4 manageable surf-camp editions with seats and bookings",
+      "Hero with embedded video and Playa de Roche aesthetic",
+      "Technical SEO: OG, Schema, sitemap, canonical",
+      "WhatsApp, Instagram and TikTok integration",
+    ],
+    bonosLabel: "The bundle system",
+    bonosA: "More classes,",
+    bonosHl: "more savings.",
+    bonosP:
+      "Packs of 2 to 7 sessions with progressive discount. Custom engine, valid 180 days per bundle.",
+    bonosBono: "Bundle",
+    bonosClasses: "classes",
+    bonosDiscount: "Discount",
+    expA: "The full",
+    expHl: "experience.",
+    services: [
+      { key: "group", title: "Group classes", blurb: "90 minutes. Max 6 people. Gear and insurance included. From beginner level." },
+      { key: "individual", title: "Private classes", blurb: "90 minutes. 100% personalized attention. Progress twice as fast." },
+      { key: "yoga", title: "Yoga classes", blurb: "Outdoor sessions to complement your progress in the water." },
+      { key: "paddle", title: "Paddle Surf", blurb: "Classes and routes in calm Conil waters. All levels." },
+      { key: "skate", title: "Surf Skate", blurb: "Land-based technical training to improve maneuvers and balance." },
+      { key: "rental", title: "Gear rental", blurb: "Boards, wetsuits, paddle, bodyboard and skate. Hassle-free." },
+    ],
+    villaCapA: "Villa · +1000 m²",
+    villaCapB: "Entre Olas Surf Camp",
+    campLabel: "Surf Camp · 18+",
+    campA: "AN EXPERIENCE",
+    campHl: "YOU WON'T FORGET.",
+    campP:
+      "Private villa of +1000 m², pool, full board, transport, surf every day, adventure and parties. Limited seats per edition.",
+    campStats: [
+      { n: "1000", u: "m² villa" },
+      { n: "4", u: "days / 3 nights" },
+      { n: "+18", u: "adults only" },
+      { n: "∞", u: "waves" },
+    ],
+    editions: "Manageable editions",
+    camps: [
+      { dates: "Mar 20–23", tag: "XXL", nights: "4 days / 3 nights" },
+      { dates: "Apr 10–13", tag: "XXL", nights: "4 days / 3 nights" },
+      { dates: "Apr 16–19", tag: "Sambatrips", nights: "4 days / 3 nights" },
+      { dates: "Sep 9–13", tag: "Sambatrips", nights: "5 days / 4 nights" },
+    ],
+    reviewsLabel: "Real reviews",
+    reviewsA: "What",
+    reviewsHl: "students say.",
+    reviews: [
+      { who: "Laura García", meta: "Group class · Roche", text: "An incredible experience. The instructors are very professional and patient. I stood up on the board the first day.", initials: "LG" },
+      { who: "Carlos Martínez", meta: "Surf Camp · Conil", text: "The surf camp was the best part of my vacation. I learned a lot and met amazing people. Unbeatable vibe.", initials: "CM" },
+      { who: "Rodríguez family", meta: "Group class · Roche", text: "We did the family course and it was perfect. The kids loved it and the instructors adapted to each age.", initials: "FR" },
+    ],
+    bookingA: "Booking is",
+    bookingHl: "this fast.",
+    bookingSteps: [
+      { n: "01", title: "Pick your pack", desc: "Single class, 2-7 bundle or surf camp. Real-time availability." },
+      { n: "02", title: "Book and pay", desc: "Full checkout with cart, user account and email confirmation." },
+      { n: "03", title: "Surf", desc: "We'll see you at Playa de Roche. Gear and insurance included." },
+    ],
+    step: "STEP",
+    hood: "Under the hood",
+    hoodA: "A stack chosen to",
+    hoodHl: "load fast.",
+    closingA: "SEE YOU",
+    closingHl: "IN THE WATER.",
+    closingP:
+      "The site is alive. Bookings every weekend and the bundle system converts without middlemen.",
+    visit: "Visit entreolasurf.com",
+    back: "← Back to portfolio",
+    footerNote: "Entre Olas · Case study",
+  },
+  de: {
+    badge: "Playa de Roche · Cádiz",
+    status: "Live · entreolasurf.com",
+    hero1: "ZWISCHEN",
+    hero2: "WELLEN.",
+    heroP:
+      "Eine Surfschule mit Seele. Ich habe die komplette Website entworfen und gebaut — Kurse mit Paketsystem, E-Commerce, Online-Buchungen und 4 Surf-Camp-Editionen in einer Privatvilla.",
+    marqueeItems: ["ROCHE", "CÁDIZ", "SURF CAMP", "PRIVATVILLA", "+18", "PAKETE -30%", "ROCHE", "CONIL"],
+    sceneLabel: "Die Szene",
+    sceneA: "Playa de Roche.",
+    sceneHl: "Echte Menschen.",
+    scenePhotos: "Fotos des Kunden",
+    capTeam: "Team · Roche",
+    capVilla: "Villa · Drohne",
+    capRooftop: "Terrasse · goldene Stunde",
+    proj: "Das Projekt",
+    projA: "Eine Site, die",
+    projHl: "Surf verkauft.",
+    projP:
+      "Es gab Schule, Wellen, Ruf. Es fehlte die Website, die den Kreis schließt. Ich habe sie gebaut.",
+    builtList: [
+      "Full-Stack-Design und -Entwicklung der gesamten Site",
+      "Pakete-System mit progressivem Rabatt (-7% bis -30%)",
+      "Online-Buchungen mit echter Datums-Verfügbarkeit",
+      "E-Commerce für Merchandise mit komplettem Checkout",
+      "4 verwaltbare Surf-Camp-Editionen mit Plätzen und Buchungen",
+      "Hero mit eingebettetem Video und Playa-de-Roche-Ästhetik",
+      "Technisches SEO: OG, Schema, Sitemap, Canonical",
+      "WhatsApp-, Instagram- und TikTok-Integration",
+    ],
+    bonosLabel: "Das Paket-System",
+    bonosA: "Mehr Kurse,",
+    bonosHl: "mehr Ersparnis.",
+    bonosP:
+      "Pakete von 2 bis 7 Sitzungen mit progressivem Rabatt. Eigene Engine, gültig 180 Tage pro Paket.",
+    bonosBono: "Paket",
+    bonosClasses: "Kurse",
+    bonosDiscount: "Rabatt",
+    expA: "Die volle",
+    expHl: "Erfahrung.",
+    services: [
+      { key: "group", title: "Gruppenkurse", blurb: "90 Minuten. Max. 6 Personen. Material und Versicherung inklusive. Ab Anfänger-Level." },
+      { key: "individual", title: "Einzelkurse", blurb: "90 Minuten. 100% persönliche Betreuung. Doppelt so schneller Fortschritt." },
+      { key: "yoga", title: "Yoga-Stunden", blurb: "Outdoor-Sessions als Ergänzung zum Wasser-Training." },
+      { key: "paddle", title: "Paddle Surf", blurb: "Kurse und Routen in den ruhigen Gewässern von Conil. Alle Level." },
+      { key: "skate", title: "Surf Skate", blurb: "Technisches Land-Training, um Manöver und Balance zu verbessern." },
+      { key: "rental", title: "Material-Verleih", blurb: "Boards, Neoprenanzüge, Paddle, Bodyboard und Skate. Ohne Aufwand." },
+    ],
+    villaCapA: "Villa · +1000 m²",
+    villaCapB: "Entre Olas Surf Camp",
+    campLabel: "Surf Camp · +18",
+    campA: "EINE ERFAHRUNG,",
+    campHl: "DIE DU NICHT VERGISST.",
+    campP:
+      "Privatvilla mit +1000 m², Pool, Vollpension, Transport, Surf jeden Tag, Abenteuer und Partys. Begrenzte Plätze pro Edition.",
+    campStats: [
+      { n: "1000", u: "m² Villa" },
+      { n: "4", u: "Tage / 3 Nächte" },
+      { n: "+18", u: "nur Erwachsene" },
+      { n: "∞", u: "Wellen" },
+    ],
+    editions: "Verwaltbare Editionen",
+    camps: [
+      { dates: "20.–23. März", tag: "XXL", nights: "4 Tage / 3 Nächte" },
+      { dates: "10.–13. April", tag: "XXL", nights: "4 Tage / 3 Nächte" },
+      { dates: "16.–19. April", tag: "Sambatrips", nights: "4 Tage / 3 Nächte" },
+      { dates: "9.–13. September", tag: "Sambatrips", nights: "5 Tage / 4 Nächte" },
+    ],
+    reviewsLabel: "Echte Bewertungen",
+    reviewsA: "Was",
+    reviewsHl: "Schüler sagen.",
+    reviews: [
+      { who: "Laura García", meta: "Gruppenkurs · Roche", text: "Eine unglaubliche Erfahrung. Die Instruktoren sind sehr professionell und geduldig. Ich stand am ersten Tag auf dem Board.", initials: "LG" },
+      { who: "Carlos Martínez", meta: "Surf Camp · Conil", text: "Das Surf-Camp war der beste Teil meines Urlaubs. Ich habe viel gelernt und tolle Leute kennengelernt. Unschlagbare Stimmung.", initials: "CM" },
+      { who: "Familie Rodríguez", meta: "Gruppenkurs · Roche", text: "Wir haben den Familien-Kurs gemacht und es war perfekt. Die Kinder hatten Spaß und die Instruktoren passten sich jedem Alter an.", initials: "FR" },
+    ],
+    bookingA: "Buchen ist",
+    bookingHl: "so schnell.",
+    bookingSteps: [
+      { n: "01", title: "Pack auswählen", desc: "Einzelkurs, 2-7er-Paket oder Surf Camp. Echtzeit-Verfügbarkeit." },
+      { n: "02", title: "Buchen und zahlen", desc: "Vollständiger Checkout mit Warenkorb, Benutzerkonto und E-Mail-Bestätigung." },
+      { n: "03", title: "Surfen", desc: "Wir sehen uns am Playa de Roche. Material und Versicherung inklusive." },
+    ],
+    step: "SCHRITT",
+    hood: "Unter der Haube",
+    hoodA: "Ein Stack, gewählt zum",
+    hoodHl: "schnellen Laden.",
+    closingA: "WIR SEHEN UNS",
+    closingHl: "IM WASSER.",
+    closingP:
+      "Die Site lebt. Jedes Wochenende kommen Buchungen und das Paket-System konvertiert ohne Mittelsmänner.",
+    visit: "entreolasurf.com besuchen",
+    back: "← Zurück zum Portfolio",
+    footerNote: "Entre Olas · Fallstudie",
+  },
+};
+
 function Sun({ className }: { className?: string }) {
   return (
     <motion.svg
@@ -61,7 +398,6 @@ function Sun({ className }: { className?: string }) {
   );
 }
 
-/* ─── Scroll-drawn wave ─── */
 function ScrollWave({ color = NAVY }: { color?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -93,7 +429,6 @@ function ScrollWave({ color = NAVY }: { color?: string }) {
   );
 }
 
-/* ─── Marquee strip ─── */
 function Marquee({
   items,
   color = NAVY,
@@ -116,12 +451,8 @@ function Marquee({
         {[...items, ...items].map((item, i) => (
           <span
             key={i}
-            className="text-3xl md:text-5xl"
-            style={{
-              fontFamily: DISPLAY,
-              color,
-              letterSpacing: "0.02em",
-            }}
+            className="text-2xl md:text-5xl"
+            style={{ fontFamily: DISPLAY, color, letterSpacing: "0.02em" }}
           >
             {item} <span style={{ color: YELLOW }}>✺</span>
           </span>
@@ -131,7 +462,6 @@ function Marquee({
   );
 }
 
-/* ─── Service icon SVGs (from entreolasurf.com) ─── */
 const serviceIcons = {
   group: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -171,7 +501,6 @@ const serviceIcons = {
   ),
 };
 
-/* ─── Service card ─── */
 function ServiceCard({
   icon,
   title,
@@ -193,7 +522,7 @@ function ServiceCard({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       data-hover
-      className="relative p-8 md:p-10 border transition-colors duration-300"
+      className="relative p-7 md:p-10 border transition-colors duration-300"
       style={{
         borderColor: LINE,
         background: hover ? NAVY : "transparent",
@@ -214,10 +543,7 @@ function ServiceCard({
       </h3>
       <p
         className="mt-3 text-sm leading-relaxed"
-        style={{
-          fontFamily: SANS,
-          color: hover ? "rgba(255,253,247,0.7)" : MUTED,
-        }}
+        style={{ fontFamily: SANS, color: hover ? "rgba(255,253,247,0.7)" : MUTED }}
       >
         {blurb}
       </p>
@@ -225,8 +551,16 @@ function ServiceCard({
   );
 }
 
-/* ─── Main ─── */
+const bonos = [
+  { count: "2", discount: "7" },
+  { count: "3", discount: "14" },
+  { count: "5", discount: "23" },
+  { count: "7", discount: "30" },
+];
+
 export default function EntreOlasDetailClient() {
+  const { lang } = useLang();
+  const t = T[lang];
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: heroProgress } = useScroll({
     target: heroRef,
@@ -236,64 +570,14 @@ export default function EntreOlasDetailClient() {
   const heroFade = useTransform(heroProgress, [0, 0.9], [1, 0]);
   const titleX = useTransform(heroProgress, [0, 1], ["0%", "-10%"]);
 
-  const camps = [
-    { dates: "20–23 Marzo", tag: "XXL", nights: "4 días / 3 noches" },
-    { dates: "10–13 Abril", tag: "XXL", nights: "4 días / 3 noches" },
-    { dates: "16–19 Abril", tag: "Sambatrips", nights: "4 días / 3 noches" },
-    { dates: "9–13 Septiembre", tag: "Sambatrips", nights: "5 días / 4 noches" },
-  ];
-
-  const bonos = [
-    { count: "2", discount: "7" },
-    { count: "3", discount: "14" },
-    { count: "5", discount: "23" },
-    { count: "7", discount: "30" },
-  ];
-
   return (
-    <div
-      style={{
-        background: BG,
-        color: TEXT,
-        fontFamily: SANS,
-      }}
-    >
-      {/* ─── Top bar ─── */}
-      <motion.nav
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-5 backdrop-blur-md border-b"
-        style={{ background: BG + "cc", borderColor: LINE }}
-      >
-        <Link
-          href="/"
-          data-hover
-          className="text-xs uppercase tracking-[0.2em] hover:opacity-100 transition-opacity"
-          style={{ color: MUTED, fontFamily: SANS }}
-        >
-          ← Felipe Cámara
-        </Link>
-        <div className="flex items-center gap-3">
-          <span
-            className="w-1.5 h-1.5 rounded-full animate-pulse"
-            style={{ background: YELLOW }}
-          />
-          <span
-            className="text-[10px] uppercase tracking-[0.25em]"
-            style={{ color: MUTED, fontFamily: MONO }}
-          >
-            En vivo · entreolasurf.com
-          </span>
-        </div>
-      </motion.nav>
+    <div style={{ background: BG, color: TEXT, fontFamily: SANS }}>
+      <BlendNav active="projects" />
 
-      {/* ─── Hero ─── */}
       <section
         ref={heroRef}
-        className="relative min-h-screen flex items-end overflow-hidden px-6 md:px-12 pt-32 md:pt-40 pb-16"
+        className="relative min-h-screen flex items-end overflow-hidden px-6 md:px-12 pt-28 md:pt-40 pb-16"
       >
-        {/* Real aerial photo background */}
         <motion.div
           aria-hidden
           style={{ y: heroY, opacity: heroFade }}
@@ -317,51 +601,38 @@ export default function EntreOlasDetailClient() {
           />
         </motion.div>
 
-        {/* Sun */}
         <motion.div
           style={{ y: heroY, opacity: heroFade }}
-          className="absolute top-20 right-6 md:right-20 w-40 md:w-60"
+          className="absolute top-20 right-6 md:right-20 w-32 md:w-60"
         >
           <Sun />
         </motion.div>
 
-        {/* Big 03 */}
         <motion.span
           aria-hidden
           style={{ opacity: heroFade }}
-          className="absolute right-8 bottom-32 select-none pointer-events-none leading-none"
+          className="absolute right-6 bottom-32 select-none pointer-events-none leading-none"
         >
           <span
             className="text-[18vw] md:text-[14vw] block"
-            style={{
-              fontFamily: DISPLAY,
-              color: NAVY,
-              opacity: 0.05,
-            }}
+            style={{ fontFamily: DISPLAY, color: NAVY, opacity: 0.05 }}
           >
             03
           </span>
         </motion.span>
 
-        <motion.div
-          style={{ opacity: heroFade }}
-          className="relative z-10 w-full"
-        >
+        <motion.div style={{ opacity: heroFade }} className="relative z-10 w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="flex items-center gap-3 mb-6"
+            className="flex items-center gap-3 mb-6 flex-wrap"
           >
             <span
               className="text-[10px] uppercase tracking-[0.3em] px-4 py-1.5"
-              style={{
-                background: NAVY,
-                color: YELLOW,
-                fontFamily: MONO,
-              }}
+              style={{ background: NAVY, color: YELLOW, fontFamily: MONO }}
             >
-              Playa de Roche · Cádiz
+              {t.badge}
             </span>
             <span
               className="text-[10px] uppercase tracking-[0.3em]"
@@ -371,31 +642,24 @@ export default function EntreOlasDetailClient() {
             </span>
           </motion.div>
 
-          <motion.h1
-            style={{ x: titleX }}
-            className="relative"
-          >
+          <motion.h1 style={{ x: titleX }} className="relative">
             <span className="block overflow-hidden">
               <motion.span
                 initial={{ y: "110%" }}
                 animate={{ y: "0%" }}
                 transition={{ duration: 1, delay: 0.35, ease: EASE }}
-                className="block text-[clamp(5rem,18vw,16rem)] leading-[0.82]"
-                style={{
-                  fontFamily: DISPLAY,
-                  color: NAVY,
-                  letterSpacing: "0.005em",
-                }}
+                className="block text-[clamp(3.5rem,18vw,16rem)] leading-[0.85]"
+                style={{ fontFamily: DISPLAY, color: NAVY, letterSpacing: "0.005em" }}
               >
-                ENTRE
+                {t.hero1}
               </motion.span>
             </span>
-            <span className="block overflow-hidden -mt-2 md:-mt-4">
+            <span className="block overflow-hidden -mt-1 md:-mt-4">
               <motion.span
                 initial={{ y: "110%" }}
                 animate={{ y: "0%" }}
                 transition={{ duration: 1, delay: 0.55, ease: EASE }}
-                className="block text-[clamp(5rem,18vw,16rem)] leading-[0.82] italic"
+                className="block text-[clamp(3.5rem,18vw,16rem)] leading-[0.85] italic"
                 style={{
                   fontFamily: DISPLAY,
                   color: YELLOW,
@@ -403,12 +667,12 @@ export default function EntreOlasDetailClient() {
                   letterSpacing: "0.005em",
                 }}
               >
-                OLAS.
+                {t.hero2}
               </motion.span>
             </span>
           </motion.h1>
 
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-10 items-end">
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-8 items-end">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -416,9 +680,7 @@ export default function EntreOlasDetailClient() {
               className="max-w-xl text-base md:text-lg leading-relaxed"
               style={{ color: TEXT, fontFamily: SANS }}
             >
-              Escuela de surf con alma. Diseñé y construí la web entera — clases
-              con sistema de bonos, e-commerce, reservas online y 4 ediciones de
-              surf camp en villa privada.
+              {t.heroP}
             </motion.p>
 
             <motion.div
@@ -433,75 +695,49 @@ export default function EntreOlasDetailClient() {
                 rel="noopener noreferrer"
                 data-hover
                 className="group text-xs uppercase tracking-[0.25em] px-6 py-3.5 flex items-center gap-2 transition-colors"
-                style={{
-                  background: NAVY,
-                  color: YELLOW,
-                  fontFamily: MONO,
-                }}
+                style={{ background: NAVY, color: YELLOW, fontFamily: MONO }}
               >
                 entreolasurf.com
-                <span className="transition-transform group-hover:translate-x-0.5">
-                  ↗
-                </span>
+                <span>↗</span>
               </a>
             </motion.div>
           </div>
 
-          {/* wave */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 1 }}
-            className="mt-16"
+            className="mt-12"
           >
             <ScrollWave />
           </motion.div>
         </motion.div>
       </section>
 
-      {/* ─── Marquee ─── */}
-      <Marquee
-        items={[
-          "ROCHE",
-          "CÁDIZ",
-          "SURF CAMP",
-          "VILLA PRIVADA",
-          "+18",
-          "BONOS -30%",
-          "ROCHE",
-          "CONIL",
-        ]}
-        color={NAVY}
-        bg={SAND}
-      />
+      <Marquee items={t.marqueeItems} color={NAVY} bg={SAND} />
 
-      {/* ─── Editorial photo grid — la escena ─── */}
-      <section className="px-6 md:px-12 py-20 md:py-28">
+      <section className="px-6 md:px-12 py-16 md:py-28">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="flex items-baseline justify-between mb-12 max-w-4xl"
+          className="flex items-baseline justify-between mb-12 max-w-4xl flex-wrap gap-3"
         >
           <div>
             <p
               className="text-[10px] uppercase tracking-[0.3em] mb-3"
               style={{ color: MUTED, fontFamily: MONO }}
             >
-              La escena
+              {t.sceneLabel}
             </p>
             <h2
-              className="text-4xl md:text-6xl leading-[0.92]"
-              style={{
-                fontFamily: DISPLAY,
-                color: NAVY,
-                letterSpacing: "0.005em",
-              }}
+              className="text-3xl md:text-6xl leading-[0.95]"
+              style={{ fontFamily: DISPLAY, color: NAVY, letterSpacing: "0.005em" }}
             >
-              Playa de Roche.{" "}
+              {t.sceneA}{" "}
               <span style={{ color: YELLOW, WebkitTextStroke: `1.5px ${NAVY}` }}>
-                Gente real.
+                {t.sceneHl}
               </span>
             </h2>
           </div>
@@ -509,12 +745,11 @@ export default function EntreOlasDetailClient() {
             className="hidden md:block text-[10px] uppercase tracking-[0.3em] shrink-0"
             style={{ color: MUTED, fontFamily: MONO }}
           >
-            Fotos del cliente
+            {t.scenePhotos}
           </span>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5">
-          {/* Tall team portrait */}
           <motion.div
             initial={{ opacity: 0.01, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -525,7 +760,7 @@ export default function EntreOlasDetailClient() {
           >
             <Image
               src="/projects/entre-olas-surf/team-beach.jpg"
-              alt="Equipo de Entre Olas sentados junto a la caseta de la playa de Roche"
+              alt="Entre Olas team"
               fill
               sizes="(max-width: 768px) 100vw, 40vw"
               quality={85}
@@ -534,17 +769,12 @@ export default function EntreOlasDetailClient() {
             />
             <span
               className="absolute bottom-4 left-4 text-[10px] uppercase tracking-[0.3em]"
-              style={{
-                color: "white",
-                fontFamily: MONO,
-                textShadow: "0 1px 10px rgba(0,0,0,0.6)",
-              }}
+              style={{ color: "white", fontFamily: MONO, textShadow: "0 1px 10px rgba(0,0,0,0.6)" }}
             >
-              Equipo · Roche
+              {t.capTeam}
             </span>
           </motion.div>
 
-          {/* Wide aerial */}
           <motion.div
             initial={{ opacity: 0.01, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -555,7 +785,7 @@ export default function EntreOlasDetailClient() {
           >
             <Image
               src="/projects/entre-olas-surf/aerial-house.jpg"
-              alt="Vista aérea de la villa privada del surf camp en Roche"
+              alt="Villa from drone"
               fill
               sizes="(max-width: 768px) 100vw, 58vw"
               quality={85}
@@ -564,17 +794,12 @@ export default function EntreOlasDetailClient() {
             />
             <span
               className="absolute bottom-4 left-4 text-[10px] uppercase tracking-[0.3em]"
-              style={{
-                color: "white",
-                fontFamily: MONO,
-                textShadow: "0 1px 10px rgba(0,0,0,0.6)",
-              }}
+              style={{ color: "white", fontFamily: MONO, textShadow: "0 1px 10px rgba(0,0,0,0.6)" }}
             >
-              Villa · drone
+              {t.capVilla}
             </span>
           </motion.div>
 
-          {/* Rooftop pool */}
           <motion.div
             initial={{ opacity: 0.01, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -585,7 +810,7 @@ export default function EntreOlasDetailClient() {
           >
             <Image
               src="/projects/entre-olas-surf/rooftop.jpg"
-              alt="Terraza con piscina de la villa privada al atardecer"
+              alt="Terrace with pool"
               fill
               sizes="(max-width: 768px) 100vw, 58vw"
               quality={85}
@@ -593,21 +818,16 @@ export default function EntreOlasDetailClient() {
             />
             <span
               className="absolute bottom-4 left-4 text-[10px] uppercase tracking-[0.3em]"
-              style={{
-                color: "white",
-                fontFamily: MONO,
-                textShadow: "0 1px 10px rgba(0,0,0,0.6)",
-              }}
+              style={{ color: "white", fontFamily: MONO, textShadow: "0 1px 10px rgba(0,0,0,0.6)" }}
             >
-              Terraza · golden hour
+              {t.capRooftop}
             </span>
           </motion.div>
         </div>
       </section>
 
-      {/* ─── Lo que hice ─── */}
-      <section className="px-6 md:px-12 py-24 md:py-32">
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.3fr] gap-12 md:gap-20">
+      <section className="px-6 md:px-12 py-20 md:py-32">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.3fr] gap-10 md:gap-20">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -618,28 +838,23 @@ export default function EntreOlasDetailClient() {
               className="text-[10px] uppercase tracking-[0.3em] mb-4"
               style={{ color: MUTED, fontFamily: MONO }}
             >
-              El proyecto
+              {t.proj}
             </p>
             <h2
-              className="text-5xl md:text-7xl leading-[0.92]"
-              style={{
-                fontFamily: DISPLAY,
-                color: NAVY,
-                letterSpacing: "0.005em",
-              }}
+              className="text-4xl md:text-7xl leading-[0.92]"
+              style={{ fontFamily: DISPLAY, color: NAVY, letterSpacing: "0.005em" }}
             >
-              Una web que
+              {t.projA}
               <br />
               <span style={{ color: YELLOW, WebkitTextStroke: `1.5px ${NAVY}` }}>
-                vende surf.
+                {t.projHl}
               </span>
             </h2>
             <p
               className="mt-6 max-w-sm text-base leading-relaxed"
               style={{ color: MUTED, fontFamily: SANS }}
             >
-              Había escuela, había olas, había reputación. Faltaba la web que
-              cerrase el círculo. La construí.
+              {t.projP}
             </p>
           </motion.div>
 
@@ -655,26 +870,13 @@ export default function EntreOlasDetailClient() {
             }
             className="space-y-0"
           >
-            {[
-              "Diseño y desarrollo full-stack de todo el site",
-              "Sistema de bonos con descuento progresivo (-7% a -30%)",
-              "Reservas online con disponibilidad real por fechas",
-              "E-commerce para merchandising con checkout completo",
-              "4 ediciones de surf camp gestionables con plazas y reservas",
-              "Hero con vídeo integrado y estética de Playa de Roche",
-              "SEO técnico: OG, Schema, sitemap, canonical",
-              "Integración con WhatsApp, Instagram y TikTok",
-            ].map((line, i) => (
+            {t.builtList.map((line) => (
               <motion.li
                 key={line}
                 variants={
                   {
                     hidden: { opacity: 0, x: -20 },
-                    visible: {
-                      opacity: 1,
-                      x: 0,
-                      transition: { duration: 0.7, ease: EASE },
-                    },
+                    visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: EASE } },
                   } as Variants
                 }
                 className="flex items-start gap-5 py-5 border-b group"
@@ -698,9 +900,8 @@ export default function EntreOlasDetailClient() {
         </div>
       </section>
 
-      {/* ─── Bonos interactive ─── */}
       <section
-        className="px-6 md:px-12 py-24 md:py-32 overflow-hidden"
+        className="px-6 md:px-12 py-20 md:py-32 overflow-hidden"
         style={{ background: SAND }}
       >
         <motion.div
@@ -708,34 +909,29 @@ export default function EntreOlasDetailClient() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="max-w-3xl mb-16"
+          className="max-w-3xl mb-14"
         >
           <p
             className="text-[10px] uppercase tracking-[0.3em] mb-4"
             style={{ color: MUTED, fontFamily: MONO }}
           >
-            El sistema de bonos
+            {t.bonosLabel}
           </p>
           <h2
-            className="text-5xl md:text-7xl leading-[0.92]"
-            style={{
-              fontFamily: DISPLAY,
-              color: NAVY,
-              letterSpacing: "0.005em",
-            }}
+            className="text-4xl md:text-7xl leading-[0.92]"
+            style={{ fontFamily: DISPLAY, color: NAVY, letterSpacing: "0.005em" }}
           >
-            Cuantas más clases,
+            {t.bonosA}
             <br />
             <span style={{ color: YELLOW, WebkitTextStroke: `1.5px ${NAVY}` }}>
-              más ahorras.
+              {t.bonosHl}
             </span>
           </h2>
           <p
             className="mt-6 max-w-lg text-base leading-relaxed"
             style={{ color: MUTED, fontFamily: SANS }}
           >
-            Packs de 2 a 7 sesiones con descuento progresivo. Motor propio con
-            válidez de 180 días por bono comprado.
+            {t.bonosP}
           </p>
         </motion.div>
 
@@ -748,15 +944,9 @@ export default function EntreOlasDetailClient() {
                 initial={{ opacity: 0, y: 40, scale: 0.9 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-40px" }}
-                transition={{
-                  delay: i * 0.12,
-                  duration: 0.7,
-                  ease: EASE,
-                  type: "spring",
-                  stiffness: 180,
-                }}
+                transition={{ delay: i * 0.12, duration: 0.7, ease: EASE, type: "spring", stiffness: 180 }}
                 whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                className="relative p-6 md:p-8 flex flex-col justify-between aspect-[3/4]"
+                className="relative p-5 md:p-8 flex flex-col justify-between aspect-[3/4]"
                 style={{
                   background: highlight ? NAVY : BG,
                   color: highlight ? BG : NAVY,
@@ -766,15 +956,12 @@ export default function EntreOlasDetailClient() {
                 <div>
                   <p
                     className="text-[10px] uppercase tracking-[0.3em]"
-                    style={{
-                      fontFamily: MONO,
-                      color: highlight ? YELLOW : MUTED,
-                    }}
+                    style={{ fontFamily: MONO, color: highlight ? YELLOW : MUTED }}
                   >
-                    Bono
+                    {t.bonosBono}
                   </p>
                   <p
-                    className="text-7xl md:text-8xl leading-none mt-3"
+                    className="text-6xl md:text-8xl leading-none mt-3"
                     style={{ fontFamily: DISPLAY }}
                   >
                     {b.count}
@@ -783,25 +970,19 @@ export default function EntreOlasDetailClient() {
                     className="mt-1 text-xs uppercase tracking-widest"
                     style={{ fontFamily: SANS }}
                   >
-                    clases
+                    {t.bonosClasses}
                   </p>
                 </div>
                 <div className="mt-6">
                   <p
                     className="text-[10px] uppercase tracking-[0.3em]"
-                    style={{
-                      fontFamily: MONO,
-                      color: highlight ? YELLOW : MUTED,
-                    }}
+                    style={{ fontFamily: MONO, color: highlight ? YELLOW : MUTED }}
                   >
-                    Descuento
+                    {t.bonosDiscount}
                   </p>
                   <p
-                    className="text-5xl md:text-6xl leading-none mt-2"
-                    style={{
-                      fontFamily: DISPLAY,
-                      color: highlight ? YELLOW : NAVY,
-                    }}
+                    className="text-4xl md:text-6xl leading-none mt-2"
+                    style={{ fontFamily: DISPLAY, color: highlight ? YELLOW : NAVY }}
                   >
                     −{b.discount}%
                   </p>
@@ -812,25 +993,20 @@ export default function EntreOlasDetailClient() {
         </div>
       </section>
 
-      {/* ─── Services ─── */}
-      <section className="px-6 md:px-12 py-24 md:py-32">
-        <div className="flex items-baseline justify-between mb-14">
+      <section className="px-6 md:px-12 py-20 md:py-32">
+        <div className="flex items-baseline justify-between mb-12 flex-wrap gap-3">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-5xl md:text-7xl leading-[0.92] max-w-2xl"
-            style={{
-              fontFamily: DISPLAY,
-              color: NAVY,
-              letterSpacing: "0.005em",
-            }}
+            className="text-4xl md:text-7xl leading-[0.92] max-w-2xl"
+            style={{ fontFamily: DISPLAY, color: NAVY, letterSpacing: "0.005em" }}
           >
-            La experiencia
+            {t.expA}
             <br />
             <span style={{ color: YELLOW, WebkitTextStroke: `1.5px ${NAVY}` }}>
-              completa.
+              {t.expHl}
             </span>
           </motion.h2>
           <span
@@ -842,46 +1018,18 @@ export default function EntreOlasDetailClient() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <ServiceCard
-            index={0}
-            icon={serviceIcons.group}
-            title="Clases Grupales"
-            blurb="90 minutos. Máx. 6 personas. Material y seguro incluidos. Niveles desde cero."
-          />
-          <ServiceCard
-            index={1}
-            icon={serviceIcons.individual}
-            title="Clases Individuales"
-            blurb="90 minutos. Atención 100% personalizada. Progresa el doble de rápido."
-          />
-          <ServiceCard
-            index={2}
-            icon={serviceIcons.yoga}
-            title="Clases de Yoga"
-            blurb="Sesiones al aire libre para complementar la evolución en el agua."
-          />
-          <ServiceCard
-            index={3}
-            icon={serviceIcons.paddle}
-            title="Paddle Surf"
-            blurb="Clases y rutas en aguas tranquilas de Conil. Todos los niveles."
-          />
-          <ServiceCard
-            index={4}
-            icon={serviceIcons.skate}
-            title="Surf Skate"
-            blurb="Entrenamiento técnico en tierra para mejorar maniobras y equilibrio."
-          />
-          <ServiceCard
-            index={5}
-            icon={serviceIcons.rental}
-            title="Alquiler de Material"
-            blurb="Tablas, neoprenos, paddle, bodyboard y skate. Sin complicaciones."
-          />
+          {t.services.map((s, i) => (
+            <ServiceCard
+              key={s.title}
+              index={i}
+              icon={serviceIcons[s.key]}
+              title={s.title}
+              blurb={s.blurb}
+            />
+          ))}
         </div>
       </section>
 
-      {/* ─── Full-bleed interior photo (Surf Camp teaser) ─── */}
       <section className="relative">
         <motion.div
           initial={{ opacity: 0.01 }}
@@ -893,7 +1041,7 @@ export default function EntreOlasDetailClient() {
         >
           <Image
             src="/projects/entre-olas-surf/interior-patio.jpg"
-            alt="Piscina interior y hamacas en la villa del surf camp"
+            alt="Villa courtyard pool and hammocks"
             fill
             sizes="100vw"
             quality={85}
@@ -907,29 +1055,27 @@ export default function EntreOlasDetailClient() {
                 "linear-gradient(180deg, rgba(15,47,57,0) 55%, rgba(15,47,57,0.85) 100%)",
             }}
           />
-          <div className="absolute bottom-0 left-0 right-0 px-6 md:px-12 py-6 md:py-10 flex items-end justify-between">
+          <div className="absolute bottom-0 left-0 right-0 px-6 md:px-12 py-6 md:py-10 flex items-end justify-between flex-wrap gap-2">
             <p
               className="text-[10px] uppercase tracking-[0.3em]"
               style={{ color: YELLOW, fontFamily: MONO }}
             >
-              Villa · +1000 m²
+              {t.villaCapA}
             </p>
             <p
               className="text-[10px] uppercase tracking-[0.3em] hidden md:block"
               style={{ color: "rgba(255,253,247,0.7)", fontFamily: MONO }}
             >
-              Entre Olas Surf Camp
+              {t.villaCapB}
             </p>
           </div>
         </motion.div>
       </section>
 
-      {/* ─── Surf Camp dark section ─── */}
       <section
-        className="px-6 md:px-12 py-24 md:py-32 relative overflow-hidden"
+        className="px-6 md:px-12 py-20 md:py-32 relative overflow-hidden"
         style={{ background: NAVY, color: BG }}
       >
-        {/* Decorative sun faint */}
         <motion.div
           aria-hidden
           animate={{ rotate: 360 }}
@@ -951,31 +1097,24 @@ export default function EntreOlasDetailClient() {
               className="text-[10px] uppercase tracking-[0.3em] mb-4"
               style={{ color: YELLOW, fontFamily: MONO }}
             >
-              Surf Camp · +18
+              {t.campLabel}
             </p>
             <h2
-              className="text-6xl md:text-8xl leading-[0.88]"
-              style={{
-                fontFamily: DISPLAY,
-                color: BG,
-                letterSpacing: "0.005em",
-              }}
+              className="text-4xl md:text-8xl leading-[0.92] md:leading-[0.88]"
+              style={{ fontFamily: DISPLAY, color: BG, letterSpacing: "0.005em" }}
             >
-              LA EXPERIENCIA
+              {t.campA}
               <br />
-              <span style={{ color: YELLOW }}>QUE NO OLVIDARÁS.</span>
+              <span style={{ color: YELLOW }}>{t.campHl}</span>
             </h2>
             <p
               className="mt-8 max-w-2xl text-base md:text-lg leading-relaxed"
               style={{ color: "rgba(255,253,247,0.72)", fontFamily: SANS }}
             >
-              Villa privada de +1000 m², piscina, pensión completa, transporte,
-              surf todos los días, aventura y fiestas. Plazas limitadas por
-              edición.
+              {t.campP}
             </p>
           </motion.div>
 
-          {/* Features */}
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -986,14 +1125,9 @@ export default function EntreOlasDetailClient() {
                 hidden: {},
               } as Variants
             }
-            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4"
+            className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4"
           >
-            {[
-              { n: "1000", u: "m² villa" },
-              { n: "4", u: "días / 3 noches" },
-              { n: "+18", u: "solo adultos" },
-              { n: "∞", u: "olas" },
-            ].map((f) => (
+            {t.campStats.map((f) => (
               <motion.div
                 key={f.u}
                 variants={
@@ -1006,7 +1140,7 @@ export default function EntreOlasDetailClient() {
                 style={{ borderColor: "rgba(255,253,247,0.2)" }}
               >
                 <p
-                  className="text-5xl md:text-6xl leading-none"
+                  className="text-4xl md:text-6xl leading-none"
                   style={{ fontFamily: DISPLAY, color: YELLOW }}
                 >
                   {f.n}
@@ -1021,13 +1155,12 @@ export default function EntreOlasDetailClient() {
             ))}
           </motion.div>
 
-          {/* Interior photo strip */}
           <motion.div
             initial={{ opacity: 0.01, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.9, ease: EASE }}
-            className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4"
+            className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4"
           >
             <div
               className="relative aspect-[4/3] overflow-hidden"
@@ -1035,7 +1168,7 @@ export default function EntreOlasDetailClient() {
             >
               <Image
                 src="/projects/entre-olas-surf/interior-living.jpg"
-                alt="Salón interior de la villa con suelo turquesa y lámparas colgantes"
+                alt="Villa living room"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 quality={85}
@@ -1048,7 +1181,7 @@ export default function EntreOlasDetailClient() {
             >
               <Image
                 src="/projects/entre-olas-surf/interior-pool.jpg"
-                alt="Patio con piscina y hamacas dentro de la villa"
+                alt="Villa pool patio"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 quality={85}
@@ -1057,23 +1190,22 @@ export default function EntreOlasDetailClient() {
             </div>
           </motion.div>
 
-          {/* Editions */}
-          <div className="mt-20">
+          <div className="mt-16">
             <p
               className="text-[10px] uppercase tracking-[0.3em] mb-8"
               style={{ color: YELLOW, fontFamily: MONO }}
             >
-              Ediciones gestionables
+              {t.editions}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-              {camps.map((c, i) => (
+              {t.camps.map((c, i) => (
                 <motion.div
                   key={c.dates}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ delay: i * 0.1, duration: 0.7, ease: EASE }}
-                  className="p-6 border"
+                  className="p-5 border"
                   style={{ borderColor: "rgba(255,253,247,0.2)" }}
                 >
                   <span
@@ -1083,17 +1215,14 @@ export default function EntreOlasDetailClient() {
                     {c.tag}
                   </span>
                   <p
-                    className="mt-3 text-3xl md:text-4xl leading-tight"
+                    className="mt-3 text-2xl md:text-4xl leading-tight"
                     style={{ fontFamily: DISPLAY }}
                   >
                     {c.dates}
                   </p>
                   <p
                     className="mt-2 text-xs"
-                    style={{
-                      color: "rgba(255,253,247,0.55)",
-                      fontFamily: SANS,
-                    }}
+                    style={{ color: "rgba(255,253,247,0.55)", fontFamily: SANS }}
                   >
                     {c.nights}
                   </p>
@@ -1104,75 +1233,45 @@ export default function EntreOlasDetailClient() {
         </div>
       </section>
 
-      {/* ─── Reseñas ─── */}
-      <section className="px-6 md:px-12 py-24 md:py-32">
+      <section className="px-6 md:px-12 py-20 md:py-32">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mb-14"
+          className="mb-12"
         >
           <p
             className="text-[10px] uppercase tracking-[0.3em] mb-4"
             style={{ color: MUTED, fontFamily: MONO }}
           >
-            Opiniones reales
+            {t.reviewsLabel}
           </p>
           <h2
-            className="text-5xl md:text-7xl leading-[0.92] max-w-2xl"
-            style={{
-              fontFamily: DISPLAY,
-              color: NAVY,
-              letterSpacing: "0.005em",
-            }}
+            className="text-4xl md:text-7xl leading-[0.92] max-w-2xl"
+            style={{ fontFamily: DISPLAY, color: NAVY, letterSpacing: "0.005em" }}
           >
-            Lo que dicen
+            {t.reviewsA}
             <br />
             <span style={{ color: YELLOW, WebkitTextStroke: `1.5px ${NAVY}` }}>
-              sus alumnos.
+              {t.reviewsHl}
             </span>
           </h2>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            {
-              who: "Laura García",
-              meta: "Clase grupal · Roche",
-              stars: 5,
-              text: "Una experiencia increíble. Los instructores son muy profesionales y pacientes. Conseguí ponerme de pie en la tabla el primer día.",
-              initials: "LG",
-            },
-            {
-              who: "Carlos Martínez",
-              meta: "Surf Camp · Conil",
-              stars: 5,
-              text: "El campamento de surf fue lo mejor de mis vacaciones. Aprendí mucho y conocí gente increíble. Ambiente inmejorable.",
-              initials: "CM",
-            },
-            {
-              who: "Familia Rodríguez",
-              meta: "Clase grupal · Roche",
-              stars: 5,
-              text: "Hicimos el curso familiar y fue perfecto. Los niños se lo pasaron genial y los instructores se adaptaron a cada edad.",
-              initials: "FR",
-            },
-          ].map((r, i) => (
+          {t.reviews.map((r, i) => (
             <motion.article
               key={r.who}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ delay: i * 0.1, duration: 0.7, ease: EASE }}
-              className="p-8 md:p-10 border flex flex-col"
+              className="p-7 md:p-10 border flex flex-col"
               style={{ borderColor: LINE, background: BG }}
             >
-              <div
-                className="text-xl tracking-wider"
-                style={{ color: YELLOW }}
-              >
-                {"★".repeat(r.stars)}
+              <div className="text-xl tracking-wider" style={{ color: YELLOW }}>
+                {"★★★★★"}
               </div>
               <blockquote
                 className="mt-6 text-base leading-relaxed flex-1"
@@ -1180,14 +1279,13 @@ export default function EntreOlasDetailClient() {
               >
                 «{r.text}»
               </blockquote>
-              <footer className="mt-6 pt-6 border-t flex items-center gap-4" style={{ borderColor: LINE }}>
+              <footer
+                className="mt-6 pt-6 border-t flex items-center gap-4"
+                style={{ borderColor: LINE }}
+              >
                 <div
                   className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold"
-                  style={{
-                    background: NAVY,
-                    color: YELLOW,
-                    fontFamily: MONO,
-                  }}
+                  style={{ background: NAVY, color: YELLOW, fontFamily: MONO }}
                 >
                   {r.initials}
                 </div>
@@ -1211,9 +1309,8 @@ export default function EntreOlasDetailClient() {
         </div>
       </section>
 
-      {/* ─── Booking flow ─── */}
       <section
-        className="px-6 md:px-12 py-24 md:py-32"
+        className="px-6 md:px-12 py-20 md:py-32"
         style={{ background: SAND }}
       >
         <motion.h2
@@ -1221,26 +1318,18 @@ export default function EntreOlasDetailClient() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-5xl md:text-7xl leading-[0.92] max-w-2xl mb-16"
-          style={{
-            fontFamily: DISPLAY,
-            color: NAVY,
-            letterSpacing: "0.005em",
-          }}
+          className="text-4xl md:text-7xl leading-[0.92] max-w-2xl mb-14"
+          style={{ fontFamily: DISPLAY, color: NAVY, letterSpacing: "0.005em" }}
         >
-          Reservar es
+          {t.bookingA}
           <br />
           <span style={{ color: YELLOW, WebkitTextStroke: `1.5px ${NAVY}` }}>
-            así de rápido.
+            {t.bookingHl}
           </span>
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4">
-          {[
-            { n: "01", title: "Elige tu pack", desc: "Clase suelta, bono de 2-7 sesiones o surf camp. Disponibilidad en tiempo real." },
-            { n: "02", title: "Reserva y paga", desc: "Checkout completo con carrito, cuenta de usuario y confirmación por email." },
-            { n: "03", title: "Surfea", desc: "Te esperamos en Playa de Roche. Material y seguro incluidos." },
-          ].map((s, i) => (
+          {t.bookingSteps.map((s, i) => (
             <motion.div
               key={s.n}
               initial={{ opacity: 0, y: 30 }}
@@ -1253,10 +1342,10 @@ export default function EntreOlasDetailClient() {
                 className="text-[10px] uppercase tracking-[0.3em]"
                 style={{ color: YELLOW, fontFamily: MONO }}
               >
-                PASO {s.n}
+                {t.step} {s.n}
               </span>
               <h3
-                className="mt-3 text-4xl md:text-5xl leading-tight"
+                className="mt-3 text-3xl md:text-5xl leading-tight"
                 style={{ fontFamily: DISPLAY, color: NAVY }}
               >
                 {s.title}
@@ -1272,44 +1361,35 @@ export default function EntreOlasDetailClient() {
         </div>
       </section>
 
-      {/* ─── Tech stack ─── */}
       <section
-        className="px-6 md:px-12 py-24 md:py-32 border-t"
+        className="px-6 md:px-12 py-20 md:py-32 border-t"
         style={{ borderColor: LINE }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12 md:gap-20">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-20">
           <div>
             <p
               className="text-[10px] uppercase tracking-[0.3em] mb-4"
               style={{ color: MUTED, fontFamily: MONO }}
             >
-              Bajo el capó
+              {t.hood}
             </p>
             <h3
-              className="text-4xl md:text-5xl leading-[0.95]"
+              className="text-3xl md:text-5xl leading-[1]"
               style={{ fontFamily: DISPLAY, color: NAVY }}
             >
-              Stack pensado para
+              {t.hoodA}
               <br />
               <span style={{ color: YELLOW, WebkitTextStroke: `1.5px ${NAVY}` }}>
-                cargar rápido.
+                {t.hoodHl}
               </span>
             </h3>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {[
-              "Vite",
-              "Supabase",
-              "Stripe",
-              "YouTube Embed",
-              "Bebas Neue",
-              "Manrope",
-              "Space Grotesk",
-              "E-commerce nativo",
-              "Calendario reservas",
-              "WhatsApp Business",
-              "Schema · SEO",
-              "Vercel",
+              "Vite", "Supabase", "Stripe", "YouTube Embed",
+              "Bebas Neue", "Manrope", "Space Grotesk",
+              "E-commerce", "Calendar", "WhatsApp Business",
+              "Schema · SEO", "Vercel",
             ].map((tech, i) => (
               <motion.div
                 key={tech}
@@ -1318,11 +1398,7 @@ export default function EntreOlasDetailClient() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ delay: i * 0.04, duration: 0.5 }}
                 className="border px-4 py-3 text-xs"
-                style={{
-                  borderColor: LINE,
-                  color: NAVY,
-                  fontFamily: MONO,
-                }}
+                style={{ borderColor: LINE, color: NAVY, fontFamily: MONO }}
               >
                 {tech}
               </motion.div>
@@ -1331,9 +1407,8 @@ export default function EntreOlasDetailClient() {
         </div>
       </section>
 
-      {/* ─── Closing ─── */}
       <section
-        className="px-6 md:px-12 py-32 md:py-48 relative overflow-hidden"
+        className="px-6 md:px-12 py-28 md:py-48 relative overflow-hidden"
         style={{ background: NAVY, color: BG }}
       >
         <motion.div
@@ -1351,15 +1426,12 @@ export default function EntreOlasDetailClient() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.9, ease: EASE }}
-            className="text-6xl md:text-9xl leading-[0.85]"
-            style={{
-              fontFamily: DISPLAY,
-              color: BG,
-            }}
+            className="text-5xl md:text-9xl leading-[0.9] md:leading-[0.85]"
+            style={{ fontFamily: DISPLAY, color: BG }}
           >
-            NOS VEMOS
+            {t.closingA}
             <br />
-            <span style={{ color: YELLOW }}>EN EL AGUA.</span>
+            <span style={{ color: YELLOW }}>{t.closingHl}</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
@@ -1369,8 +1441,7 @@ export default function EntreOlasDetailClient() {
             className="mt-8 max-w-xl text-base md:text-lg leading-relaxed"
             style={{ color: "rgba(255,253,247,0.72)", fontFamily: SANS }}
           >
-            La web está viva. Cada fin de semana entran reservas y el sistema de
-            bonos convierte sin intermediarios.
+            {t.closingP}
           </motion.p>
           <div className="mt-12 flex flex-wrap items-center gap-4">
             <a
@@ -1379,32 +1450,25 @@ export default function EntreOlasDetailClient() {
               rel="noopener noreferrer"
               data-hover
               className="group text-xs uppercase tracking-[0.25em] px-6 py-4 flex items-center gap-2"
-              style={{
-                background: YELLOW,
-                color: NAVY,
-                fontFamily: MONO,
-              }}
+              style={{ background: YELLOW, color: NAVY, fontFamily: MONO }}
             >
-              Visitar entreolasurf.com
-              <span className="transition-transform group-hover:translate-x-0.5">
-                ↗
-              </span>
+              {t.visit}
+              <span>↗</span>
             </a>
             <Link
-              href="/"
+              href="/proyectos"
               data-hover
               className="text-xs uppercase tracking-[0.25em] hover:opacity-100 transition-opacity"
               style={{ color: "rgba(255,253,247,0.6)", fontFamily: MONO }}
             >
-              ← Volver al portfolio
+              {t.back}
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ─── Footer ─── */}
       <footer
-        className="px-6 md:px-12 py-6 border-t flex items-center justify-between"
+        className="px-6 md:px-12 py-6 border-t flex items-center justify-between flex-wrap gap-3"
         style={{ borderColor: LINE, background: BG }}
       >
         <Link
@@ -1419,7 +1483,7 @@ export default function EntreOlasDetailClient() {
           className="text-[10px] uppercase tracking-[0.3em]"
           style={{ color: MUTED, fontFamily: MONO }}
         >
-          © {new Date().getFullYear()} · Entre Olas · Caso de estudio
+          © {new Date().getFullYear()} · {t.footerNote}
         </span>
       </footer>
     </div>

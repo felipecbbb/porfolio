@@ -2,29 +2,46 @@
 
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import Link from "next/link";
-import type { ProjectDetail } from "@/data/projects";
+import { L, type ProjectDetail } from "@/data/projects";
+import { useLang } from "@/lib/i18n";
+import BlendNav from "@/components/BlendNav";
 
-/* ─── Animated counter ─── */
-function Counter({ value, suffix = "" }: { value: string; suffix?: string }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+const SECTIONS_T = {
+  es: {
+    challenge: "El reto",
+    solution: "La solución",
+    gallery: "Vistas del proyecto",
+    features: "Funcionalidades",
+    results: "Resultados",
+    ctaPre: "¿Te gustaría algo así?",
+    ctaTitle: "Hablemos de tu proyecto.",
+    contact: "Contactar",
+    seeMore: "← Ver más trabajos",
+  },
+  en: {
+    challenge: "The challenge",
+    solution: "The solution",
+    gallery: "Project views",
+    features: "Features",
+    results: "Results",
+    ctaPre: "Want something like this?",
+    ctaTitle: "Let's talk about your project.",
+    contact: "Contact",
+    seeMore: "← See more work",
+  },
+  de: {
+    challenge: "Die Herausforderung",
+    solution: "Die Lösung",
+    gallery: "Projekt-Ansichten",
+    features: "Funktionen",
+    results: "Ergebnisse",
+    ctaPre: "Möchtest du so etwas?",
+    ctaTitle: "Sprechen wir über dein Projekt.",
+    contact: "Kontakt",
+    seeMore: "← Mehr Arbeiten",
+  },
+};
 
-  return (
-    <motion.span
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, ease: [0.77, 0, 0.175, 1] }}
-      className="text-4xl md:text-6xl font-bold"
-    >
-      {value}
-      {suffix}
-    </motion.span>
-  );
-}
-
-/* ─── Feature card with stagger ─── */
 function FeatureCard({
   feature,
   index,
@@ -58,7 +75,6 @@ function FeatureCard({
   );
 }
 
-/* ─── Gallery mock card ─── */
 function GalleryCard({
   item,
   index,
@@ -85,9 +101,7 @@ function GalleryCard({
       className="group relative overflow-hidden"
       style={{ backgroundColor: theme.accentLight }}
     >
-      {/* Placeholder visual */}
       <div className="aspect-[4/3] flex items-center justify-center relative overflow-hidden">
-        {/* Abstract decorative pattern */}
         <div className="absolute inset-0 opacity-10">
           <div
             className="absolute top-1/4 left-1/4 w-32 h-32 rounded-full"
@@ -115,7 +129,6 @@ function GalleryCard({
         </div>
       </div>
 
-      {/* Hover reveal bar */}
       <motion.div
         className="absolute bottom-0 left-0 right-0 h-1"
         style={{ backgroundColor: theme.accent }}
@@ -127,7 +140,6 @@ function GalleryCard({
   );
 }
 
-/* ─── Result item ─── */
 function ResultItem({
   result,
   index,
@@ -164,12 +176,13 @@ function ResultItem({
   );
 }
 
-/* ─── Main detail page ─── */
 export default function ProjectDetailClient({
   project,
 }: {
   project: ProjectDetail;
 }) {
+  const { lang } = useLang();
+  const t = SECTIONS_T[lang];
   const { theme } = project;
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -181,44 +194,17 @@ export default function ProjectDetailClient({
 
   return (
     <div style={{ backgroundColor: theme.bg, color: theme.fg, fontFamily: theme.font }}>
-      {/* ─── Sticky top bar ─── */}
-      <motion.nav
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.6 }}
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-5 backdrop-blur-md border-b"
-        style={{
-          backgroundColor: theme.bg + "cc",
-          borderColor: theme.fg + "10",
-        }}
-      >
-        <Link
-          href="/"
-          data-hover
-          className="font-mono text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity flex items-center gap-2"
-        >
-          ← Felipe Cámara
-        </Link>
-        <span className="font-mono text-xs uppercase tracking-widest opacity-30">
-          {project.category}
-        </span>
-      </motion.nav>
+      <BlendNav active="projects" />
 
-      {/* ─── Hero ─── */}
       <section
         ref={heroRef}
         className="relative min-h-screen flex flex-col justify-end overflow-hidden"
       >
-        {/* Background gradient */}
         <motion.div
           className="absolute inset-0"
-          style={{
-            background: theme.heroGradient,
-            y: heroY,
-          }}
+          style={{ background: theme.heroGradient, y: heroY }}
         />
 
-        {/* Decorative circles */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div
             initial={{ scale: 0, opacity: 0 }}
@@ -240,12 +226,11 @@ export default function ProjectDetailClient({
           style={{ opacity: heroOpacity }}
           className="relative z-10 px-6 md:px-12 pb-16 md:pb-24 pt-32"
         >
-          {/* Project number */}
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.3 }}
             transition={{ delay: 0.3, duration: 0.8 }}
-            className="font-mono text-[8rem] md:text-[12rem] font-bold leading-none absolute top-24 right-8 md:right-16 select-none pointer-events-none"
+            className="font-mono text-[6rem] md:text-[12rem] font-bold leading-none absolute top-24 right-6 md:right-16 select-none pointer-events-none"
           >
             {project.id}
           </motion.span>
@@ -259,7 +244,7 @@ export default function ProjectDetailClient({
               className="font-mono text-xs uppercase tracking-widest mb-6"
               style={{ color: theme.accent }}
             >
-              {project.category} · {project.year}
+              {L(project.category, lang)} · {project.year}
             </p>
           </motion.div>
 
@@ -272,7 +257,7 @@ export default function ProjectDetailClient({
                 duration: 0.8,
                 ease: [0.77, 0, 0.175, 1],
               }}
-              className="text-[clamp(3.5rem,12vw,10rem)] font-bold tracking-tighter leading-[0.85]"
+              className="text-[clamp(2.75rem,12vw,10rem)] font-bold tracking-tighter leading-[0.9]"
             >
               {project.title}
             </motion.h1>
@@ -284,10 +269,9 @@ export default function ProjectDetailClient({
             transition={{ delay: 0.9, duration: 0.8 }}
             className="mt-8 max-w-lg text-base md:text-lg leading-relaxed opacity-60"
           >
-            {project.longDescription}
+            {L(project.longDescription, lang)}
           </motion.p>
 
-          {/* Tags */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -309,7 +293,6 @@ export default function ProjectDetailClient({
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -326,23 +309,21 @@ export default function ProjectDetailClient({
         </motion.div>
       </section>
 
-      {/* ─── Challenge & Solution ─── */}
-      <section className="px-6 md:px-12 py-24 md:py-32">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
+      <section className="px-6 md:px-12 py-20 md:py-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
           <ChallengeBlock
-            label="El reto"
-            text={project.challenge}
+            label={t.challenge}
+            text={L(project.challenge, lang)}
             accent={theme.accent}
           />
           <ChallengeBlock
-            label="La solución"
-            text={project.solution}
+            label={t.solution}
+            text={L(project.solution, lang)}
             accent={theme.accent}
           />
         </div>
       </section>
 
-      {/* ─── Divider with accent ─── */}
       <div className="px-6 md:px-12">
         <motion.div
           initial={{ scaleX: 0 }}
@@ -354,24 +335,30 @@ export default function ProjectDetailClient({
         />
       </div>
 
-      {/* ─── Gallery ─── */}
-      <section className="px-6 md:px-12 py-24 md:py-32">
-        <SectionHeader label="Vistas del proyecto" accent={theme.accent} />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-16">
+      <section className="px-6 md:px-12 py-20 md:py-32">
+        <SectionHeader label={t.gallery} accent={theme.accent} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-12">
           {project.gallery.map((item, i) => (
-            <GalleryCard key={item.label} item={item} index={i} theme={theme} />
+            <GalleryCard
+              key={item.label.es}
+              item={{
+                label: L(item.label, lang),
+                description: L(item.description, lang),
+              }}
+              index={i}
+              theme={theme}
+            />
           ))}
         </div>
       </section>
 
-      {/* ─── Features ─── */}
       <section
-        className="px-6 md:px-12 py-24 md:py-32"
+        className="px-6 md:px-12 py-20 md:py-32"
         style={{ backgroundColor: theme.fg, color: theme.bg }}
       >
-        <SectionHeader label="Funcionalidades" accent={theme.accent} />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 mt-12">
-          {project.features.map((feature, i) => (
+        <SectionHeader label={t.features} accent={theme.accent} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 mt-10">
+          {L(project.features, lang).map((feature, i) => (
             <FeatureCard
               key={feature}
               feature={feature}
@@ -382,11 +369,10 @@ export default function ProjectDetailClient({
         </div>
       </section>
 
-      {/* ─── Results ─── */}
-      <section className="px-6 md:px-12 py-24 md:py-32">
-        <SectionHeader label="Resultados" accent={theme.accent} />
-        <ul className="mt-12 space-y-6 max-w-2xl">
-          {project.results.map((result, i) => (
+      <section className="px-6 md:px-12 py-20 md:py-32">
+        <SectionHeader label={t.results} accent={theme.accent} />
+        <ul className="mt-10 space-y-5 max-w-2xl">
+          {L(project.results, lang).map((result, i) => (
             <ResultItem
               key={i}
               result={result}
@@ -397,20 +383,22 @@ export default function ProjectDetailClient({
         </ul>
       </section>
 
-      {/* ─── Testimonial ─── */}
       {project.testimonial && (
-        <section className="px-6 md:px-12 py-24 md:py-32">
+        <section className="px-6 md:px-12 py-20 md:py-32">
           <TestimonialBlock
-            testimonial={project.testimonial}
+            testimonial={{
+              quote: L(project.testimonial.quote, lang),
+              name: project.testimonial.name,
+              role: L(project.testimonial.role, lang),
+            }}
             accent={theme.accent}
             accentLight={theme.accentLight}
           />
         </section>
       )}
 
-      {/* ─── CTA / Next project ─── */}
       <section
-        className="px-6 md:px-12 py-24 md:py-32 text-center"
+        className="px-6 md:px-12 py-20 md:py-32 text-center"
         style={{ backgroundColor: theme.fg, color: theme.bg }}
       >
         <motion.div
@@ -420,43 +408,42 @@ export default function ProjectDetailClient({
           transition={{ duration: 0.8 }}
         >
           <p className="font-mono text-xs uppercase tracking-widest opacity-40 mb-6">
-            ¿Te gustaría algo así?
+            {t.ctaPre}
           </p>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tighter mb-12">
-            Hablemos de tu proyecto.
+          <h2 className="text-3xl md:text-6xl font-bold tracking-tighter mb-10">
+            {t.ctaTitle}
           </h2>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
+            <a
               href="/#contacto"
               data-hover
               className="font-mono text-xs uppercase tracking-widest border px-8 py-4 hover:bg-white/10 transition-colors duration-300"
               style={{ borderColor: theme.bg + "40" }}
             >
-              Contactar
-            </Link>
-            <Link
-              href="/#trabajos"
+              {t.contact}
+            </a>
+            <a
+              href="/proyectos"
               data-hover
               className="font-mono text-xs uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity"
             >
-              ← Ver más trabajos
-            </Link>
+              {t.seeMore}
+            </a>
           </div>
         </motion.div>
       </section>
 
-      {/* ─── Footer ─── */}
       <footer
         className="px-6 md:px-12 py-8 flex items-center justify-between border-t"
         style={{ borderColor: theme.fg + "10" }}
       >
-        <Link
+        <a
           href="/"
           data-hover
           className="font-mono text-xs opacity-30 hover:opacity-100 transition-opacity"
         >
           Felipe Cámara
-        </Link>
+        </a>
         <span className="font-mono text-[10px] opacity-20">
           © {new Date().getFullYear()}
         </span>
@@ -464,8 +451,6 @@ export default function ProjectDetailClient({
     </div>
   );
 }
-
-/* ─── Sub-components ─── */
 
 function SectionHeader({
   label,
@@ -550,7 +535,6 @@ function TestimonialBlock({
       className="max-w-3xl mx-auto text-center py-16 px-8 md:px-16 relative"
       style={{ backgroundColor: accentLight + "40" }}
     >
-      {/* Big quote mark */}
       <span
         className="absolute top-6 left-8 text-[6rem] leading-none font-serif opacity-10 select-none"
         style={{ color: accent }}

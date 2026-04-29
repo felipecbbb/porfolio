@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useLang, type Lang } from "@/lib/i18n";
+import BlendNav from "@/components/BlendNav";
 
-// Paleta Feria de Jerez
 const CREAM = "#f3e7cf";
 const CREAM_WARM = "#ead5b0";
 const TEAL = "#13625a";
@@ -20,7 +21,280 @@ const FONT_BODY = "var(--font-yanone), 'Yanone Kaffeesatz', system-ui, sans-seri
 const LIVE_URL = "https://felipecbbb.github.io/la-inquieta/";
 const REPO_URL = "https://github.com/felipecbbb/la-inquieta";
 
+const T: Record<Lang, {
+  caseta: string;
+  liveCta: string;
+  source: string;
+  marquee: string[];
+  meta: { label: string; value: string }[];
+  multidev: string;
+  pocketA: string;
+  pocketHl: string;
+  visualLabel: string;
+  aestheticA: string;
+  aestheticHl: string;
+  palette: string;
+  typo: string;
+  typoH: string;
+  typoSub: string;
+  typoFonts: string;
+  client: string;
+  brandName: string;
+  brandSub: string;
+  busLabel: string;
+  busTitleA: string;
+  busTitleHl: string;
+  busTitleB: string;
+  stats: { num: string; label: string; color: string }[];
+  sectionsLabel: string;
+  sectionsA: string;
+  sectionsHl: string;
+  sections: { number: string; title: string; subtitle: string; image: string }[];
+  detailsLabel: string;
+  detailsA: string;
+  detailsHl: string;
+  icons: { title: string; subtitle: string; key: "arch" | "pattern" | "bus" | "wallet" | "calendar" | "whatsapp" }[];
+  ctaA: string;
+  ctaB: string;
+  ctaTagline: string;
+  enter: string;
+  others: string;
+  blockKicker: string;
+}> = {
+  es: {
+    caseta: "Caseta Nº154 · Feria de Jerez 2026",
+    liveCta: "Ver web en vivo",
+    source: "Código fuente",
+    marquee: ["Sol de Fiesta", "Luna de Fiesta", "Feria de Jerez 2026", "La Inquieta"],
+    meta: [
+      { label: "Año", value: "2026" },
+      { label: "Rol", value: "Diseño + Código" },
+      { label: "Stack", value: "HTML · SVG · JS" },
+      { label: "Despliegue", value: "GitHub Pages" },
+    ],
+    multidev: "Multi-dispositivo",
+    pocketA: "Una feria",
+    pocketHl: "en el bolsillo",
+    visualLabel: "Sistema visual",
+    aestheticA: "La",
+    aestheticHl: "estética",
+    palette: "Paleta",
+    typo: "Tipografía",
+    typoH: "La Inquieta",
+    typoSub: "Sol de Fiesta · Luna de Fiesta",
+    typoFonts: "Fontuna / Playfair + Yanone Kaffeesatz",
+    client: "Cliente",
+    brandName: "Inquieto Grupo",
+    brandSub: "Caseta Nº154 · Jerez",
+    busLabel: "El autobús",
+    busTitleA: "La",
+    busTitleHl: "guagua",
+    busTitleB: "que trae Cádiz entera",
+    stats: [
+      { num: "4", label: "Ciudades de salida", color: CORAL_DEEP },
+      { num: "6", label: "Tarifas distintas", color: TEAL_DEEP },
+      { num: "8", label: "Noches de feria", color: CORAL_DEEP },
+      { num: "0", label: "€ en tener coche", color: TEAL_DEEP },
+    ],
+    sectionsLabel: "Las secciones",
+    sectionsA: "Todo en un",
+    sectionsHl: "scroll",
+    sections: [
+      {
+        number: "01",
+        title: "Transporte",
+        subtitle: "Puntos de salida, autobús, tabla de precios y calendario de rutas",
+        image: "/projects/la-inquieta/screenshot-transport.png",
+      },
+      {
+        number: "02",
+        title: "Bebidas",
+        subtitle: "Packs de rebujito y copas · Pulsera de caseta con 3 beneficios",
+        image: "/projects/la-inquieta/screenshot-bebidas.png",
+      },
+      {
+        number: "03",
+        title: "Itinerario",
+        subtitle: "8 días en tarjetas postales cream con programación DJ + animador",
+        image: "/projects/la-inquieta/screenshot-itinerario.png",
+      },
+    ],
+    detailsLabel: "Detalles",
+    detailsA: "Lo que marca la",
+    detailsHl: "diferencia",
+    icons: [
+      { key: "arch", title: "Arco mozárabe", subtitle: "Hero con cartel original dentro de un arco andalusí" },
+      { key: "pattern", title: "Patrón continuo", subtitle: "Trama geométrica con background-attachment fixed" },
+      { key: "bus", title: "Puntos de salida", subtitle: "4 ciudades con pin dorado y venue exacto" },
+      { key: "wallet", title: "Pulsera -1€", subtitle: "Beneficio destacado con pulso coral animado" },
+      { key: "calendar", title: "8 postales", subtitle: "Timeline con slots de programación listos para DJs" },
+      { key: "whatsapp", title: "Reserva directa", subtitle: "Widget flotante que abre WhatsApp prellenado" },
+    ],
+    ctaA: "Caseta",
+    ctaB: "abierta",
+    ctaTagline: "Sol de Fiesta · Luna de Fiesta",
+    enter: "Entrar a la caseta",
+    others: "Otros proyectos",
+    blockKicker: "Bloque",
+  },
+  en: {
+    caseta: "Pavilion #154 · Feria de Jerez 2026",
+    liveCta: "View live site",
+    source: "Source code",
+    marquee: ["Sun Party", "Moon Party", "Feria de Jerez 2026", "La Inquieta"],
+    meta: [
+      { label: "Year", value: "2026" },
+      { label: "Role", value: "Design + Code" },
+      { label: "Stack", value: "HTML · SVG · JS" },
+      { label: "Deploy", value: "GitHub Pages" },
+    ],
+    multidev: "Multi-device",
+    pocketA: "A feria",
+    pocketHl: "in your pocket",
+    visualLabel: "Visual system",
+    aestheticA: "The",
+    aestheticHl: "aesthetic",
+    palette: "Palette",
+    typo: "Typography",
+    typoH: "La Inquieta",
+    typoSub: "Sun Party · Moon Party",
+    typoFonts: "Fontuna / Playfair + Yanone Kaffeesatz",
+    client: "Client",
+    brandName: "Inquieto Grupo",
+    brandSub: "Pavilion #154 · Jerez",
+    busLabel: "The bus",
+    busTitleA: "The",
+    busTitleHl: "bus",
+    busTitleB: "that brings all of Cádiz",
+    stats: [
+      { num: "4", label: "Pickup cities", color: CORAL_DEEP },
+      { num: "6", label: "Fare options", color: TEAL_DEEP },
+      { num: "8", label: "Feria nights", color: CORAL_DEEP },
+      { num: "0", label: "€ on a car", color: TEAL_DEEP },
+    ],
+    sectionsLabel: "The sections",
+    sectionsA: "Everything in one",
+    sectionsHl: "scroll",
+    sections: [
+      {
+        number: "01",
+        title: "Transport",
+        subtitle: "Pickup points, bus, pricing table and route calendar",
+        image: "/projects/la-inquieta/screenshot-transport.png",
+      },
+      {
+        number: "02",
+        title: "Drinks",
+        subtitle: "Rebujito and drinks packs · Pavilion wristband with 3 perks",
+        image: "/projects/la-inquieta/screenshot-bebidas.png",
+      },
+      {
+        number: "03",
+        title: "Schedule",
+        subtitle: "8 days as cream postcards with DJ + host slots",
+        image: "/projects/la-inquieta/screenshot-itinerario.png",
+      },
+    ],
+    detailsLabel: "Details",
+    detailsA: "What makes the",
+    detailsHl: "difference",
+    icons: [
+      { key: "arch", title: "Mozarabic arch", subtitle: "Hero with the original poster inside an Andalusian arch" },
+      { key: "pattern", title: "Continuous pattern", subtitle: "Geometric texture with fixed background-attachment" },
+      { key: "bus", title: "Pickup points", subtitle: "4 cities with golden pin and exact venue" },
+      { key: "wallet", title: "-€1 wristband", subtitle: "Perk highlighted with animated coral pulse" },
+      { key: "calendar", title: "8 postcards", subtitle: "Timeline with programming slots ready for DJs" },
+      { key: "whatsapp", title: "Direct booking", subtitle: "Floating widget that opens pre-filled WhatsApp" },
+    ],
+    ctaA: "Pavilion",
+    ctaB: "open",
+    ctaTagline: "Sun Party · Moon Party",
+    enter: "Enter the pavilion",
+    others: "Other projects",
+    blockKicker: "Block",
+  },
+  de: {
+    caseta: "Festzelt Nr. 154 · Feria de Jerez 2026",
+    liveCta: "Live-Site ansehen",
+    source: "Quellcode",
+    marquee: ["Sonnen-Fest", "Mond-Fest", "Feria de Jerez 2026", "La Inquieta"],
+    meta: [
+      { label: "Jahr", value: "2026" },
+      { label: "Rolle", value: "Design + Code" },
+      { label: "Stack", value: "HTML · SVG · JS" },
+      { label: "Deploy", value: "GitHub Pages" },
+    ],
+    multidev: "Multi-Device",
+    pocketA: "Eine Feria",
+    pocketHl: "in der Hosentasche",
+    visualLabel: "Visuelles System",
+    aestheticA: "Die",
+    aestheticHl: "Ästhetik",
+    palette: "Palette",
+    typo: "Typografie",
+    typoH: "La Inquieta",
+    typoSub: "Sonnen-Fest · Mond-Fest",
+    typoFonts: "Fontuna / Playfair + Yanone Kaffeesatz",
+    client: "Kunde",
+    brandName: "Inquieto Grupo",
+    brandSub: "Festzelt Nr. 154 · Jerez",
+    busLabel: "Der Bus",
+    busTitleA: "Der",
+    busTitleHl: "Bus",
+    busTitleB: "der ganz Cádiz mitbringt",
+    stats: [
+      { num: "4", label: "Abfahrtsstädte", color: CORAL_DEEP },
+      { num: "6", label: "Tarif-Optionen", color: TEAL_DEEP },
+      { num: "8", label: "Feria-Nächte", color: CORAL_DEEP },
+      { num: "0", label: "€ fürs Auto", color: TEAL_DEEP },
+    ],
+    sectionsLabel: "Die Bereiche",
+    sectionsA: "Alles in einem",
+    sectionsHl: "Scroll",
+    sections: [
+      {
+        number: "01",
+        title: "Transport",
+        subtitle: "Abfahrtspunkte, Bus, Preistabelle und Routen-Kalender",
+        image: "/projects/la-inquieta/screenshot-transport.png",
+      },
+      {
+        number: "02",
+        title: "Getränke",
+        subtitle: "Rebujito- und Getränke-Pakete · Armband mit 3 Vorteilen",
+        image: "/projects/la-inquieta/screenshot-bebidas.png",
+      },
+      {
+        number: "03",
+        title: "Programm",
+        subtitle: "8 Tage als cremefarbene Postkarten mit DJ- und Moderatoren-Slots",
+        image: "/projects/la-inquieta/screenshot-itinerario.png",
+      },
+    ],
+    detailsLabel: "Details",
+    detailsA: "Was den",
+    detailsHl: "Unterschied",
+    icons: [
+      { key: "arch", title: "Maurischer Bogen", subtitle: "Hero mit Originalplakat in einem andalusischen Bogen" },
+      { key: "pattern", title: "Kontinuierliches Muster", subtitle: "Geometrische Textur mit fixiertem background-attachment" },
+      { key: "bus", title: "Abfahrtspunkte", subtitle: "4 Städte mit goldenem Pin und genauem Venue" },
+      { key: "wallet", title: "−1 € Armband", subtitle: "Vorteil hervorgehoben mit animiertem Coral-Puls" },
+      { key: "calendar", title: "8 Postkarten", subtitle: "Timeline mit Programm-Slots, bereit für DJs" },
+      { key: "whatsapp", title: "Direktbuchung", subtitle: "Schwebendes Widget öffnet vorausgefülltes WhatsApp" },
+    ],
+    ctaA: "Festzelt",
+    ctaB: "geöffnet",
+    ctaTagline: "Sonnen-Fest · Mond-Fest",
+    enter: "Festzelt betreten",
+    others: "Andere Projekte",
+    blockKicker: "Block",
+  },
+};
+
 export default function LaInquietaDetailClient() {
+  const { lang } = useLang();
+  const t = T[lang];
+
   return (
     <main
       style={{
@@ -32,8 +306,9 @@ export default function LaInquietaDetailClient() {
         overflow: "hidden",
       }}
     >
-      {/* NAV */}
-      <nav
+      <BlendNav active="projects" />
+
+      <div
         style={{
           position: "sticky",
           top: 0,
@@ -42,56 +317,43 @@ export default function LaInquietaDetailClient() {
           backdropFilter: "blur(10px)",
           WebkitBackdropFilter: "blur(10px)",
           color: CREAM,
+          borderTop: `1px solid ${GOLD}30`,
           borderBottom: `1px solid ${GOLD}30`,
+          marginTop: 64,
         }}
       >
         <div
           style={{
             maxWidth: 1400,
             margin: "0 auto",
-            padding: "14px 32px",
+            padding: "10px 24px",
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Link
-            href="/proyectos"
-            style={{
-              color: CREAM,
-              textDecoration: "none",
-              fontFamily: FONT_BODY,
-              fontSize: 15,
-              fontWeight: 500,
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              opacity: 0.85,
-            }}
-          >
-            ← Proyectos
-          </Link>
           <span
             style={{
               fontFamily: FONT_DISPLAY,
               fontStyle: "italic",
-              fontSize: 15,
+              fontSize: 14,
               color: GOLD_LIGHT,
-              letterSpacing: "0.08em",
+              letterSpacing: "0.06em",
+              textAlign: "center",
             }}
           >
-            Caseta Nº154 · Feria de Jerez 2026
+            {t.caseta}
           </span>
         </div>
-      </nav>
+      </div>
 
-      {/* ============ HERO CINEMATIC ============ */}
       <section
         style={{
           position: "relative",
           background: TEAL_DEEP,
           color: CREAM,
-          padding: "0 32px",
-          minHeight: "100vh",
+          padding: "0 24px",
+          minHeight: "90vh",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -128,7 +390,7 @@ export default function LaInquietaDetailClient() {
             width: "100%",
             maxWidth: 1200,
             textAlign: "center",
-            padding: "80px 0",
+            padding: "60px 0",
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -140,7 +402,7 @@ export default function LaInquietaDetailClient() {
               maxWidth: 500,
               height: "auto",
               display: "block",
-              margin: "0 auto 40px",
+              margin: "0 auto 30px",
               filter: "drop-shadow(0 40px 60px rgba(0,0,0,0.5))",
               animation: "fadeUp 1.2s cubic-bezier(.2,.8,.2,1) both",
             }}
@@ -149,7 +411,7 @@ export default function LaInquietaDetailClient() {
           <div
             style={{
               display: "flex",
-              gap: 16,
+              gap: 12,
               justifyContent: "center",
               flexWrap: "wrap",
               marginTop: 24,
@@ -163,19 +425,19 @@ export default function LaInquietaDetailClient() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 10,
-                padding: "16px 32px",
+                padding: "14px 26px",
                 background: CORAL,
                 color: CREAM,
                 textDecoration: "none",
                 fontFamily: FONT_BODY,
-                fontSize: 15,
+                fontSize: 14,
                 fontWeight: 600,
-                letterSpacing: "0.24em",
+                letterSpacing: "0.22em",
                 textTransform: "uppercase",
                 border: `1px solid ${CORAL_DEEP}`,
               }}
             >
-              Ver web en vivo <span>↗</span>
+              {t.liveCta} <span>↗</span>
             </a>
             <a
               href={REPO_URL}
@@ -185,32 +447,31 @@ export default function LaInquietaDetailClient() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 10,
-                padding: "16px 32px",
+                padding: "14px 26px",
                 background: "transparent",
                 color: CREAM,
                 textDecoration: "none",
                 fontFamily: FONT_BODY,
-                fontSize: 15,
+                fontSize: 14,
                 fontWeight: 600,
-                letterSpacing: "0.24em",
+                letterSpacing: "0.22em",
                 textTransform: "uppercase",
                 border: `1px solid ${GOLD}`,
               }}
             >
-              Código fuente
+              {t.source}
             </a>
           </div>
         </div>
       </section>
 
-      {/* ============ MARQUEE ============ */}
       <div
         style={{
           background: CORAL,
           color: CREAM,
           borderTop: `1px solid ${CORAL_DEEP}`,
           borderBottom: `1px solid ${CORAL_DEEP}`,
-          padding: "18px 0",
+          padding: "16px 0",
           overflow: "hidden",
           position: "relative",
           zIndex: 1,
@@ -219,25 +480,28 @@ export default function LaInquietaDetailClient() {
         <div
           style={{
             display: "flex",
-            gap: 40,
+            gap: 32,
             whiteSpace: "nowrap",
             animation: "scroll 32s linear infinite",
             fontFamily: FONT_DISPLAY,
             fontStyle: "italic",
-            fontSize: 22,
-            letterSpacing: "0.2em",
+            fontSize: 20,
+            letterSpacing: "0.18em",
             textTransform: "uppercase",
           }}
         >
           {Array.from({ length: 6 }).map((_, i) => (
-            <span key={i} style={{ display: "flex", alignItems: "center", gap: 40 }}>
-              Sol de Fiesta <Dot /> Luna de Fiesta <Dot /> Feria de Jerez 2026 <Dot /> La Inquieta <Dot />
+            <span key={i} style={{ display: "flex", alignItems: "center", gap: 32 }}>
+              {t.marquee.map((m, j) => (
+                <span key={j} style={{ display: "flex", alignItems: "center", gap: 32 }}>
+                  {m} <Dot />
+                </span>
+              ))}
             </span>
           ))}
         </div>
       </div>
 
-      {/* ============ META ============ */}
       <section
         style={{
           position: "relative",
@@ -250,26 +514,24 @@ export default function LaInquietaDetailClient() {
           style={{
             maxWidth: 1200,
             margin: "0 auto",
-            padding: "28px 32px",
+            padding: "26px 24px",
             display: "grid",
             gridTemplateColumns: "repeat(4, 1fr)",
-            gap: 24,
+            gap: 20,
           }}
           className="li-meta-grid"
         >
-          <MetaBig label="Año" value="2026" />
-          <MetaBig label="Rol" value="Diseño + Código" />
-          <MetaBig label="Stack" value="HTML · SVG · JS" />
-          <MetaBig label="Despliegue" value="GitHub Pages" />
+          {t.meta.map((m) => (
+            <MetaBig key={m.label} label={m.label} value={m.value} />
+          ))}
         </div>
       </section>
 
-      {/* ============ DEVICE SHOWCASE ============ */}
       <section
         style={{
           position: "relative",
           background: CREAM,
-          padding: "120px 32px 100px",
+          padding: "90px 24px 80px",
           overflow: "hidden",
           zIndex: 1,
         }}
@@ -288,64 +550,55 @@ export default function LaInquietaDetailClient() {
           }}
         />
         <div style={{ position: "relative", maxWidth: 1300, margin: "0 auto" }}>
-          <SectionKicker color={CORAL_DEEP} text="Multi-dispositivo" center />
+          <SectionKicker color={CORAL_DEEP} text={t.multidev} center />
           <h2
             style={{
               fontFamily: FONT_DISPLAY,
               fontWeight: 800,
-              fontSize: "clamp(44px, 6vw, 72px)",
-              lineHeight: 1,
+              fontSize: "clamp(36px, 6vw, 72px)",
+              lineHeight: 1.05,
               letterSpacing: "-0.02em",
               color: INK,
               textAlign: "center",
-              margin: "20px 0 60px",
+              margin: "20px 0 50px",
             }}
           >
-            Una feria <em style={{ fontWeight: 400, color: CORAL_DEEP }}>en el bolsillo</em>
+            {t.pocketA}{" "}
+            <em style={{ fontWeight: 400, color: CORAL_DEEP }}>{t.pocketHl}</em>
           </h2>
 
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "1.6fr 1fr",
-              gap: 40,
+              gap: 32,
               alignItems: "center",
             }}
             className="li-device-grid"
           >
-            {/* BROWSER MOCKUP */}
             <div>
               <BrowserFrame>
                 <Image
                   src="/projects/la-inquieta/screenshot-hero.png"
-                  alt="La Inquieta - Vista desktop"
+                  alt="La Inquieta - Desktop"
                   width={1440}
                   height={900}
                   unoptimized
                   priority
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    display: "block",
-                  }}
+                  style={{ width: "100%", height: "auto", display: "block" }}
                 />
               </BrowserFrame>
             </div>
 
-            {/* PHONE MOCKUP */}
             <div style={{ display: "flex", justifyContent: "center" }}>
               <PhoneFrame>
                 <Image
                   src="/projects/la-inquieta/screenshot-mobile.png"
-                  alt="La Inquieta - Vista mobile"
+                  alt="La Inquieta - Mobile"
                   width={390}
                   height={844}
                   unoptimized
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    display: "block",
-                  }}
+                  style={{ width: "100%", height: "auto", display: "block" }}
                 />
               </PhoneFrame>
             </div>
@@ -353,13 +606,12 @@ export default function LaInquietaDetailClient() {
         </div>
       </section>
 
-      {/* ============ BRAND IDENTITY ============ */}
       <section
         style={{
           position: "relative",
           background: TEAL_DEEP,
           color: CREAM,
-          padding: "120px 32px",
+          padding: "90px 24px",
           overflow: "hidden",
           zIndex: 1,
           borderTop: `1px solid ${GOLD}40`,
@@ -379,35 +631,35 @@ export default function LaInquietaDetailClient() {
           }}
         />
         <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto" }}>
-          <SectionKicker color={GOLD_LIGHT} text="Sistema visual" center />
+          <SectionKicker color={GOLD_LIGHT} text={t.visualLabel} center />
           <h2
             style={{
               fontFamily: FONT_DISPLAY,
               fontWeight: 800,
-              fontSize: "clamp(44px, 6vw, 72px)",
-              lineHeight: 1,
+              fontSize: "clamp(36px, 6vw, 72px)",
+              lineHeight: 1.05,
               letterSpacing: "-0.02em",
               textAlign: "center",
-              margin: "20px 0 64px",
+              margin: "20px 0 56px",
             }}
           >
-            La <em style={{ fontWeight: 400, color: GOLD_LIGHT }}>estética</em>
+            {t.aestheticA}{" "}
+            <em style={{ fontWeight: 400, color: GOLD_LIGHT }}>{t.aestheticHl}</em>
           </h2>
 
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr 1fr",
-              gap: 24,
+              gap: 20,
             }}
             className="li-brand-grid"
           >
-            {/* Paleta */}
             <div
               style={{
                 background: `${CREAM}08`,
                 border: `1px solid ${GOLD}30`,
-                padding: "28px 26px 24px",
+                padding: "26px 22px 22px",
               }}
             >
               <div
@@ -415,13 +667,13 @@ export default function LaInquietaDetailClient() {
                   fontFamily: FONT_BODY,
                   fontSize: 11,
                   fontWeight: 600,
-                  letterSpacing: "0.35em",
+                  letterSpacing: "0.32em",
                   textTransform: "uppercase",
                   color: GOLD_LIGHT,
-                  marginBottom: 20,
+                  marginBottom: 18,
                 }}
               >
-                Paleta
+                {t.palette}
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
                 <ColorSwatch color={TEAL_DEEP} name="Teal" hex="#0D4A42" />
@@ -433,12 +685,11 @@ export default function LaInquietaDetailClient() {
               </div>
             </div>
 
-            {/* Tipografía */}
             <div
               style={{
                 background: `${CREAM}08`,
                 border: `1px solid ${GOLD}30`,
-                padding: "28px 26px 24px",
+                padding: "26px 22px 22px",
               }}
             >
               <div
@@ -446,19 +697,19 @@ export default function LaInquietaDetailClient() {
                   fontFamily: FONT_BODY,
                   fontSize: 11,
                   fontWeight: 600,
-                  letterSpacing: "0.35em",
+                  letterSpacing: "0.32em",
                   textTransform: "uppercase",
                   color: GOLD_LIGHT,
-                  marginBottom: 20,
+                  marginBottom: 18,
                 }}
               >
-                Tipografía
+                {t.typo}
               </div>
               <div
                 style={{
                   fontFamily: FONT_DISPLAY,
                   fontWeight: 800,
-                  fontSize: 56,
+                  fontSize: 48,
                   letterSpacing: "-0.01em",
                   lineHeight: 1,
                   color: CREAM,
@@ -469,15 +720,15 @@ export default function LaInquietaDetailClient() {
               <div
                 style={{
                   fontFamily: FONT_BODY,
-                  fontSize: 15,
+                  fontSize: 14,
                   fontWeight: 500,
-                  letterSpacing: "0.22em",
+                  letterSpacing: "0.18em",
                   textTransform: "uppercase",
                   color: GOLD_LIGHT,
                   marginTop: 14,
                 }}
               >
-                Sol de Fiesta · Luna de Fiesta
+                {t.typoSub}
               </div>
               <div
                 style={{
@@ -490,16 +741,15 @@ export default function LaInquietaDetailClient() {
                   letterSpacing: "0.05em",
                 }}
               >
-                Fontuna <span style={{ opacity: 0.5 }}>/ Playfair</span> + Yanone Kaffeesatz
+                {t.typoFonts}
               </div>
             </div>
 
-            {/* Cliente */}
             <div
               style={{
                 background: `${CREAM}08`,
                 border: `1px solid ${GOLD}30`,
-                padding: "28px 26px 24px",
+                padding: "26px 22px 22px",
                 display: "flex",
                 flexDirection: "column",
               }}
@@ -509,13 +759,13 @@ export default function LaInquietaDetailClient() {
                   fontFamily: FONT_BODY,
                   fontSize: 11,
                   fontWeight: 600,
-                  letterSpacing: "0.35em",
+                  letterSpacing: "0.32em",
                   textTransform: "uppercase",
                   color: GOLD_LIGHT,
-                  marginBottom: 20,
+                  marginBottom: 18,
                 }}
               >
-                Cliente
+                {t.client}
               </div>
               <div
                 style={{
@@ -523,9 +773,9 @@ export default function LaInquietaDetailClient() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  padding: "20px 0",
+                  padding: "18px 0",
                   background: CREAM,
-                  marginBottom: 14,
+                  marginBottom: 12,
                 }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -545,7 +795,7 @@ export default function LaInquietaDetailClient() {
                   lineHeight: 1.2,
                 }}
               >
-                Inquieto Grupo
+                {t.brandName}
               </div>
               <div
                 style={{
@@ -553,22 +803,21 @@ export default function LaInquietaDetailClient() {
                   fontSize: 13,
                   color: `${CREAM}99`,
                   marginTop: 4,
-                  letterSpacing: "0.1em",
+                  letterSpacing: "0.08em",
                 }}
               >
-                Caseta Nº154 · Jerez
+                {t.brandSub}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ============ BUS VISUAL ============ */}
       <section
         style={{
           position: "relative",
           background: CREAM,
-          padding: "120px 32px",
+          padding: "90px 24px",
           overflow: "hidden",
           zIndex: 1,
         }}
@@ -586,29 +835,31 @@ export default function LaInquietaDetailClient() {
           }}
         />
         <div style={{ position: "relative", maxWidth: 1300, margin: "0 auto" }}>
-          <SectionKicker color={CORAL_DEEP} text="El autobús" />
+          <SectionKicker color={CORAL_DEEP} text={t.busLabel} />
           <h2
             style={{
               fontFamily: FONT_DISPLAY,
               fontWeight: 800,
-              fontSize: "clamp(48px, 7vw, 92px)",
-              lineHeight: 0.95,
+              fontSize: "clamp(40px, 7vw, 92px)",
+              lineHeight: 1,
               letterSpacing: "-0.02em",
               color: INK,
-              margin: "18px 0 40px",
+              margin: "18px 0 32px",
               maxWidth: 900,
             }}
           >
-            La <em style={{ fontWeight: 400, color: CORAL_DEEP }}>guagua</em> que trae Cádiz entera
+            {t.busTitleA}{" "}
+            <em style={{ fontWeight: 400, color: CORAL_DEEP }}>{t.busTitleHl}</em>{" "}
+            {t.busTitleB}
           </h2>
 
           <div
             style={{
               position: "relative",
-              padding: "60px 40px 40px",
+              padding: "40px 24px 28px",
               background: TEAL,
               overflow: "hidden",
-              marginBottom: 32,
+              marginBottom: 28,
             }}
           >
             <div
@@ -627,13 +878,8 @@ export default function LaInquietaDetailClient() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/projects/la-inquieta/autobus.svg"
-                alt="Autobús La Inquieta"
-                style={{
-                  width: "100%",
-                  maxWidth: 780,
-                  height: "auto",
-                  display: "block",
-                }}
+                alt="La Inquieta bus"
+                style={{ width: "100%", maxWidth: 780, height: "auto", display: "block" }}
               />
             </div>
           </div>
@@ -642,151 +888,119 @@ export default function LaInquietaDetailClient() {
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(4, 1fr)",
-              gap: 20,
+              gap: 16,
             }}
             className="li-stats-grid"
           >
-            <BigStat num="4" label="Ciudades de salida" color={CORAL_DEEP} />
-            <BigStat num="6" label="Tarifas distintas" color={TEAL_DEEP} />
-            <BigStat num="8" label="Noches de feria" color={CORAL_DEEP} />
-            <BigStat num="0" label="€ en tener coche" color={TEAL_DEEP} />
+            {t.stats.map((s) => (
+              <BigStat key={s.label} num={s.num} label={s.label} color={s.color} />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ============ SECTIONS PREVIEW ============ */}
       <section
         style={{
           position: "relative",
           background: CREAM_WARM,
-          padding: "120px 32px",
+          padding: "90px 24px",
           zIndex: 1,
           borderTop: `1px solid ${INK}12`,
           borderBottom: `1px solid ${INK}12`,
         }}
       >
         <div style={{ maxWidth: 1300, margin: "0 auto" }}>
-          <SectionKicker color={TEAL_DEEP} text="Las secciones" center />
+          <SectionKicker color={TEAL_DEEP} text={t.sectionsLabel} center />
           <h2
             style={{
               fontFamily: FONT_DISPLAY,
               fontWeight: 800,
-              fontSize: "clamp(44px, 6vw, 72px)",
-              lineHeight: 1,
+              fontSize: "clamp(36px, 6vw, 72px)",
+              lineHeight: 1.05,
               letterSpacing: "-0.02em",
               color: INK,
               textAlign: "center",
-              margin: "20px 0 56px",
+              margin: "20px 0 50px",
             }}
           >
-            Todo en un <em style={{ fontWeight: 400, color: CORAL_DEEP }}>scroll</em>
+            {t.sectionsA}{" "}
+            <em style={{ fontWeight: 400, color: CORAL_DEEP }}>{t.sectionsHl}</em>
           </h2>
 
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr 1fr",
-              gap: 20,
+              gap: 18,
             }}
             className="li-preview-grid"
           >
-            <SectionPreview
-              number="01"
-              title="Transporte"
-              subtitle="Puntos de salida, autobús, tabla de precios y calendario de rutas"
-              image="/projects/la-inquieta/screenshot-transport.png"
-            />
-            <SectionPreview
-              number="02"
-              title="Bebidas"
-              subtitle="Packs de rebujito y copas · Pulsera de caseta con 3 beneficios"
-              image="/projects/la-inquieta/screenshot-bebidas.png"
-            />
-            <SectionPreview
-              number="03"
-              title="Itinerario"
-              subtitle="8 días en tarjetas postales cream con programación DJ + animador"
-              image="/projects/la-inquieta/screenshot-itinerario.png"
-            />
+            {t.sections.map((s) => (
+              <SectionPreview
+                key={s.number}
+                number={s.number}
+                title={s.title}
+                subtitle={s.subtitle}
+                image={s.image}
+                kicker={t.blockKicker}
+              />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ============ FEATURES ICONS ============ */}
       <section
         style={{
           position: "relative",
           background: CREAM,
-          padding: "120px 32px",
+          padding: "90px 24px",
           zIndex: 1,
         }}
       >
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <SectionKicker color={CORAL_DEEP} text="Detalles" center />
+          <SectionKicker color={CORAL_DEEP} text={t.detailsLabel} center />
           <h2
             style={{
               fontFamily: FONT_DISPLAY,
               fontWeight: 800,
-              fontSize: "clamp(44px, 6vw, 68px)",
-              lineHeight: 1,
+              fontSize: "clamp(36px, 6vw, 68px)",
+              lineHeight: 1.05,
               letterSpacing: "-0.02em",
               color: INK,
               textAlign: "center",
-              margin: "20px 0 56px",
+              margin: "20px 0 50px",
             }}
           >
-            Lo que marca la <em style={{ fontWeight: 400, color: CORAL_DEEP }}>diferencia</em>
+            {t.detailsA}{" "}
+            <em style={{ fontWeight: 400, color: CORAL_DEEP }}>{t.detailsHl}</em>
           </h2>
 
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(3, 1fr)",
-              gap: 20,
+              gap: 18,
             }}
             className="li-icons-grid"
           >
-            <IconCard
-              icon={<ArchIcon />}
-              title="Arco mozárabe"
-              subtitle="Hero con cartel original dentro de un arco andalusí"
-            />
-            <IconCard
-              icon={<PatternIcon />}
-              title="Patrón continuo"
-              subtitle="Trama geométrica con background-attachment fixed"
-            />
-            <IconCard
-              icon={<BusIcon />}
-              title="Puntos de salida"
-              subtitle="4 ciudades con pin dorado y venue exacto"
-            />
-            <IconCard
-              icon={<WalletIcon />}
-              title="Pulsera -1€"
-              subtitle="Beneficio destacado con pulso coral animado"
-            />
-            <IconCard
-              icon={<CalendarIcon />}
-              title="8 postales"
-              subtitle="Timeline con slots de programación listos para DJs"
-            />
-            <IconCard
-              icon={<WhatsAppIcon />}
-              title="Reserva directa"
-              subtitle="Widget flotante que abre WhatsApp prellenado"
-            />
+            {t.icons.map((it) => (
+              <IconCard
+                key={it.title}
+                icon={renderIcon(it.key)}
+                title={it.title}
+                subtitle={it.subtitle}
+              />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ============ CTA FINAL ============ */}
       <section
         style={{
           position: "relative",
           background: TEAL_DEEP,
           color: CREAM,
-          padding: "140px 32px 140px",
+          padding: "100px 24px",
           textAlign: "center",
           overflow: "hidden",
           zIndex: 1,
@@ -819,30 +1033,30 @@ export default function LaInquietaDetailClient() {
             style={{
               fontFamily: FONT_DISPLAY,
               fontWeight: 800,
-              fontSize: "clamp(54px, 8vw, 120px)",
-              lineHeight: 0.9,
+              fontSize: "clamp(44px, 8vw, 120px)",
+              lineHeight: 0.95,
               letterSpacing: "-0.02em",
-              margin: "32px 0 24px",
+              margin: "30px 0 24px",
             }}
           >
-            <em style={{ fontWeight: 300 }}>Caseta</em> abierta
+            <em style={{ fontWeight: 300 }}>{t.ctaA}</em> {t.ctaB}
           </h2>
           <div
             style={{
               fontFamily: FONT_DISPLAY,
               fontStyle: "italic",
-              fontSize: 22,
+              fontSize: 20,
               color: GOLD_LIGHT,
               letterSpacing: "0.1em",
-              marginBottom: 40,
+              marginBottom: 32,
             }}
           >
-            Sol de Fiesta · Luna de Fiesta
+            {t.ctaTagline}
           </div>
           <div
             style={{
               display: "flex",
-              gap: 16,
+              gap: 14,
               justifyContent: "center",
               flexWrap: "wrap",
             }}
@@ -855,19 +1069,19 @@ export default function LaInquietaDetailClient() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 12,
-                padding: "18px 36px",
+                padding: "16px 28px",
                 background: CORAL,
                 color: CREAM,
                 textDecoration: "none",
                 fontFamily: FONT_BODY,
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: 600,
-                letterSpacing: "0.24em",
+                letterSpacing: "0.22em",
                 textTransform: "uppercase",
                 border: `1px solid ${CORAL_DEEP}`,
               }}
             >
-              Entrar a la caseta <span>→</span>
+              {t.enter} <span>→</span>
             </a>
             <Link
               href="/proyectos"
@@ -875,19 +1089,19 @@ export default function LaInquietaDetailClient() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 12,
-                padding: "18px 36px",
+                padding: "16px 28px",
                 background: "transparent",
                 color: CREAM,
                 textDecoration: "none",
                 fontFamily: FONT_BODY,
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: 600,
-                letterSpacing: "0.24em",
+                letterSpacing: "0.22em",
                 textTransform: "uppercase",
                 border: `1px solid ${GOLD}`,
               }}
             >
-              Otros proyectos
+              {t.others}
             </Link>
           </div>
         </div>
@@ -895,46 +1109,34 @@ export default function LaInquietaDetailClient() {
 
       <style jsx global>{`
         @keyframes fadeUp {
-          from {
-            opacity: 0;
-            transform: translateY(40px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(40px); }
+          to { opacity: 1; transform: translateY(0); }
         }
         @keyframes scroll {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(-50%);
-          }
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
         }
         @media (max-width: 900px) {
-          .li-meta-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-          .li-device-grid {
-            grid-template-columns: 1fr !important;
-            gap: 60px !important;
-          }
-          .li-brand-grid,
-          .li-preview-grid,
-          .li-icons-grid {
-            grid-template-columns: 1fr !important;
-          }
-          .li-stats-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
+          .li-meta-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .li-device-grid { grid-template-columns: 1fr !important; gap: 50px !important; }
+          .li-brand-grid, .li-preview-grid, .li-icons-grid { grid-template-columns: 1fr !important; }
+          .li-stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
       `}</style>
     </main>
   );
 }
 
-/* ============ AUX COMPONENTS ============ */
+function renderIcon(k: "arch" | "pattern" | "bus" | "wallet" | "calendar" | "whatsapp") {
+  switch (k) {
+    case "arch": return <ArchIcon />;
+    case "pattern": return <PatternIcon />;
+    case "bus": return <BusIcon />;
+    case "wallet": return <WalletIcon />;
+    case "calendar": return <CalendarIcon />;
+    case "whatsapp": return <WhatsAppIcon />;
+  }
+}
 
 function Dot() {
   return (
@@ -973,7 +1175,7 @@ function SectionKicker({
           fontFamily: FONT_BODY,
           fontSize: 12,
           fontWeight: 600,
-          letterSpacing: "0.4em",
+          letterSpacing: "0.35em",
           textTransform: "uppercase",
         }}
       >
@@ -1000,7 +1202,7 @@ function MetaBig({ label, value }: { label: string; value: string }) {
           fontFamily: FONT_BODY,
           fontSize: 11,
           fontWeight: 600,
-          letterSpacing: "0.32em",
+          letterSpacing: "0.3em",
           textTransform: "uppercase",
           color: TEAL,
           marginBottom: 6,
@@ -1012,7 +1214,7 @@ function MetaBig({ label, value }: { label: string; value: string }) {
       <div
         style={{
           fontFamily: FONT_DISPLAY,
-          fontSize: 22,
+          fontSize: 20,
           fontWeight: 700,
           letterSpacing: "-0.01em",
           color: INK,
@@ -1051,7 +1253,7 @@ function BrowserFrame({ children }: { children: React.ReactNode }) {
         <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#28c840" }} />
         <div
           style={{
-            marginLeft: 20,
+            marginLeft: 16,
             flex: 1,
             maxWidth: 360,
             background: "#1a1a1a",
@@ -1061,6 +1263,9 @@ function BrowserFrame({ children }: { children: React.ReactNode }) {
             fontFamily: "monospace",
             color: "#999",
             letterSpacing: "0.02em",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
           }}
         >
           felipecbbb.github.io/la-inquieta
@@ -1097,13 +1302,7 @@ function PhoneFrame({ children }: { children: React.ReactNode }) {
           zIndex: 2,
         }}
       />
-      <div
-        style={{
-          borderRadius: 26,
-          overflow: "hidden",
-          background: "#000",
-        }}
-      >
+      <div style={{ borderRadius: 26, overflow: "hidden", background: "#000" }}>
         {children}
       </div>
     </div>
@@ -1126,7 +1325,7 @@ function ColorSwatch({ color, name, hex }: { color: string; name: string; hex: s
           fontFamily: FONT_BODY,
           fontSize: 10,
           fontWeight: 600,
-          letterSpacing: "0.18em",
+          letterSpacing: "0.16em",
           textTransform: "uppercase",
           color: GOLD_LIGHT,
           marginTop: 6,
@@ -1154,14 +1353,14 @@ function BigStat({ num, label, color }: { num: string; label: string; color: str
       style={{
         background: CREAM_WARM,
         borderLeft: `3px solid ${color}`,
-        padding: "28px 24px",
+        padding: "26px 22px",
       }}
     >
       <div
         style={{
           fontFamily: FONT_DISPLAY,
           fontWeight: 900,
-          fontSize: 76,
+          fontSize: 64,
           lineHeight: 0.9,
           letterSpacing: "-0.04em",
           color,
@@ -1172,9 +1371,9 @@ function BigStat({ num, label, color }: { num: string; label: string; color: str
       <div
         style={{
           fontFamily: FONT_BODY,
-          fontSize: 13,
+          fontSize: 12,
           fontWeight: 500,
-          letterSpacing: "0.22em",
+          letterSpacing: "0.18em",
           textTransform: "uppercase",
           color: INK,
           marginTop: 8,
@@ -1192,11 +1391,13 @@ function SectionPreview({
   title,
   subtitle,
   image,
+  kicker,
 }: {
   number: string;
   title: string;
   subtitle: string;
   image: string;
+  kicker: string;
 }) {
   return (
     <div
@@ -1208,25 +1409,25 @@ function SectionPreview({
         transition: "transform 0.4s ease",
       }}
     >
-      <div style={{ padding: "24px 26px 20px" }}>
+      <div style={{ padding: "22px 22px 18px" }}>
         <div
           style={{
             fontFamily: FONT_DISPLAY,
             fontStyle: "italic",
-            fontSize: 14,
+            fontSize: 13,
             color: CORAL_DEEP,
-            letterSpacing: "0.2em",
+            letterSpacing: "0.18em",
             textTransform: "uppercase",
             marginBottom: 8,
           }}
         >
-          {number} · Bloque
+          {number} · {kicker}
         </div>
         <h3
           style={{
             fontFamily: FONT_DISPLAY,
             fontWeight: 800,
-            fontSize: 28,
+            fontSize: 26,
             letterSpacing: "-0.01em",
             color: INK,
             marginBottom: 10,
@@ -1237,7 +1438,7 @@ function SectionPreview({
         <p
           style={{
             fontFamily: FONT_BODY,
-            fontSize: 16,
+            fontSize: 15,
             lineHeight: 1.4,
             color: INK,
             opacity: 0.75,
@@ -1247,24 +1448,14 @@ function SectionPreview({
         </p>
       </div>
       <div style={{ padding: "0 12px 12px" }}>
-        <div
-          style={{
-            background: TEAL_DEEP,
-            padding: 4,
-            overflow: "hidden",
-          }}
-        >
+        <div style={{ background: TEAL_DEEP, padding: 4, overflow: "hidden" }}>
           <Image
             src={image}
             alt={title}
             width={1440}
             height={900}
             unoptimized
-            style={{
-              width: "100%",
-              height: "auto",
-              display: "block",
-            }}
+            style={{ width: "100%", height: "auto", display: "block" }}
           />
         </div>
       </div>
@@ -1285,11 +1476,11 @@ function IconCard({
     <div
       style={{
         background: CREAM_WARM,
-        padding: "32px 28px 28px",
+        padding: "28px 24px 24px",
         borderLeft: `3px solid ${CORAL}`,
         display: "flex",
         flexDirection: "column",
-        gap: 14,
+        gap: 12,
       }}
     >
       <div style={{ color: CORAL_DEEP }}>{icon}</div>
@@ -1297,7 +1488,7 @@ function IconCard({
         style={{
           fontFamily: FONT_DISPLAY,
           fontWeight: 700,
-          fontSize: 22,
+          fontSize: 20,
           letterSpacing: "-0.01em",
           color: INK,
           lineHeight: 1.1,
@@ -1308,7 +1499,7 @@ function IconCard({
       <p
         style={{
           fontFamily: FONT_BODY,
-          fontSize: 16,
+          fontSize: 15,
           lineHeight: 1.4,
           color: INK,
           opacity: 0.75,
@@ -1323,11 +1514,7 @@ function IconCard({
 function OrnamentalStar() {
   return (
     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style={{ margin: "0 auto" }}>
-      <path
-        d="M20 2L24 14L36 16L24 20L20 32L16 20L4 16L16 14Z"
-        fill={GOLD}
-        opacity="0.9"
-      />
+      <path d="M20 2L24 14L36 16L24 20L20 32L16 20L4 16L16 14Z" fill={GOLD} opacity="0.9" />
       <circle cx="20" cy="17" r="3" fill={CORAL} />
     </svg>
   );
@@ -1335,7 +1522,7 @@ function OrnamentalStar() {
 
 function ArchIcon() {
   return (
-    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg width="40" height="40" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M6 40V20 Q6 8 22 4 Q38 8 38 20 V40" />
       <path d="M10 40V22 Q10 12 22 9 Q34 12 34 22 V40" opacity="0.5" />
     </svg>
@@ -1343,7 +1530,7 @@ function ArchIcon() {
 }
 function PatternIcon() {
   return (
-    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="1.8">
+    <svg width="40" height="40" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="1.8">
       <path d="M22 4L30 14L22 22L14 14Z" />
       <path d="M22 22L30 32L22 40L14 32Z" />
       <path d="M4 22L14 14L14 30Z" opacity="0.5" />
@@ -1353,7 +1540,7 @@ function PatternIcon() {
 }
 function BusIcon() {
   return (
-    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <svg width="40" height="40" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
       <rect x="6" y="12" width="32" height="20" rx="3" />
       <path d="M6 24h32M10 12v20M22 12v12M34 12v20" />
       <circle cx="13" cy="34" r="3" fill="currentColor" />
@@ -1363,7 +1550,7 @@ function BusIcon() {
 }
 function WalletIcon() {
   return (
-    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="40" height="40" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <ellipse cx="22" cy="22" rx="14" ry="8" />
       <ellipse cx="22" cy="22" rx="18" ry="11" opacity="0.45" />
       <path d="M16 22l4 3 8-6" strokeWidth="2.4" />
@@ -1372,7 +1559,7 @@ function WalletIcon() {
 }
 function CalendarIcon() {
   return (
-    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <svg width="40" height="40" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
       <rect x="6" y="10" width="32" height="28" rx="2" />
       <path d="M6 18h32M14 6v8M30 6v8" />
       <rect x="12" y="24" width="6" height="6" fill="currentColor" opacity="0.3" />
@@ -1382,7 +1569,7 @@ function CalendarIcon() {
 }
 function WhatsAppIcon() {
   return (
-    <svg width="44" height="44" viewBox="0 0 44 44" fill="currentColor">
+    <svg width="40" height="40" viewBox="0 0 44 44" fill="currentColor">
       <path d="M32 24c-.5-.3-3-1.5-3.5-1.7s-.8-.3-1.2.3-1.3 1.7-1.6 2-.6.4-1.2.1c-1.8-.9-3.4-2.1-4.8-3.8-.4-.6 0-.6.4-1.1.3-.4.7-.9.9-1.2.1-.2.1-.5 0-.7s-1.2-2.8-1.6-3.9c-.4-.9-.8-.8-1.2-.8-.3 0-.7 0-1 0-.4 0-.9.1-1.4.6s-1.8 1.7-1.8 4.2 1.9 4.9 2.1 5.3c.3.3 3.7 5.8 9 7.9 3.3 1.3 5.5 1.2 7.1.5 1-.4 3-1.2 3.4-2.4.4-1.2.4-2.2.3-2.4-.1-.2-.5-.4-1-.6z" />
       <path d="M22 4C11.5 4 3 12.5 3 23c0 3.3.9 6.5 2.5 9.3L3 40l8-2.5c2.6 1.4 5.7 2.2 8.8 2.2 10.5 0 19-8.5 19-19S32.5 4 22 4zm0 34.5c-2.9 0-5.7-.8-8.2-2.2l-.6-.4-6 1.7 1.7-6-.4-.6c-1.6-2.5-2.5-5.4-2.5-8.5 0-8.8 7.2-16 16-16s16 7.2 16 16-7.2 16-16 16z" />
     </svg>

@@ -29,7 +29,7 @@ export async function generateMetadata({
   if (!project) return {};
   return {
     title: `${project.title} — Felipe Cámara`,
-    description: project.description,
+    description: project.description.es,
   };
 }
 
