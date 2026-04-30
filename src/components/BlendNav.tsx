@@ -71,16 +71,19 @@ export function LangSwitcher({ tone = "light" }: { tone?: "light" | "dark" }) {
 export default function BlendNav({ active = "none" }: { active?: Active }) {
   const { t } = useLang();
   const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const lastScroll = useRef(0);
 
   useEffect(() => {
     const onScroll = () => {
       const s = window.scrollY;
+      setScrolled(s > 30);
       if (s > 200 && s > lastScroll.current) setHidden(true);
       else setHidden(false);
       lastScroll.current = s;
     };
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -92,6 +95,11 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  // When the header is "solid" (scrolled or drawer open) we drop mix-blend-mode
+  // and switch to a dark surface with a backdrop blur. This is what fixes the
+  // illegible header on mobile when scrolling over colored sections.
+  const solid = scrolled || open;
 
   const linkStyle = (isActive: boolean) => ({
     color: "#fff",
@@ -108,15 +116,20 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
           top: 0,
           left: 0,
           right: 0,
-          padding: "20px clamp(16px, 5vw, 77px)",
+          padding: solid ? "14px clamp(16px, 5vw, 77px)" : "20px clamp(16px, 5vw, 77px)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           zIndex: 100,
-          mixBlendMode: open ? "normal" : "difference",
+          mixBlendMode: solid ? "normal" : "difference",
+          background: solid ? "rgba(10,10,10,0.78)" : "transparent",
+          backdropFilter: solid ? "saturate(140%) blur(14px)" : "none",
+          WebkitBackdropFilter: solid ? "saturate(140%) blur(14px)" : "none",
+          borderBottom: solid && !open ? "1px solid rgba(255,255,255,0.08)" : "1px solid transparent",
           color: "#fff",
           transform: hidden ? "translateY(-100%)" : "translateY(0)",
-          transition: "transform 0.5s cubic-bezier(.2,.8,.2,1)",
+          transition:
+            "transform 0.5s cubic-bezier(.2,.8,.2,1), background 0.25s ease, padding 0.25s ease, border-color 0.25s ease",
           pointerEvents: hidden ? "none" : "auto",
         }}
       >
