@@ -301,7 +301,7 @@ export default function LaInquietaDetailClient() {
         background: CREAM,
         color: INK,
         fontFamily: FONT_BODY,
-        minHeight: "100vh",
+        minHeight: "100dvh",
         position: "relative",
         overflow: "hidden",
       }}

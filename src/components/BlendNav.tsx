@@ -116,7 +116,12 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
           top: 0,
           left: 0,
           right: 0,
-          padding: solid ? "14px clamp(16px, 5vw, 77px)" : "20px clamp(16px, 5vw, 77px)",
+          paddingTop: solid
+            ? "calc(14px + env(safe-area-inset-top))"
+            : "calc(20px + env(safe-area-inset-top))",
+          paddingBottom: solid ? 14 : 20,
+          paddingLeft: "clamp(16px, 5vw, 77px)",
+          paddingRight: "clamp(16px, 5vw, 77px)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -189,7 +194,10 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
             background: "transparent",
             border: 0,
             color: "#fff",
-            padding: 8,
+            padding: 12,
+            margin: -8,
+            minWidth: 44,
+            minHeight: 44,
             cursor: "pointer",
           }}
         >
@@ -237,13 +245,17 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
           background: INK,
           color: BG,
           zIndex: 99,
-          padding: "100px 28px 40px",
+          paddingTop: "calc(96px + env(safe-area-inset-top))",
+          paddingRight: "max(28px, env(safe-area-inset-right))",
+          paddingBottom: "max(40px, env(safe-area-inset-bottom))",
+          paddingLeft: "max(28px, env(safe-area-inset-left))",
           display: "flex",
           flexDirection: "column",
           gap: 32,
           transform: open ? "translateY(0)" : "translateY(-100%)",
           transition: "transform 0.5s cubic-bezier(.2,.8,.2,1)",
           overflowY: "auto",
+          overscrollBehavior: "contain",
         }}
       >
         <nav

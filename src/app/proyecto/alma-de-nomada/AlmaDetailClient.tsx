@@ -528,7 +528,7 @@ export default function AlmaDetailClient() {
 
       <section
         ref={heroRef}
-        className="relative min-h-screen overflow-hidden flex items-end"
+        className="relative min-h-dvh overflow-hidden flex items-end"
       >
         <motion.div
           style={{ y: heroImageY }}

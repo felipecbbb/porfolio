@@ -21,7 +21,7 @@ export default function HomeClient({ projects }: { projects: ProjectDetail[] }) 
       style={{
         background: BG,
         color: INK,
-        minHeight: "100vh",
+        minHeight: "100dvh",
         fontFamily:
           "'Inter', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif",
         letterSpacing: "-0.005em",
@@ -55,7 +55,7 @@ function HeroXXL() {
     <section
       style={{
         padding: "clamp(120px, 18vh, 220px) clamp(20px, 5vw, 77px) 60px",
-        minHeight: "100vh",
+        minHeight: "100dvh",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",

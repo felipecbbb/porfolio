@@ -329,7 +329,7 @@ export default function GrupoAxialDetailClient() {
 
       <section
         ref={heroRef}
-        className="relative min-h-screen flex items-end overflow-hidden"
+        className="relative min-h-dvh flex items-end overflow-hidden"
       >
         <motion.div
           style={{ y: heroImageY }}

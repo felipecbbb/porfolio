@@ -520,7 +520,7 @@ export default function LorenaDetailClient() {
 
       <section
         ref={heroRef}
-        className="relative min-h-screen flex items-end overflow-hidden px-6 md:px-12 pt-28 md:pt-40 pb-16"
+        className="relative min-h-dvh flex items-end overflow-hidden px-6 md:px-12 pt-28 md:pt-40 pb-16"
       >
         <Blob className="absolute -top-20 -left-20 w-[420px] h-[420px] opacity-60" color={PEACH_SOFT} />
         <Blob className="absolute top-1/3 -right-32 w-[520px] h-[520px] opacity-40" color={BEIGE} />

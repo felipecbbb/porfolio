@@ -848,7 +848,7 @@ export default function WavepanelDetailClient() {
 
       <section
         ref={heroRef}
-        className="relative min-h-screen flex items-center overflow-hidden px-6 md:px-12 pt-28 md:pt-40 pb-16"
+        className="relative min-h-dvh flex items-center overflow-hidden px-6 md:px-12 pt-28 md:pt-40 pb-16"
       >
         <div
           aria-hidden

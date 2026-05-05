@@ -198,7 +198,7 @@ export default function ProjectDetailClient({
 
       <section
         ref={heroRef}
-        className="relative min-h-screen flex flex-col justify-end overflow-hidden"
+        className="relative min-h-dvh flex flex-col justify-end overflow-hidden"
       >
         <motion.div
           className="absolute inset-0"

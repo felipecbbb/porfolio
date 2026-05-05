@@ -99,7 +99,7 @@ export default function ProyectosClient({ projects }: Props) {
       style={{
         background: BG,
         color: INK,
-        minHeight: "100vh",
+        minHeight: "100dvh",
         fontFamily:
           "'Inter', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif",
         letterSpacing: "-0.005em",
