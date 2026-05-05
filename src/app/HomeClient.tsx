@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { L, type ProjectDetail } from "@/data/projects";
 import { useLang, type Lang } from "@/lib/i18n";
 import BlendNav, { LangSwitcher } from "@/components/BlendNav";
+import ProjectCover from "@/components/ProjectCover";
 
 const INK = "#0a0a0a";
 const BG = "#ffffff";
@@ -401,44 +401,7 @@ function FeaturedCard({ project }: { project: ProjectDetail }) {
           cursor: "none",
         }}
       >
-        {project.featuredImage ? (
-          <Image
-            src={project.featuredImage}
-            alt={project.title}
-            fill
-            sizes="(max-width: 860px) 100vw, 45vw"
-            style={{
-              objectFit: "cover",
-              transition: "transform 1s cubic-bezier(.2,.8,.2,1)",
-              transform: hover ? "scale(1.04)" : "scale(1)",
-            }}
-          />
-        ) : (
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: project.theme.bg,
-              color: project.theme.fg,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 40,
-            }}
-          >
-            <span
-              style={{
-                fontSize: "clamp(36px, 7vw, 100px)",
-                fontWeight: 500,
-                letterSpacing: "-0.04em",
-                lineHeight: 0.95,
-                textAlign: "center",
-              }}
-            >
-              {project.title}
-            </span>
-          </div>
-        )}
+        <ProjectCover project={project} hover={hover} />
         <div
           style={{
             position: "absolute",

@@ -2,11 +2,11 @@
 
 import { useState, useMemo, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { L, type ProjectDetail } from "@/data/projects";
 import { useLang } from "@/lib/i18n";
 import BlendNav from "@/components/BlendNav";
+import ProjectCover from "@/components/ProjectCover";
 
 const INK = "#0a0a0a";
 const BG = "#ffffff";
@@ -390,7 +390,6 @@ function FilterBar({
 
 function FeatureCard({ project, t }: { project: ProjectDetail; t: T }) {
   const { lang } = useLang();
-  const theme = project.theme;
   return (
     <Link
       href={`/proyecto/${project.slug}`}
@@ -406,10 +405,7 @@ function FeatureCard({ project, t }: { project: ProjectDetail; t: T }) {
         className="proy-feature"
       >
         <MagneticMedia
-          image={project.featuredImage}
-          themeBg={theme.bg}
-          themeFg={theme.fg}
-          title={project.title}
+          project={project}
           large
           ctaLabel={t.seeOne}
         />
@@ -476,19 +472,12 @@ function FeatureCard({ project, t }: { project: ProjectDetail; t: T }) {
 
 function ProjectCard({ project, t }: { project: ProjectDetail; t: T }) {
   const { lang } = useLang();
-  const theme = project.theme;
   return (
     <Link
       href={`/proyecto/${project.slug}`}
       style={{ textDecoration: "none", color: "inherit", display: "block" }}
     >
-      <MagneticMedia
-        image={project.featuredImage}
-        themeBg={theme.bg}
-        themeFg={theme.fg}
-        title={project.title}
-        ctaLabel={t.seeOne}
-      />
+      <MagneticMedia project={project} ctaLabel={t.seeOne} />
       <div
         style={{
           marginTop: 18,
@@ -548,17 +537,11 @@ function ProjectCard({ project, t }: { project: ProjectDetail; t: T }) {
 }
 
 function MagneticMedia({
-  image,
-  themeBg,
-  themeFg,
-  title,
+  project,
   large,
   ctaLabel,
 }: {
-  image?: string;
-  themeBg: string;
-  themeFg: string;
-  title: string;
+  project: ProjectDetail;
   large?: boolean;
   ctaLabel: string;
 }) {
@@ -586,29 +569,11 @@ function MagneticMedia({
         borderRadius: 20,
         overflow: "hidden",
         aspectRatio: large ? "16 / 11" : "4 / 3",
-        background: themeBg || "#f0f0f0",
+        background: project.theme.bg || "#f0f0f0",
         cursor: "none",
       }}
     >
-      {image ? (
-        <Image
-          src={image}
-          alt={title}
-          fill
-          sizes={
-            large
-              ? "(max-width: 860px) 100vw, 60vw"
-              : "(max-width: 860px) 100vw, 45vw"
-          }
-          style={{
-            objectFit: "cover",
-            transition: "transform 1s cubic-bezier(.2,.8,.2,1)",
-            transform: hover ? "scale(1.04)" : "scale(1)",
-          }}
-        />
-      ) : (
-        <TypographicPlaceholder title={title} bg={themeBg} fg={themeFg} />
-      )}
+      <ProjectCover project={project} large={large} hover={hover} />
 
       <div
         style={{
@@ -651,43 +616,6 @@ function MagneticMedia({
       >
         {ctaLabel}
       </div>
-    </div>
-  );
-}
-
-function TypographicPlaceholder({
-  title,
-  bg,
-  fg,
-}: {
-  title: string;
-  bg: string;
-  fg: string;
-}) {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        background: bg || "#111",
-        color: fg || "#fff",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 40,
-      }}
-    >
-      <span
-        style={{
-          fontSize: "clamp(36px, 7vw, 100px)",
-          fontWeight: 500,
-          letterSpacing: "-0.04em",
-          lineHeight: 0.95,
-          textAlign: "center",
-        }}
-      >
-        {title}
-      </span>
     </div>
   );
 }

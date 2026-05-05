@@ -124,7 +124,7 @@ const T: Record<Lang, {
     creatorLabel: "El creator detrás",
     creatorTitleA: "Oliver Czudny, ",
     creatorHl: "aka Oli.",
-    creatorShot: "shot by @oli_czudny · lombok",
+    creatorShot: "@oli_czudny · samba trips",
     creatorQuoteA:
       "«Porque lo mejor de recorrer el mundo no son los lugares, sino las personas con las que los compartes. Viajamos juntos, vivimos intensamente… y la vida se vuelve ",
     creatorQuoteHl: "samba",
@@ -212,7 +212,7 @@ const T: Record<Lang, {
     creatorLabel: "The creator behind it",
     creatorTitleA: "Oliver Czudny, ",
     creatorHl: "aka Oli.",
-    creatorShot: "shot by @oli_czudny · lombok",
+    creatorShot: "@oli_czudny · samba trips",
     creatorQuoteA:
       "\"The best part of traveling the world isn't the places — it's the people you share them with. We travel together, live intensely… and life turns into ",
     creatorQuoteHl: "samba",
@@ -300,7 +300,7 @@ const T: Record<Lang, {
     creatorLabel: "Der Creator dahinter",
     creatorTitleA: "Oliver Czudny, ",
     creatorHl: "aka Oli.",
-    creatorShot: "shot by @oli_czudny · lombok",
+    creatorShot: "@oli_czudny · samba trips",
     creatorQuoteA:
       "„Das Beste am Bereisen der Welt sind nicht die Orte, sondern die Menschen, mit denen du sie teilst. Wir reisen zusammen, leben intensiv… und das Leben wird zu ",
     creatorQuoteHl: "samba",
@@ -523,13 +523,13 @@ export default function SambaDetailClient() {
           className="absolute inset-0 -top-8 -bottom-8"
         >
           <Image
-            src="/projects/samba-trips/hero-video-poster.jpg"
+            src="/projects/samba-trips/hero-surf.jpg"
             alt=""
             fill
             priority
             quality={85}
             sizes="100vw"
-            className="object-cover"
+            className="object-cover object-center"
           />
           <div
             aria-hidden
@@ -831,149 +831,310 @@ export default function SambaDetailClient() {
       </section>
 
       <section
-        className="px-6 md:px-12 py-20 md:py-32 relative overflow-hidden"
+        className="relative overflow-hidden px-6 md:px-12 py-24 md:py-36"
         style={{ background: LAVENDER, color: NAVY }}
       >
+        {/* Decoración: dos soles, uno arriba derecha (suave) y otro detrás de la foto */}
         <motion.div
           aria-hidden
-          className="absolute -top-12 right-8 w-24 md:w-32 opacity-40"
+          className="absolute -top-16 right-4 w-40 md:w-56 opacity-25"
           animate={{ rotate: 360 }}
-          transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
         >
           <SambaSun color={NAVY} />
         </motion.div>
+        <motion.div
+          aria-hidden
+          className="absolute hidden md:block top-[58%] left-[42%] w-72 opacity-15"
+          animate={{ rotate: -360 }}
+          transition={{ duration: 200, repeat: Infinity, ease: "linear" }}
+        >
+          <SambaSun color={ORANGE} />
+        </motion.div>
 
-        <div className="relative max-w-5xl">
-          <p
-            className="text-[10px] uppercase tracking-[0.3em] mb-8"
-            style={{ color: NAVY, fontFamily: MONO, opacity: 0.6 }}
-          >
-            {t.creatorLabel}
-          </p>
-          <h2
-            className="text-4xl md:text-7xl leading-[0.95] mb-10"
-            style={{ fontFamily: DISPLAY, fontWeight: 700, color: NAVY, letterSpacing: "-0.03em" }}
-          >
-            {t.creatorTitleA}
-            <span style={{ color: ORANGE, fontStyle: "italic", fontWeight: 400 }}>
-              {t.creatorHl}
-            </span>
-          </h2>
-
-          <motion.div
-            initial={{ opacity: 0.01, scale: 1.02 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 1, ease: EASE }}
-            className="relative aspect-[16/7] w-full overflow-hidden mb-12"
-            style={{ background: NAVY }}
-          >
-            <Image
-              src="/projects/samba-trips/oli-mood.jpg"
-              alt="Travel landscape from Oli Czudny"
-              fill
-              sizes="(max-width: 768px) 100vw, 80vw"
-              className="object-cover"
-              quality={85}
-            />
-            <span
-              className="absolute bottom-4 left-4 text-[10px] uppercase tracking-[0.3em]"
-              style={{
-                color: "white",
-                fontFamily: MONO,
-                textShadow: "0 1px 10px rgba(0,0,0,0.6)",
-              }}
-            >
-              {t.creatorShot}
-            </span>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-8 md:gap-16 items-start">
+        <div className="relative max-w-6xl mx-auto">
+          {/* ── Header ── */}
+          <div className="flex items-baseline justify-between gap-6 mb-12 md:mb-20 flex-wrap">
             <div>
               <p
-                className="text-lg md:text-2xl leading-snug"
-                style={{ fontFamily: DISPLAY, fontWeight: 400, color: NAVY }}
+                className="text-[10px] uppercase tracking-[0.3em] mb-5 flex items-center gap-3"
+                style={{ color: NAVY, fontFamily: MONO, opacity: 0.6 }}
               >
-                {t.creatorQuoteA}
-                <span style={{ color: ORANGE, fontStyle: "italic" }}>{t.creatorQuoteHl}</span>
-                {t.creatorQuoteB}
+                <span
+                  className="inline-block w-6 h-px"
+                  style={{ background: NAVY, opacity: 0.4 }}
+                />
+                {t.creatorLabel}
               </p>
-              <p
+              <h2
+                className="text-4xl md:text-7xl leading-[0.95]"
+                style={{
+                  fontFamily: DISPLAY,
+                  fontWeight: 700,
+                  color: NAVY,
+                  letterSpacing: "-0.03em",
+                }}
+              >
+                {t.creatorTitleA}
+                <br />
+                <span style={{ color: ORANGE, fontStyle: "italic", fontWeight: 400 }}>
+                  {t.creatorHl}
+                </span>
+              </h2>
+            </div>
+            <span
+              className="hidden md:inline-block text-[10px] uppercase tracking-[0.3em] pt-2"
+              style={{ color: NAVY, fontFamily: MONO, opacity: 0.4 }}
+            >
+              · perfil ·
+            </span>
+          </div>
+
+          {/* ── Editorial spread ── */}
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.15fr] gap-10 md:gap-20 items-center">
+            {/* ── Polaroid card ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 40, rotate: -3 }}
+              whileInView={{ opacity: 1, y: 0, rotate: -2.5 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 1, ease: EASE }}
+              className="relative mx-auto md:mx-0 w-full max-w-sm"
+            >
+              {/* Tape decorativo */}
+              <span
+                aria-hidden
+                className="absolute -top-3 left-10 z-20 px-8 py-1.5"
+                style={{
+                  background: "rgba(255,255,255,0.55)",
+                  transform: "rotate(-4deg)",
+                  boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
+                }}
+              />
+              {/* Polaroid */}
+              <div
+                className="relative pt-3 px-3 pb-14"
+                style={{
+                  background: BG,
+                  boxShadow:
+                    "0 30px 60px -20px rgba(8,28,58,0.35), 0 8px 22px -10px rgba(8,28,58,0.18)",
+                }}
+              >
+                <div
+                  className="relative aspect-[3/4] overflow-hidden"
+                  style={{ background: NAVY }}
+                >
+                  <Image
+                    src="/projects/samba-trips/oli-pool.jpg"
+                    alt="Oli Czudny — Samba Trips"
+                    fill
+                    sizes="(max-width: 768px) 80vw, 420px"
+                    className="object-cover object-center"
+                    quality={85}
+                  />
+                </div>
+                {/* Caption tipo polaroid */}
+                <div className="absolute bottom-3 left-0 right-0 text-center px-4">
+                  <p
+                    className="text-[10px] uppercase tracking-[0.3em]"
+                    style={{
+                      color: NAVY,
+                      fontFamily: MONO,
+                      opacity: 0.65,
+                    }}
+                  >
+                    {t.creatorShot}
+                  </p>
+                </div>
+                {/* Sticker creator */}
+                <span
+                  className="absolute -bottom-4 -right-4 z-20 inline-flex items-center justify-center text-[9px] uppercase tracking-[0.25em] px-3 py-1.5"
+                  style={{
+                    background: ORANGE,
+                    color: BG,
+                    fontFamily: MONO,
+                    fontWeight: 700,
+                    transform: "rotate(6deg)",
+                    boxShadow: "0 6px 16px -4px rgba(254,108,1,0.45)",
+                  }}
+                >
+                  Creator
+                </span>
+              </div>
+            </motion.div>
+
+            {/* ── Texto, stats, CTA ── */}
+            <div>
+              {/* Quote pull-out */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.9, ease: EASE }}
+                className="relative"
+              >
+                <span
+                  aria-hidden
+                  className="absolute -top-10 -left-2 md:-top-14 md:-left-6 select-none pointer-events-none leading-none"
+                  style={{
+                    fontFamily: DISPLAY,
+                    fontWeight: 700,
+                    fontSize: "clamp(120px, 16vw, 200px)",
+                    color: ORANGE,
+                    opacity: 0.18,
+                  }}
+                >
+                  «
+                </span>
+                <p
+                  className="relative text-xl md:text-3xl leading-[1.25]"
+                  style={{
+                    fontFamily: DISPLAY,
+                    fontWeight: 500,
+                    color: NAVY,
+                    letterSpacing: "-0.015em",
+                  }}
+                >
+                  {t.creatorQuoteA}
+                  <span style={{ color: ORANGE, fontStyle: "italic" }}>
+                    {t.creatorQuoteHl}
+                  </span>
+                  {t.creatorQuoteB}
+                </p>
+              </motion.div>
+
+              {/* Bio */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2, duration: 0.7 }}
                 className="mt-8 max-w-lg text-base leading-relaxed"
                 style={{ color: MUTED, fontFamily: SANS }}
               >
                 {t.creatorBio}
-              </p>
-            </div>
+              </motion.p>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-5 border" style={{ borderColor: NAVY, background: BG }}>
-                <p
-                  className="text-3xl md:text-5xl leading-none"
-                  style={{
-                    fontFamily: DISPLAY,
-                    fontWeight: 800,
-                    color: ORANGE,
-                    letterSpacing: "-0.03em",
-                  }}
-                >
-                  96K
-                </p>
-                <p
-                  className="mt-2 text-[10px] uppercase tracking-[0.3em]"
-                  style={{ color: NAVY, fontFamily: MONO, opacity: 0.6 }}
-                >
-                  {t.followers}
-                </p>
-              </div>
-              <div className="p-5 border" style={{ borderColor: NAVY, background: BG }}>
-                <p
-                  className="text-3xl md:text-5xl leading-none"
-                  style={{
-                    fontFamily: DISPLAY,
-                    fontWeight: 800,
-                    color: NAVY,
-                    letterSpacing: "-0.03em",
-                  }}
-                >
-                  491
-                </p>
-                <p
-                  className="mt-2 text-[10px] uppercase tracking-[0.3em]"
-                  style={{ color: NAVY, fontFamily: MONO, opacity: 0.6 }}
-                >
-                  {t.posts}
-                </p>
-              </div>
-              <a
+              {/* Línea divisoria */}
+              <div
+                className="mt-10 h-px w-16"
+                style={{ background: NAVY, opacity: 0.25 }}
+              />
+
+              {/* Stats inline */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.7 }}
+                className="mt-8 flex items-baseline flex-wrap gap-x-10 gap-y-4"
+              >
+                <div>
+                  <p
+                    className="text-3xl md:text-5xl leading-none"
+                    style={{
+                      fontFamily: DISPLAY,
+                      fontWeight: 800,
+                      color: ORANGE,
+                      letterSpacing: "-0.03em",
+                    }}
+                  >
+                    96K
+                  </p>
+                  <p
+                    className="mt-2 text-[10px] uppercase tracking-[0.3em]"
+                    style={{ color: NAVY, fontFamily: MONO, opacity: 0.6 }}
+                  >
+                    {t.followers}
+                  </p>
+                </div>
+                <div
+                  aria-hidden
+                  className="hidden sm:inline-block w-px h-10"
+                  style={{ background: NAVY, opacity: 0.2 }}
+                />
+                <div>
+                  <p
+                    className="text-3xl md:text-5xl leading-none"
+                    style={{
+                      fontFamily: DISPLAY,
+                      fontWeight: 800,
+                      color: NAVY,
+                      letterSpacing: "-0.03em",
+                    }}
+                  >
+                    491
+                  </p>
+                  <p
+                    className="mt-2 text-[10px] uppercase tracking-[0.3em]"
+                    style={{ color: NAVY, fontFamily: MONO, opacity: 0.6 }}
+                  >
+                    {t.posts}
+                  </p>
+                </div>
+                <div
+                  aria-hidden
+                  className="hidden sm:inline-block w-px h-10"
+                  style={{ background: NAVY, opacity: 0.2 }}
+                />
+                <div>
+                  <p
+                    className="text-3xl md:text-5xl leading-none"
+                    style={{
+                      fontFamily: DISPLAY,
+                      fontWeight: 800,
+                      color: NAVY,
+                      letterSpacing: "-0.03em",
+                    }}
+                  >
+                    03
+                  </p>
+                  <p
+                    className="mt-2 text-[10px] uppercase tracking-[0.3em]"
+                    style={{ color: NAVY, fontFamily: MONO, opacity: 0.6 }}
+                  >
+                    Continentes
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* CTA Instagram */}
+              <motion.a
                 href="https://instagram.com/oli_czudny"
                 target="_blank"
                 rel="noopener noreferrer"
                 data-hover
-                className="col-span-2 p-5 flex items-center justify-between group"
-                style={{ background: NAVY, color: BG }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4, duration: 0.7 }}
+                className="group mt-10 inline-flex items-center gap-3 px-6 py-4 rounded-full transition-transform hover:-translate-y-0.5"
+                style={{
+                  background: NAVY,
+                  color: BG,
+                  fontFamily: MONO,
+                  boxShadow: "0 12px 30px -10px rgba(8,28,58,0.35)",
+                }}
               >
-                <div>
-                  <p
-                    className="text-[10px] uppercase tracking-[0.3em] opacity-60"
-                    style={{ fontFamily: MONO }}
-                  >
-                    Instagram
-                  </p>
-                  <p
-                    className="mt-1 text-xl"
-                    style={{ fontFamily: DISPLAY, fontWeight: 600 }}
-                  >
-                    @oli_czudny
-                  </p>
-                </div>
                 <span
-                  className="text-2xl group-hover:translate-x-1 transition-transform"
+                  className="w-2 h-2 rounded-full"
+                  style={{ background: ORANGE }}
+                />
+                <span className="text-[10px] uppercase tracking-[0.3em] opacity-60">
+                  Instagram
+                </span>
+                <span
+                  className="text-base"
+                  style={{ fontFamily: DISPLAY, fontWeight: 600 }}
+                >
+                  @oli_czudny
+                </span>
+                <span
+                  className="ml-1 text-lg transition-transform group-hover:translate-x-1"
                   style={{ color: ORANGE }}
                 >
                   ↗
                 </span>
-              </a>
+              </motion.a>
             </div>
           </div>
         </div>

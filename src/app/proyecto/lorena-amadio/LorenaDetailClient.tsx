@@ -3,6 +3,7 @@
 import { motion, useInView, useScroll, useTransform, type Variants } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useLang, type Lang } from "@/lib/i18n";
 import BlendNav from "@/components/BlendNav";
 
@@ -64,6 +65,25 @@ const T: Record<Lang, {
   visit: string;
   back: string;
   footerNote: string;
+  creator: {
+    label: string;
+    titleA: string;
+    titleHl: string;
+    badge: string;
+    photoCaption: string;
+    quote: string;
+    bio: string;
+    igLabel: string;
+    igHandle: string;
+    igFollowers: string;
+    ttLabel: string;
+    ttHandle: string;
+    ttFollowers: string;
+    sessionsLabel: string;
+    sessionsValue: string;
+    ctaIg: string;
+    ctaTt: string;
+  };
 }> = {
   es: {
     badge: "Web · Psicología",
@@ -143,6 +163,26 @@ const T: Record<Lang, {
     visit: "Visitar la web",
     back: "← Volver al portfolio",
     footerNote: "Lorena Amadio · Caso de estudio",
+    creator: {
+      label: "La psicóloga detrás",
+      titleA: "Lorena, ",
+      titleHl: "psicóloga + creadora.",
+      badge: "Influencer · Salud mental",
+      photoCaption: "@lorenaamadio · psicóloga sanitaria",
+      quote: "Hablar también es cuidarse.",
+      bio:
+        "Lorena Amadio es psicóloga sanitaria y una de las voces más visibles de la salud mental en español. Lleva la consulta al móvil de cientos de miles de personas con vídeos que hablan claro, sin jerga clínica. Atiende online por videollamada — terapia individual, sesiones express y terapia de pareja desde donde quieras.",
+      igLabel: "Instagram",
+      igHandle: "@psico.lorenaamadio",
+      igFollowers: "145K",
+      ttLabel: "TikTok",
+      ttHandle: "@lorenaamadioo",
+      ttFollowers: "180K",
+      sessionsLabel: "Sesiones",
+      sessionsValue: "1:1 online",
+      ctaIg: "Seguir en Instagram",
+      ctaTt: "Ver en TikTok",
+    },
   },
   en: {
     badge: "Web · Psychology",
@@ -222,6 +262,26 @@ const T: Record<Lang, {
     visit: "Visit the site",
     back: "← Back to portfolio",
     footerNote: "Lorena Amadio · Case study",
+    creator: {
+      label: "The psychologist behind it",
+      titleA: "Lorena, ",
+      titleHl: "psychologist + creator.",
+      badge: "Influencer · Mental health",
+      photoCaption: "@lorenaamadio · clinical psychologist",
+      quote: "Talking is also self-care.",
+      bio:
+        "Lorena Amadio is a clinical psychologist and one of the most visible mental-health voices in Spanish. She brings the therapy room to hundreds of thousands of phones with videos that speak plainly, no clinical jargon. She sees clients online — individual therapy, express sessions and couples therapy from wherever you are.",
+      igLabel: "Instagram",
+      igHandle: "@psico.lorenaamadio",
+      igFollowers: "145K",
+      ttLabel: "TikTok",
+      ttHandle: "@lorenaamadioo",
+      ttFollowers: "180K",
+      sessionsLabel: "Sessions",
+      sessionsValue: "1:1 online",
+      ctaIg: "Follow on Instagram",
+      ctaTt: "Watch on TikTok",
+    },
   },
   de: {
     badge: "Web · Psychologie",
@@ -301,6 +361,26 @@ const T: Record<Lang, {
     visit: "Website besuchen",
     back: "← Zurück zum Portfolio",
     footerNote: "Lorena Amadio · Fallstudie",
+    creator: {
+      label: "Die Psychologin dahinter",
+      titleA: "Lorena, ",
+      titleHl: "Psychologin + Creatorin.",
+      badge: "Influencerin · Mental Health",
+      photoCaption: "@lorenaamadio · klinische Psychologin",
+      quote: "Reden ist auch Selbstfürsorge.",
+      bio:
+        "Lorena Amadio ist klinische Psychologin und eine der sichtbarsten Stimmen der psychischen Gesundheit im Spanischen. Sie bringt die Praxis auf das Handy von hunderttausenden Menschen — mit Videos, die klar sprechen, ohne Fachjargon. Sie betreut Patienten online: Einzeltherapie, Express-Sitzungen und Paartherapie, von wo auch immer du bist.",
+      igLabel: "Instagram",
+      igHandle: "@psico.lorenaamadio",
+      igFollowers: "145K",
+      ttLabel: "TikTok",
+      ttHandle: "@lorenaamadioo",
+      ttFollowers: "180K",
+      sessionsLabel: "Sitzungen",
+      sessionsValue: "1:1 online",
+      ctaIg: "Auf Instagram folgen",
+      ctaTt: "Auf TikTok ansehen",
+    },
   },
 };
 
@@ -652,6 +732,341 @@ export default function LorenaDetailClient() {
         </div>
       </section>
 
+      {/* ─── CREATOR SECTION — Lorena ─── */}
+      <section
+        className="relative overflow-hidden px-6 md:px-12 py-24 md:py-36"
+        style={{ background: BG_WARM }}
+      >
+        {/* Decoración: blob peach + tulipán bg */}
+        <Blob
+          className="absolute -top-24 -right-24 w-[480px] h-[480px] opacity-40"
+          color={PEACH_SOFT}
+        />
+        <div
+          aria-hidden
+          className="absolute -bottom-12 right-[15%] w-44 md:w-56 opacity-15 hidden md:block"
+        >
+          <TulipOrnament stroke={FG} />
+        </div>
+
+        <div className="relative max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="flex items-baseline justify-between gap-6 mb-12 md:mb-20 flex-wrap">
+            <div>
+              <p
+                className="text-[10px] uppercase tracking-[0.3em] mb-5 flex items-center gap-3"
+                style={{ color: FAINT, fontFamily: SANS }}
+              >
+                <span
+                  className="inline-block w-6 h-px"
+                  style={{ background: FG, opacity: 0.3 }}
+                />
+                {t.creator.label}
+              </p>
+              <h2
+                className="text-4xl md:text-7xl leading-[1]"
+                style={{
+                  fontFamily: SERIF,
+                  fontWeight: 500,
+                  color: FG,
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                {t.creator.titleA}
+                <br />
+                <span style={{ color: PEACH, fontStyle: "italic" }}>
+                  {t.creator.titleHl}
+                </span>
+              </h2>
+            </div>
+            <span
+              className="hidden md:inline-block text-[10px] uppercase tracking-[0.3em] pt-2"
+              style={{ color: FAINT, fontFamily: SANS }}
+            >
+              · perfil ·
+            </span>
+          </div>
+
+          {/* Editorial spread */}
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.15fr] gap-10 md:gap-20 items-center">
+            {/* Polaroid card */}
+            <motion.div
+              initial={{ opacity: 0, y: 40, rotate: -3 }}
+              whileInView={{ opacity: 1, y: 0, rotate: -2 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 1, ease: EASE }}
+              className="relative mx-auto md:mx-0 w-full max-w-md"
+            >
+              {/* Tape */}
+              <span
+                aria-hidden
+                className="absolute -top-3 left-12 z-20 px-10 py-1.5"
+                style={{
+                  background: "rgba(255,255,255,0.6)",
+                  transform: "rotate(-4deg)",
+                  boxShadow: "0 4px 14px rgba(29,36,48,0.08)",
+                }}
+              />
+              {/* Polaroid frame */}
+              <div
+                className="relative pt-3 px-3 pb-14"
+                style={{
+                  background: BG,
+                  boxShadow:
+                    "0 30px 60px -20px rgba(29,36,48,0.25), 0 8px 22px -10px rgba(29,36,48,0.12)",
+                }}
+              >
+                <div
+                  className="relative aspect-[4/3] overflow-hidden"
+                  style={{ background: FG }}
+                >
+                  <Image
+                    src="/projects/lorena-amadio/lorena-closeup.jpg"
+                    alt="Lorena Amadio — psicóloga sanitaria"
+                    fill
+                    sizes="(max-width: 768px) 90vw, 480px"
+                    className="object-cover object-center"
+                    quality={85}
+                  />
+                </div>
+                {/* Caption */}
+                <div className="absolute bottom-3 left-0 right-0 text-center px-4">
+                  <p
+                    className="text-[10px] uppercase tracking-[0.3em]"
+                    style={{
+                      color: FG,
+                      fontFamily: SANS,
+                      opacity: 0.6,
+                    }}
+                  >
+                    {t.creator.photoCaption}
+                  </p>
+                </div>
+                {/* Sticker */}
+                <span
+                  className="absolute -bottom-4 -right-4 z-20 inline-flex items-center justify-center text-[9px] uppercase tracking-[0.22em] px-3 py-1.5"
+                  style={{
+                    background: PEACH,
+                    color: FG,
+                    fontFamily: SANS,
+                    fontWeight: 700,
+                    transform: "rotate(6deg)",
+                    boxShadow: "0 6px 16px -4px rgba(244,176,126,0.55)",
+                  }}
+                >
+                  {t.creator.badge}
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Texto + stats + CTA */}
+            <div>
+              {/* Quote pull-out */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.9, ease: EASE }}
+                className="relative"
+              >
+                <span
+                  aria-hidden
+                  className="absolute -top-10 -left-2 md:-top-14 md:-left-6 select-none pointer-events-none leading-none"
+                  style={{
+                    fontFamily: SERIF,
+                    fontWeight: 500,
+                    fontSize: "clamp(120px, 16vw, 200px)",
+                    color: PEACH,
+                    opacity: 0.22,
+                  }}
+                >
+                  «
+                </span>
+                <p
+                  className="relative text-2xl md:text-4xl leading-[1.2] italic"
+                  style={{
+                    fontFamily: SERIF,
+                    fontWeight: 500,
+                    color: FG,
+                    letterSpacing: "-0.015em",
+                  }}
+                >
+                  {t.creator.quote}
+                </p>
+              </motion.div>
+
+              {/* Bio */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2, duration: 0.7 }}
+                className="mt-8 max-w-lg text-base leading-relaxed"
+                style={{ color: MUTED, fontFamily: SANS }}
+              >
+                {t.creator.bio}
+              </motion.p>
+
+              {/* Línea divisoria */}
+              <div
+                className="mt-10 h-px w-16"
+                style={{ background: FG, opacity: 0.2 }}
+              />
+
+              {/* Stats inline */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.7 }}
+                className="mt-8 flex items-baseline flex-wrap gap-x-10 gap-y-5"
+              >
+                <div>
+                  <p
+                    className="text-3xl md:text-5xl leading-none"
+                    style={{
+                      fontFamily: SERIF,
+                      fontWeight: 600,
+                      color: PEACH,
+                      letterSpacing: "-0.025em",
+                    }}
+                  >
+                    {t.creator.ttFollowers}
+                  </p>
+                  <p
+                    className="mt-2 text-[10px] uppercase tracking-[0.3em]"
+                    style={{ color: FAINT, fontFamily: SANS }}
+                  >
+                    {t.creator.ttLabel} · {t.creator.ttHandle}
+                  </p>
+                </div>
+                <div
+                  aria-hidden
+                  className="hidden sm:inline-block w-px h-10"
+                  style={{ background: FG, opacity: 0.18 }}
+                />
+                <div>
+                  <p
+                    className="text-3xl md:text-5xl leading-none"
+                    style={{
+                      fontFamily: SERIF,
+                      fontWeight: 600,
+                      color: FG,
+                      letterSpacing: "-0.025em",
+                    }}
+                  >
+                    {t.creator.igFollowers}
+                  </p>
+                  <p
+                    className="mt-2 text-[10px] uppercase tracking-[0.3em]"
+                    style={{ color: FAINT, fontFamily: SANS }}
+                  >
+                    {t.creator.igLabel} · {t.creator.igHandle}
+                  </p>
+                </div>
+                <div
+                  aria-hidden
+                  className="hidden sm:inline-block w-px h-10"
+                  style={{ background: FG, opacity: 0.18 }}
+                />
+                <div>
+                  <p
+                    className="text-3xl md:text-5xl leading-none"
+                    style={{
+                      fontFamily: SERIF,
+                      fontWeight: 600,
+                      color: FG,
+                      letterSpacing: "-0.025em",
+                    }}
+                  >
+                    {t.creator.sessionsValue}
+                  </p>
+                  <p
+                    className="mt-2 text-[10px] uppercase tracking-[0.3em]"
+                    style={{ color: FAINT, fontFamily: SANS }}
+                  >
+                    {t.creator.sessionsLabel}
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* CTAs */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4, duration: 0.7 }}
+                className="mt-10 flex flex-wrap gap-3"
+              >
+                <a
+                  href="https://www.instagram.com/psico.lorenaamadio/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-hover
+                  className="group inline-flex items-center gap-3 px-5 py-3.5 rounded-full transition-transform hover:-translate-y-0.5"
+                  style={{
+                    background: FG,
+                    color: BG,
+                    fontFamily: SANS,
+                    boxShadow: "0 12px 30px -10px rgba(29,36,48,0.3)",
+                  }}
+                >
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{ background: PEACH }}
+                  />
+                  <span className="text-[10px] uppercase tracking-[0.3em] opacity-60">
+                    {t.creator.igLabel}
+                  </span>
+                  <span className="text-sm font-semibold">
+                    {t.creator.igHandle}
+                  </span>
+                  <span
+                    className="text-base transition-transform group-hover:translate-x-1"
+                    style={{ color: PEACH }}
+                  >
+                    ↗
+                  </span>
+                </a>
+                <a
+                  href="https://www.tiktok.com/@lorenaamadioo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-hover
+                  className="group inline-flex items-center gap-3 px-5 py-3.5 rounded-full transition-transform hover:-translate-y-0.5"
+                  style={{
+                    background: BG,
+                    color: FG,
+                    border: `1px solid ${LINE}`,
+                    fontFamily: SANS,
+                  }}
+                >
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{ background: PEACH }}
+                  />
+                  <span
+                    className="text-[10px] uppercase tracking-[0.3em]"
+                    style={{ color: FAINT }}
+                  >
+                    {t.creator.ttLabel}
+                  </span>
+                  <span className="text-sm font-semibold">
+                    {t.creator.ttHandle}
+                  </span>
+                  <span
+                    className="text-base transition-transform group-hover:translate-x-1"
+                    style={{ color: PEACH }}
+                  >
+                    ↗
+                  </span>
+                </a>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="px-6 md:px-12 py-20 md:py-32 border-t" style={{ borderColor: LINE }}>
         <div className="grid grid-cols-1 md:grid-cols-[1fr_1.3fr] gap-10 md:gap-20">
           <motion.div
@@ -831,6 +1246,139 @@ export default function LorenaDetailClient() {
           {t.services.map((s, i) => (
             <ServiceCard key={s.title} index={i} {...s} />
           ))}
+        </div>
+      </section>
+
+      {/* ─── EDITORIAL SPREAD — portrait + pull quote ─── */}
+      <section
+        className="relative overflow-hidden px-6 md:px-12 py-20 md:py-32"
+        style={{ background: BG_WARM }}
+      >
+        {/* Decoración sutil */}
+        <Blob
+          className="absolute -bottom-32 -left-20 w-[480px] h-[480px] opacity-30"
+          color={PEACH_SOFT}
+        />
+        <div
+          aria-hidden
+          className="absolute -top-12 right-[12%] w-32 md:w-44 opacity-15 hidden md:block"
+        >
+          <TulipOrnament stroke={FG} />
+        </div>
+
+        <div className="relative max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-10 md:gap-20 items-center">
+          {/* Foto vertical respetando su composición */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 1, ease: EASE }}
+            className="relative w-full max-w-sm md:max-w-md mx-auto md:mx-0"
+          >
+            <div
+              className="relative aspect-[3/4] overflow-hidden"
+              style={{
+                background: FG,
+                boxShadow:
+                  "0 30px 60px -20px rgba(29,36,48,0.25), 0 8px 22px -10px rgba(29,36,48,0.12)",
+              }}
+            >
+              <Image
+                src="/projects/lorena-amadio/lorena-outdoor.jpg"
+                alt="Lorena Amadio"
+                fill
+                sizes="(max-width: 768px) 90vw, 480px"
+                className="object-cover object-center"
+                quality={85}
+              />
+            </div>
+            <p
+              className="mt-4 text-[10px] uppercase tracking-[0.3em]"
+              style={{ color: FAINT, fontFamily: SANS }}
+            >
+              · @psico.lorenaamadio · a tomar el aire ·
+            </p>
+          </motion.div>
+
+          {/* Texto: kicker + pull quote + caption */}
+          <div>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="text-[10px] uppercase tracking-[0.3em] mb-6 flex items-center gap-3"
+              style={{ color: FAINT, fontFamily: SANS }}
+            >
+              <span
+                aria-hidden
+                className="inline-block w-6 h-px"
+                style={{ background: FG, opacity: 0.3 }}
+              />
+              pausar también es trabajar
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.9, ease: EASE }}
+              className="relative"
+            >
+              <span
+                aria-hidden
+                className="absolute -top-12 -left-2 md:-top-16 md:-left-6 select-none pointer-events-none leading-none"
+                style={{
+                  fontFamily: SERIF,
+                  fontWeight: 500,
+                  fontSize: "clamp(140px, 18vw, 220px)",
+                  color: PEACH,
+                  opacity: 0.22,
+                }}
+              >
+                «
+              </span>
+              <p
+                className="relative text-[clamp(2.2rem,5.5vw,4.5rem)] leading-[1.05] italic"
+                style={{
+                  fontFamily: SERIF,
+                  fontWeight: 500,
+                  color: FG,
+                  letterSpacing: "-0.015em",
+                }}
+              >
+                respirar.
+                <br />
+                hablar.
+                <br />
+                <span style={{ color: PEACH }}>volver.</span>
+              </p>
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.7 }}
+              className="mt-8 max-w-md text-base leading-relaxed"
+              style={{ color: MUTED, fontFamily: SANS }}
+            >
+              Cuando hablamos sin armadura, el cuerpo recuerda cómo descansar.
+              La consulta no termina al cerrar el portátil — se hace en el
+              cuerpo, en la calle, en cómo te sientas tú a respirar.
+            </motion.p>
+
+            <div
+              className="mt-10 h-px w-16"
+              style={{ background: FG, opacity: 0.2 }}
+            />
+            <p
+              className="mt-4 text-[10px] uppercase tracking-[0.3em]"
+              style={{ color: FAINT, fontFamily: SANS }}
+            >
+              fotografía editorial · psicolorenaamadio.com
+            </p>
+          </div>
         </div>
       </section>
 

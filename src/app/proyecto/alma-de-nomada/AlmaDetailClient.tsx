@@ -19,9 +19,11 @@ const MUTED = "rgba(24,64,56,0.55)";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const DISPLAY = "var(--font-changa), system-ui, sans-serif";
-const SANS = "var(--font-poppins), system-ui, sans-serif";
-const MONO = "var(--font-mono), monospace";
+// Editorial: serif display + Inter sans · sin pesos extra-bold ·
+// el peso lo da el ritmo, no la tipo
+const DISPLAY = "'Cormorant Garamond', 'Cormorant', Georgia, 'Times New Roman', serif";
+const SANS = "'Inter', 'Helvetica Neue', system-ui, sans-serif";
+const MONO = "'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace";
 
 interface Destination {
   country: string;
@@ -50,6 +52,8 @@ const T: Record<Lang, {
   central3a: string;
   central3b: string;
   centralP: string;
+  freedom: string;
+  freedomCaption: string;
   destLabel: string;
   destA: string;
   destHl: string;
@@ -114,6 +118,8 @@ const T: Record<Lang, {
     central3b: "expandirse.",
     centralP:
       "Toda la web respira esta idea: no escapar de lo que tienes, sino expandirlo. Cambio, no huida.",
+    freedom: "La libertad",
+    freedomCaption: "drone · alma de nómada",
     destLabel: "El atlas de destinos",
     destA: "Ocho sitios. ",
     destHl: "Ocho formas de empezar.",
@@ -207,6 +213,8 @@ const T: Record<Lang, {
     central3b: "expanding.",
     centralP:
       "The whole site breathes this idea: don't escape what you have, expand it. Change, not flight.",
+    freedom: "Freedom",
+    freedomCaption: "drone · alma de nómada",
     destLabel: "The atlas of destinations",
     destA: "Eight places. ",
     destHl: "Eight ways to start.",
@@ -300,6 +308,8 @@ const T: Record<Lang, {
     central3b: "Expansion.",
     centralP:
       "Die ganze Site atmet diese Idee: nicht fliehen, sondern erweitern. Wandel, keine Flucht.",
+    freedom: "Freiheit",
+    freedomCaption: "drone · alma de nómada",
     destLabel: "Der Atlas der Reiseziele",
     destA: "Acht Orte. ",
     destHl: "Acht Wege anzufangen.",
@@ -524,6 +534,21 @@ export default function AlmaDetailClient() {
 
   return (
     <div style={{ background: BG, color: FOREST, fontFamily: SANS }}>
+      {/* Carga Cormorant Garamond para esta página */}
+      <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+      />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin=""
+      />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      />
+
       <BlendNav active="projects" />
 
       <section
@@ -534,15 +559,18 @@ export default function AlmaDetailClient() {
           style={{ y: heroImageY }}
           className="absolute inset-0 -top-8 -bottom-8"
         >
-          <Image
-            src="/projects/alma-de-nomada/hero-photo.jpg"
-            alt=""
-            fill
-            priority
-            quality={85}
-            sizes="100vw"
-            className="object-cover"
-          />
+          {/* Vídeo de fondo · libertad ·  loop sin sonido */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            poster="/projects/alma-de-nomada/freedom-poster.jpg"
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="/projects/alma-de-nomada/freedom.mp4" type="video/mp4" />
+          </video>
           <div
             aria-hidden
             className="absolute inset-0"
@@ -583,7 +611,7 @@ export default function AlmaDetailClient() {
                 className="text-[clamp(2.75rem,10vw,9rem)] leading-[0.92] text-white"
                 style={{
                   fontFamily: DISPLAY,
-                  fontWeight: 700,
+                  fontWeight: 500,
                   letterSpacing: "-0.03em",
                   textShadow: "0 4px 30px rgba(0,0,0,0.35)",
                 }}
@@ -681,7 +709,7 @@ export default function AlmaDetailClient() {
                 className="text-3xl md:text-5xl leading-none"
                 style={{
                   fontFamily: DISPLAY,
-                  fontWeight: 700,
+                  fontWeight: 500,
                   color: i === 0 ? TERRACOTA : BG,
                   letterSpacing: "-0.02em",
                 }}
@@ -709,7 +737,7 @@ export default function AlmaDetailClient() {
           </p>
           <h2
             className="text-3xl md:text-6xl leading-[1.05] mb-10"
-            style={{ fontFamily: DISPLAY, fontWeight: 700, color: FOREST, letterSpacing: "-0.025em" }}
+            style={{ fontFamily: DISPLAY, fontWeight: 500, color: FOREST, letterSpacing: "-0.025em" }}
           >
             {t.projA}
             <span style={{ color: TERRACOTA, fontStyle: "italic", fontWeight: 600 }}>
@@ -788,7 +816,7 @@ export default function AlmaDetailClient() {
           </p>
           <h2
             className="text-3xl md:text-6xl leading-[1.05]"
-            style={{ fontFamily: DISPLAY, fontWeight: 700, color: FOREST, letterSpacing: "-0.025em" }}
+            style={{ fontFamily: DISPLAY, fontWeight: 500, color: FOREST, letterSpacing: "-0.025em" }}
           >
             {t.destA}
             <span style={{ color: TERRACOTA, fontStyle: "italic", fontWeight: 600 }}>
@@ -898,7 +926,7 @@ export default function AlmaDetailClient() {
             </p>
             <h2
               className="text-3xl md:text-6xl leading-[1.05]"
-              style={{ fontFamily: DISPLAY, fontWeight: 700, color: FOREST, letterSpacing: "-0.025em" }}
+              style={{ fontFamily: DISPLAY, fontWeight: 500, color: FOREST, letterSpacing: "-0.025em" }}
             >
               {t.ausA}
               <span style={{ color: TERRACOTA, fontStyle: "italic", fontWeight: 600 }}>
@@ -947,7 +975,7 @@ export default function AlmaDetailClient() {
             </p>
             <h2
               className="text-3xl md:text-6xl leading-[1.05]"
-              style={{ fontFamily: DISPLAY, fontWeight: 700, letterSpacing: "-0.025em" }}
+              style={{ fontFamily: DISPLAY, fontWeight: 500, letterSpacing: "-0.025em" }}
             >
               {t.creatorA}
               <span style={{ color: TERRACOTA, fontStyle: "italic" }}>{t.creatorHl}</span>
@@ -971,7 +999,7 @@ export default function AlmaDetailClient() {
                   className="text-3xl md:text-4xl"
                   style={{
                     fontFamily: DISPLAY,
-                    fontWeight: 700,
+                    fontWeight: 500,
                     color: TERRACOTA,
                     letterSpacing: "-0.02em",
                   }}
@@ -990,7 +1018,7 @@ export default function AlmaDetailClient() {
                   className="text-2xl md:text-3xl"
                   style={{
                     fontFamily: DISPLAY,
-                    fontWeight: 700,
+                    fontWeight: 500,
                     color: BG,
                     letterSpacing: "-0.02em",
                   }}
@@ -1099,7 +1127,7 @@ export default function AlmaDetailClient() {
           </p>
           <h3
             className="text-2xl md:text-5xl leading-[1.05]"
-            style={{ fontFamily: DISPLAY, fontWeight: 700, color: FOREST, letterSpacing: "-0.02em" }}
+            style={{ fontFamily: DISPLAY, fontWeight: 500, color: FOREST, letterSpacing: "-0.02em" }}
           >
             {t.pillarsTitleA}
             <span style={{ color: TERRACOTA, fontStyle: "italic", fontWeight: 600 }}>
@@ -1171,7 +1199,7 @@ export default function AlmaDetailClient() {
             </p>
             <h3
               className="text-2xl md:text-5xl leading-[1.05]"
-              style={{ fontFamily: DISPLAY, fontWeight: 700, color: FOREST, letterSpacing: "-0.02em" }}
+              style={{ fontFamily: DISPLAY, fontWeight: 500, color: FOREST, letterSpacing: "-0.02em" }}
             >
               {t.ownA}
               <span style={{ color: TERRACOTA, fontStyle: "italic", fontWeight: 600 }}>
@@ -1244,7 +1272,7 @@ export default function AlmaDetailClient() {
             className="text-4xl md:text-8xl leading-[0.95] md:leading-[0.9]"
             style={{
               fontFamily: DISPLAY,
-              fontWeight: 700,
+              fontWeight: 500,
               color: BG,
               letterSpacing: "-0.035em",
             }}

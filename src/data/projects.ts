@@ -624,6 +624,7 @@ export const projects: ProjectDetail[] = [
     },
     tags: ["Next.js", "SEO", "Reservas", "Responsive"],
     year: "2025",
+    featuredImage: "/projects/lorena-amadio/lorena-portrait.jpg",
     client: "Lorena Amadio · Psicóloga",
     liveUrl: "https://psicolorenaamadio.com",
     longDescription: {
@@ -881,7 +882,7 @@ export const projects: ProjectDetail[] = [
     },
     tags: ["Next.js", "Stripe", "Reservas", "CMS", "SEO"],
     year: "2025",
-    featuredImage: "/projects/samba-trips/hero-video-poster.jpg",
+    featuredImage: "/projects/samba-trips/hero-surf.jpg",
     client: "Oli Czudny · @oli_czudny",
     liveUrl: "https://sambatrips.com",
     longDescription: {
@@ -1010,7 +1011,7 @@ export const projects: ProjectDetail[] = [
     },
     tags: ["Next.js", "SEO", "Lead gen", "CMS"],
     year: "2025",
-    featuredImage: "/projects/alma-de-nomada/hero-photo.jpg",
+    featuredImage: "/projects/alma-de-nomada/cover-freedom.jpg",
     client: "Ainhoa García · @ainhhgarcia",
     liveUrl: "https://almadenomada.com",
     longDescription: {
