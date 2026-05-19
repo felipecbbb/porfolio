@@ -91,8 +91,10 @@ export default function ProyectosClient({ projects }: Props) {
     [filter, projects]
   );
 
-  const featured = filtered[0];
-  const rest = filtered.slice(1);
+  const FEATURED_SLUG = "lorena-amadio";
+  const featured =
+    filtered.find((p) => p.slug === FEATURED_SLUG) ?? filtered[0];
+  const rest = filtered.filter((p) => p.slug !== featured?.slug);
 
   return (
     <main

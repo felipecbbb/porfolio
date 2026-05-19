@@ -7,6 +7,7 @@ import { L, type ProjectDetail } from "@/data/projects";
 import { useLang, type Lang } from "@/lib/i18n";
 import BlendNav, { LangSwitcher } from "@/components/BlendNav";
 import ProjectCover from "@/components/ProjectCover";
+import ContactForm from "@/components/ContactForm";
 
 const INK = "#0a0a0a";
 const BG = "#ffffff";
@@ -1061,54 +1062,67 @@ function ContactCTA() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: "1.05fr 1fr",
             gap: "clamp(28px, 5vw, 80px)",
-            maxWidth: 1200,
+            maxWidth: 1280,
+            alignItems: "start",
           }}
           className="home-contact-grid"
         >
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-15%" }}
+            transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+          >
+            <ContactForm />
+          </motion.div>
+
           <div>
-            <a
-              href="mailto:felipe@kujme.es"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 14,
-                padding: "20px 28px",
-                borderRadius: 999,
-                background: CORAL,
-                color: BG,
-                textDecoration: "none",
-                fontSize: 16,
-                fontWeight: 500,
-                letterSpacing: "0.02em",
-                transition: "transform 0.3s ease, background 0.3s ease",
-                marginBottom: 24,
-                maxWidth: "100%",
-                wordBreak: "break-all",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-3px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              felipe@kujme.es <span style={{ fontSize: 20 }}>→</span>
-            </a>
             <p
               style={{
                 fontSize: 16,
-                lineHeight: 1.5,
-                color: "rgba(255,255,255,0.6)",
-                margin: 0,
+                lineHeight: 1.55,
+                color: "rgba(255,255,255,0.65)",
+                margin: "0 0 28px",
                 maxWidth: 440,
               }}
             >
               {t.contact.body}
             </p>
-          </div>
-          <div>
+            <a
+              href="mailto:felipegestion03@gmail.com"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 14,
+                padding: "16px 22px",
+                borderRadius: 999,
+                background: "transparent",
+                color: BG,
+                textDecoration: "none",
+                fontSize: 15,
+                fontWeight: 500,
+                letterSpacing: "0.01em",
+                border: "1.5px solid rgba(255,255,255,0.2)",
+                transition: "transform 0.3s ease, background 0.3s ease, color 0.3s ease",
+                marginBottom: 36,
+                maxWidth: "100%",
+                wordBreak: "break-all",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.background = CORAL;
+                e.currentTarget.style.color = INK;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.color = BG;
+              }}
+            >
+              felipegestion03@gmail.com <span style={{ fontSize: 18 }}>→</span>
+            </a>
             <div
               style={{
                 fontSize: 12,
@@ -1116,23 +1130,22 @@ function ContactCTA() {
                 letterSpacing: "0.25em",
                 textTransform: "uppercase",
                 color: MUTED,
-                marginBottom: 20,
+                marginBottom: 16,
               }}
             >
               {t.contact.follow}
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               <SocialLink
                 label="Instagram"
-                handle="@felippe.lab"
-                href="https://instagram.com/felippe.lab"
+                handle="@felippe.camara"
+                href="https://instagram.com/felippe.camara"
               />
               <SocialLink
                 label="TikTok"
-                handle="@felippe.lab"
-                href="https://tiktok.com/@felippe.lab"
+                handle="@felippe.camara"
+                href="https://tiktok.com/@felippe.camara"
               />
-              <SocialLink label="Email" handle="felipe@kujme.es" href="mailto:felipe@kujme.es" />
             </div>
           </div>
         </div>

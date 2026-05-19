@@ -73,6 +73,29 @@ type Dict = {
     body: string;
     follow: string;
   };
+  form: {
+    intro: string;
+    next: string;
+    back: string;
+    send: string;
+    sending: string;
+    enterHint: string;
+    pickHint: string;
+    step: (n: number, total: number) => string;
+    steps: {
+      name: { q: string; placeholder: string; err: string };
+      email: { q: string; placeholder: string; err: string };
+      project: { q: string; options: string[] };
+      budget: { q: string; sub: string; options: string[] };
+      message: { q: string; placeholder: string; optional: string };
+    };
+    success: {
+      title: string;
+      body: string;
+      again: string;
+      open: string;
+    };
+  };
   footer: {
     rights: string;
     seeProjects: string;
@@ -168,9 +191,9 @@ const ES: Dict = {
     body2Post:
       ", un SaaS de email marketing con IA. Gestiono marcas en redes sociales. Y estoy construyendo en público todo lo que hago.",
     stats: [
-      { num: "15+", label: "Proyectos entregados" },
-      { num: "10+", label: "Clientes" },
-      { num: "102", label: "Tests escritos" },
+      { num: "150+", label: "Proyectos entregados" },
+      { num: "100+", label: "Clientes" },
+      { num: "5", label: "Años en esto" },
       { num: "∞", label: "Cafés" },
     ],
     stack: "Stack principal",
@@ -184,8 +207,8 @@ const ES: Dict = {
       {
         quote:
           "Felipe no solo ejecuta, entiende lo que necesitas antes de que tú mismo lo sepas. El mejor profesional con el que he trabajado.",
-        name: "Cliente Savanna",
-        role: "Marca de lifestyle",
+        name: "Víctor Bueno Ureña",
+        role: "Fundador · Waya Surf · Gran Canaria",
       },
       {
         quote:
@@ -203,6 +226,61 @@ const ES: Dict = {
     body:
       "Respuesta en menos de 24h. Cuéntame qué necesitas y te digo si soy la persona indicada — o te mando a alguien que sí.",
     follow: "Sígueme",
+  },
+  form: {
+    intro: "Cuéntamelo en 1 minuto",
+    next: "Siguiente",
+    back: "Atrás",
+    send: "Enviar",
+    sending: "Abriendo email…",
+    enterHint: "pulsa Enter ↵",
+    pickHint: "elige una opción",
+    step: (n, total) => `Paso ${n} de ${total}`,
+    steps: {
+      name: {
+        q: "¿Cómo te llamas?",
+        placeholder: "Tu nombre",
+        err: "Necesito al menos 2 letras",
+      },
+      email: {
+        q: "¿Tu email?",
+        placeholder: "tu@email.com",
+        err: "Ese email no me cuadra",
+      },
+      project: {
+        q: "¿De qué va el proyecto?",
+        options: [
+          "Desarrollo web",
+          "Software a medida (SaaS, app)",
+          "Redes sociales",
+          "Consultoría",
+          "Otro",
+        ],
+      },
+      budget: {
+        q: "¿Presupuesto aproximado?",
+        sub: "Sé honesto, así te digo si puedo ayudarte de verdad.",
+        options: [
+          "Menos de 1.000€",
+          "1.000€ – 3.000€",
+          "3.000€ – 6.000€",
+          "6.000€ – 12.000€",
+          "Más de 12.000€",
+          "Aún no lo sé",
+        ],
+      },
+      message: {
+        q: "Cuéntame más",
+        placeholder: "Plazos, objetivos, contexto… lo que se te ocurra.",
+        optional: "opcional",
+      },
+    },
+    success: {
+      title: "Listo. Mensaje preparado.",
+      body: "He abierto tu cliente de email con todo rellenado. Solo te falta darle a enviar.",
+      again: "Enviar otro",
+      open: "Abrir email otra vez",
+    },
   },
   footer: {
     rights: "© 2026 Felipe Cámara — Todos los derechos reservados",
@@ -298,9 +376,9 @@ const EN: Dict = {
     body2Post:
       ", an AI email marketing SaaS. I manage brands on social media. And I'm building everything in public.",
     stats: [
-      { num: "15+", label: "Projects shipped" },
-      { num: "10+", label: "Clients" },
-      { num: "102", label: "Tests written" },
+      { num: "150+", label: "Projects shipped" },
+      { num: "100+", label: "Clients" },
+      { num: "5", label: "Years doing this" },
       { num: "∞", label: "Coffees" },
     ],
     stack: "Core stack",
@@ -314,8 +392,8 @@ const EN: Dict = {
       {
         quote:
           "Felipe doesn't just execute — he understands what you need before you do. The best professional I've ever worked with.",
-        name: "Savanna client",
-        role: "Lifestyle brand",
+        name: "Víctor Bueno Ureña",
+        role: "Founder · Waya Surf · Gran Canaria",
       },
       {
         quote:
@@ -333,6 +411,61 @@ const EN: Dict = {
     body:
       "Reply in under 24h. Tell me what you need and I'll say if I'm the right person — or send you to someone who is.",
     follow: "Follow me",
+  },
+  form: {
+    intro: "Tell me in 1 minute",
+    next: "Next",
+    back: "Back",
+    send: "Send",
+    sending: "Opening email…",
+    enterHint: "press Enter ↵",
+    pickHint: "pick one",
+    step: (n, total) => `Step ${n} of ${total}`,
+    steps: {
+      name: {
+        q: "What's your name?",
+        placeholder: "Your name",
+        err: "At least 2 letters please",
+      },
+      email: {
+        q: "Your email?",
+        placeholder: "you@email.com",
+        err: "That email doesn't look right",
+      },
+      project: {
+        q: "What kind of project?",
+        options: [
+          "Web development",
+          "Custom software (SaaS, app)",
+          "Social media",
+          "Consulting",
+          "Other",
+        ],
+      },
+      budget: {
+        q: "Rough budget?",
+        sub: "Be honest — that way I can tell you if I can actually help.",
+        options: [
+          "Under €1,000",
+          "€1,000 – €3,000",
+          "€3,000 – €6,000",
+          "€6,000 – €12,000",
+          "Over €12,000",
+          "Not sure yet",
+        ],
+      },
+      message: {
+        q: "Tell me more",
+        placeholder: "Timelines, goals, context… whatever you want.",
+        optional: "optional",
+      },
+    },
+    success: {
+      title: "Done. Message ready.",
+      body: "I opened your email client with everything filled in. Just hit send.",
+      again: "Send another",
+      open: "Open email again",
+    },
   },
   footer: {
     rights: "© 2026 Felipe Cámara — All rights reserved",
@@ -428,9 +561,9 @@ const DE: Dict = {
     body2Post:
       " gegründet — ein KI-E-Mail-Marketing-SaaS. Ich manage Marken in Social Media. Und ich baue alles öffentlich auf.",
     stats: [
-      { num: "15+", label: "Gelieferte Projekte" },
-      { num: "10+", label: "Kunden" },
-      { num: "102", label: "Geschriebene Tests" },
+      { num: "150+", label: "Gelieferte Projekte" },
+      { num: "100+", label: "Kunden" },
+      { num: "5", label: "Jahre dabei" },
       { num: "∞", label: "Kaffees" },
     ],
     stack: "Haupt-Stack",
@@ -444,8 +577,8 @@ const DE: Dict = {
       {
         quote:
           "Felipe führt nicht nur aus — er versteht, was du brauchst, bevor du es selbst weißt. Der beste Profi, mit dem ich je gearbeitet habe.",
-        name: "Kunde Savanna",
-        role: "Lifestyle-Marke",
+        name: "Víctor Bueno Ureña",
+        role: "Gründer · Waya Surf · Gran Canaria",
       },
       {
         quote:
@@ -463,6 +596,61 @@ const DE: Dict = {
     body:
       "Antwort in unter 24h. Erzähl mir, was du brauchst — ich sage dir, ob ich die richtige Person bin oder leite dich an jemanden weiter.",
     follow: "Folge mir",
+  },
+  form: {
+    intro: "Erzähl es mir in 1 Minute",
+    next: "Weiter",
+    back: "Zurück",
+    send: "Senden",
+    sending: "E-Mail öffnen…",
+    enterHint: "Enter drücken ↵",
+    pickHint: "wähle eine Option",
+    step: (n, total) => `Schritt ${n} von ${total}`,
+    steps: {
+      name: {
+        q: "Wie heißt du?",
+        placeholder: "Dein Name",
+        err: "Mindestens 2 Buchstaben",
+      },
+      email: {
+        q: "Deine E-Mail?",
+        placeholder: "du@email.com",
+        err: "Diese E-Mail sieht falsch aus",
+      },
+      project: {
+        q: "Was für ein Projekt?",
+        options: [
+          "Web-Entwicklung",
+          "Maßgeschneiderte Software (SaaS, App)",
+          "Social Media",
+          "Beratung",
+          "Anderes",
+        ],
+      },
+      budget: {
+        q: "Ungefähres Budget?",
+        sub: "Sei ehrlich — so kann ich dir sagen, ob ich wirklich helfen kann.",
+        options: [
+          "Unter 1.000 €",
+          "1.000 € – 3.000 €",
+          "3.000 € – 6.000 €",
+          "6.000 € – 12.000 €",
+          "Über 12.000 €",
+          "Weiß noch nicht",
+        ],
+      },
+      message: {
+        q: "Erzähl mir mehr",
+        placeholder: "Zeitrahmen, Ziele, Kontext… was immer du willst.",
+        optional: "optional",
+      },
+    },
+    success: {
+      title: "Fertig. Nachricht bereit.",
+      body: "Ich habe dein E-Mail-Programm mit allem vorausgefüllt geöffnet. Nur noch senden.",
+      again: "Eine weitere senden",
+      open: "E-Mail wieder öffnen",
+    },
   },
   footer: {
     rights: "© 2026 Felipe Cámara — Alle Rechte vorbehalten",
