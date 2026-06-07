@@ -15,6 +15,7 @@ export default function ProjectCover({
 }) {
   // Slugs que siempre usan cover diseñado (SaaS sin foto + casos editoriales)
   const designedOnly = new Set([
+    "lunin",
     "wavepanel",
     "noa",
     "la-inquieta",
@@ -41,6 +42,8 @@ export default function ProjectCover({
   }
 
   switch (project.slug) {
+    case "lunin":
+      return <LuninCover hover={hover} />;
     case "wavepanel":
       return <WavepanelCover hover={hover} />;
     case "noa":
@@ -64,6 +67,65 @@ export default function ProjectCover({
         />
       );
   }
+}
+
+/* ------------------------------------------------------------
+   LUNIN COCKTAIL BAR — foto real + marca (oro/serif)
+   ------------------------------------------------------------ */
+function LuninCover({ hover }: { hover: boolean }) {
+  return (
+    <div className="absolute inset-0 overflow-hidden" style={{ background: "#0d0d0d" }}>
+      <Image
+        src="/projects/lunin/cover-cherry.jpg"
+        alt="Lunin Cocktail Bar"
+        fill
+        sizes="(max-width: 440px) 100vw, (max-width: 760px) 50vw, (max-width: 1100px) 33vw, 25vw"
+        style={{
+          objectFit: "cover",
+          objectPosition: "center",
+          transition: "transform 1s cubic-bezier(.2,.8,.2,1)",
+          transform: hover ? "scale(1.05)" : "scale(1)",
+        }}
+      />
+      {/* Degradado inferior para el rótulo */}
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(13,13,13,0.15) 0%, transparent 30%, transparent 55%, rgba(13,13,13,0.85) 100%)",
+        }}
+      />
+      {/* Rótulo de marca */}
+      <div className="absolute inset-x-0 bottom-0 flex flex-col items-center text-center" style={{ padding: "6cqi" }}>
+        <span
+          style={{
+            fontFamily: "Georgia, 'Times New Roman', serif",
+            fontWeight: 500,
+            letterSpacing: "0.14em",
+            color: "#f9f2e0",
+            fontSize: "clamp(24px, 17cqi, 56px)",
+            lineHeight: 1,
+          }}
+        >
+          LUNIN
+        </span>
+        <span
+          style={{
+            fontFamily: "'Inter', system-ui, sans-serif",
+            fontWeight: 600,
+            fontSize: "clamp(8px, 2.8cqi, 11px)",
+            letterSpacing: "0.34em",
+            textTransform: "uppercase",
+            color: "#deab3b",
+            marginTop: "3cqi",
+          }}
+        >
+          Cocktail Bar
+        </span>
+      </div>
+    </div>
+  );
 }
 
 /* ------------------------------------------------------------
