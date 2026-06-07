@@ -740,7 +740,7 @@ function JMPadelCover({ hover }: { hover: boolean }) {
 }
 
 /* ------------------------------------------------------------
-   KUJME — SaaS email marketing IA · estética postal cream + terracota
+   KUJME — SaaS email marketing IA · minimalista cream + terracota
    ------------------------------------------------------------ */
 function KujmeCover({ hover }: { hover: boolean }) {
   return (
@@ -748,181 +748,63 @@ function KujmeCover({ hover }: { hover: boolean }) {
       className="absolute inset-0 overflow-hidden"
       style={{ background: "#f0ebe3" }}
     >
-      {/* Sobre / papel kraft de fondo */}
+      {/* Halo terracota sutil — único elemento decorativo */}
       <div
         aria-hidden
-        className="absolute inset-0"
+        className="absolute rounded-full"
         style={{
-          backgroundImage:
-            "repeating-linear-gradient(45deg, rgba(196,88,46,0.04) 0px, rgba(196,88,46,0.04) 1px, transparent 1px, transparent 14px)",
+          top: "-25%",
+          right: "-20%",
+          width: "70%",
+          aspectRatio: "1",
+          background: "radial-gradient(circle, rgba(196,88,46,0.18) 0%, transparent 70%)",
+          filter: "blur(24px)",
+          transition: "transform 1.1s cubic-bezier(.2,.8,.2,1)",
+          transform: hover ? "scale(1.12)" : "scale(1)",
         }}
       />
 
-      {/* Banda postal diagonal arriba */}
-      <div
-        aria-hidden
-        className="absolute pointer-events-none"
-        style={{
-          top: 16,
-          right: -40,
-          width: 220,
-          height: 32,
-          background: "#a62a1a",
-          transform: "rotate(15deg)",
-          transformOrigin: "center",
-          boxShadow: "0 2px 0 rgba(0,0,0,0.06)",
-        }}
-      />
-      <div
-        aria-hidden
-        className="absolute pointer-events-none"
-        style={{
-          top: 52,
-          right: -40,
-          width: 220,
-          height: 8,
-          background: "repeating-linear-gradient(90deg, #1a1a2e 0 6px, transparent 6px 12px)",
-          transform: "rotate(15deg)",
-          opacity: 0.4,
-        }}
-      />
-
-      {/* Sello "PRIORITY" estilo postal */}
-      <div
-        aria-hidden
-        className="absolute"
-        style={{
-          top: 24,
-          left: 24,
-          width: 56,
-          height: 56,
-          border: "2px solid #a62a1a",
-          borderRadius: 6,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: "'Inter', system-ui, sans-serif",
-          fontWeight: 800,
-          fontSize: 9,
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-          color: "#a62a1a",
-          lineHeight: 1.05,
-          textAlign: "center",
-          background: "rgba(250,247,242,0.85)",
-          transition: "transform 1s cubic-bezier(.2,.8,.2,1)",
-          transform: hover ? "rotate(-8deg)" : "rotate(-4deg)",
-        }}
-      >
-        SaaS
-        <br />
-        ES
-      </div>
-
-      {/* Bloque tipográfico central */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
         <span
-          className="text-[10px] uppercase tracking-[0.32em] mb-3"
           style={{
             color: "#a62a1a",
             fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
             fontWeight: 700,
+            fontSize: "clamp(9px, 3cqi, 12px)",
+            letterSpacing: "0.32em",
+            textTransform: "uppercase",
+            marginBottom: "8cqi",
           }}
         >
-          12 · AGENTES · IA
+          Email · IA
         </span>
         <h3
-          className="leading-[0.88]"
           style={{
             fontFamily: "'Inter', system-ui, sans-serif",
             fontWeight: 700,
             letterSpacing: "-0.04em",
             color: "#1a1a2e",
-            fontSize: "clamp(34px, 25cqi, 88px)",
+            lineHeight: 0.9,
+            fontSize: "clamp(34px, 26cqi, 90px)",
+            margin: 0,
           }}
         >
-          kujme
-          <span style={{ color: "#a62a1a" }}>.</span>
+          kujme<span style={{ color: "#a62a1a" }}>.</span>
         </h3>
         <span
-          className="mt-3 text-[11px] tracking-[0.18em] uppercase"
           style={{
-            color: "rgba(26,26,46,0.65)",
+            color: "rgba(26,26,46,0.6)",
             fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
             fontWeight: 600,
-          }}
-        >
-          $6/mes · trabaja mientras duermes
-        </span>
-      </div>
-
-      {/* Línea de dirección estilo postal abajo */}
-      <div
-        className="absolute bottom-5 left-5 right-5 flex justify-between items-end gap-3"
-        style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-      >
-        <div
-          style={{
-            fontSize: 9,
-            letterSpacing: "0.28em",
+            fontSize: "clamp(9px, 3cqi, 12px)",
+            letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "rgba(26,26,46,0.55)",
-            fontWeight: 600,
-            lineHeight: 1.5,
+            marginTop: "7cqi",
           }}
         >
-          Recogida → Empaquetado
-          <br />
-          → Entregado
-        </div>
-        <div
-          aria-hidden
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 3,
-            opacity: 0.65,
-          }}
-        >
-          {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              style={{
-                width: 36,
-                height: 2,
-                background: "#1a1a2e",
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Esquina sup-der: badge precio */}
-      <div
-        className="absolute top-5 right-5"
-        style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-      >
-        <span
-          className="text-[9px] uppercase tracking-[0.22em] px-2.5 py-1"
-          style={{
-            background: "#e8dfd3",
-            color: "#1a1a2e",
-            fontWeight: 700,
-            border: "1px solid rgba(196,88,46,0.25)",
-          }}
-        >
-          Desde 9€/mes
+          trabaja mientras duermes
         </span>
       </div>
-
-      {/* Marco kraft fino */}
-      <div
-        aria-hidden
-        className="absolute inset-3 pointer-events-none"
-        style={{
-          border: "1px solid rgba(26,26,46,0.12)",
-        }}
-      />
     </div>
   );
 }

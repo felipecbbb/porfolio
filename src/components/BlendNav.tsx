@@ -97,10 +97,11 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
     };
   }, [open]);
 
-  // Header sólido (crema) al hacer scroll o con el drawer abierto. Sin
-  // mix-blend-mode: ese era el causante de la "transparencia"/inversión al
-  // deslizar sobre las secciones. Texto siempre en tinta sobre claro.
-  const solid = scrolled || open;
+  // Barra crema OPACA al hacer scroll (sin translucidez sucia sobre secciones
+  // oscuras). Con el drawer abierto, el header se integra con el fondo oscuro
+  // del menú → logo y aspas en blanco. Sin mix-blend-mode.
+  const bar = scrolled && !open; // barra crema sólida
+  const fg = open ? "#fff" : INK; // color de contenido del header
 
   const linkStyle = (isActive: boolean) => ({
     color: INK,
@@ -118,34 +119,33 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
           top: 0,
           left: 0,
           right: 0,
-          paddingTop: solid
+          paddingTop: bar
             ? "calc(12px + env(safe-area-inset-top))"
             : "calc(18px + env(safe-area-inset-top))",
-          paddingBottom: solid ? 12 : 18,
+          paddingBottom: bar ? 12 : 18,
           paddingLeft: "clamp(16px, 5vw, 77px)",
           paddingRight: "clamp(16px, 5vw, 77px)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           zIndex: 100,
-          background: solid ? "rgba(243,239,228,0.88)" : "transparent",
-          backdropFilter: solid ? "saturate(120%) blur(14px)" : "none",
-          WebkitBackdropFilter: solid ? "saturate(120%) blur(14px)" : "none",
-          borderBottom: solid && !open ? `1px solid ${"rgba(26,25,22,0.1)"}` : "1px solid transparent",
-          color: INK,
-          transform: hidden ? "translateY(-100%)" : "translateY(0)",
+          background: bar ? "#f3efe4" : "transparent",
+          borderBottom: bar ? "1px solid rgba(26,25,22,0.12)" : "1px solid transparent",
+          boxShadow: bar ? "0 6px 20px rgba(26,25,22,0.06)" : "none",
+          color: fg,
+          transform: hidden && !open ? "translateY(-100%)" : "translateY(0)",
           transition:
-            "transform 0.5s cubic-bezier(.2,.8,.2,1), background 0.25s ease, padding 0.25s ease, border-color 0.25s ease",
-          pointerEvents: hidden ? "none" : "auto",
+            "transform 0.5s cubic-bezier(.2,.8,.2,1), background 0.25s ease, padding 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease",
+          pointerEvents: hidden && !open ? "none" : "auto",
         }}
       >
         <Link
           href="/"
           aria-label="Felipe Cámara — inicio"
           className="blendnav-logo"
-          style={{ color: INK, textDecoration: "none", display: "inline-flex", alignItems: "center" }}
+          style={{ color: fg, textDecoration: "none", display: "inline-flex", alignItems: "center" }}
         >
-          <FcLogo size={32} color={INK} withWordmark tone="dark" />
+          <FcLogo size={32} color={fg} withWordmark tone={open ? "light" : "dark"} />
         </Link>
 
         <nav
@@ -190,7 +190,7 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
             display: "none",
             background: "transparent",
             border: 0,
-            color: open ? BG : INK,
+            color: fg,
             padding: 12,
             margin: -8,
             minWidth: 44,
