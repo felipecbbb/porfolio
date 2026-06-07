@@ -19,13 +19,16 @@ type Dict = {
   hero: {
     badge: string;
     available: string;
-    line1: string;
-    line2: string;
-    line3: string;
+    name: string;
+    headPre: string;
+    headMark: string;
+    headPost: string;
     location: string;
     bodyA: string;
     bodyB: string;
     scroll: string;
+    ctaPrimary: string;
+    ctaSecondary: string;
   };
   projects: {
     label: string;
@@ -105,20 +108,24 @@ type Dict = {
 const ES: Dict = {
   nav: { home: "Inicio", projects: "Proyectos", contact: "Contacto" },
   hero: {
-    badge: "· Felipe Cámara / Portfolio 2026",
-    available: "Disponible para proyectos",
-    line1: "Desarrollo.",
-    line2: "Diseño.",
-    line3: "Estrategia",
-    location: "Freelance · España",
-    bodyA: "No solo diseño, no solo programo, no solo estrategia.",
+    badge: "Desarrollo · Estrategia · Automatización",
+    available: "Disponible para nuevos proyectos",
+    name: "Felipe Cámara",
+    headPre: "Desarrollo, IA y automatización con",
+    headMark: "resultados reales",
+    headPost: "para tu negocio.",
+    location: "Freelance · Gran Canaria, España",
+    bodyA:
+      "Construyo webs, SaaS y automatizaciones que ahorran tiempo y traen clientes.",
     bodyB:
-      "Las tres cosas: entiendo el negocio, diseño la solución y la construyo.",
+      "Entiendo el negocio, diseño la solución y la implemento — sin intermediarios.",
     scroll: "Desliza",
+    ctaPrimary: "Hablemos de tu proyecto",
+    ctaSecondary: "Ver proyectos",
   },
   projects: {
     label: "· 02 / Proyectos",
-    title: "Últimos",
+    title: "Trabajo reciente",
     titleAccent: ".",
     seeAll: "Ver todos",
     seeOne: "Ver →",
@@ -291,20 +298,24 @@ const ES: Dict = {
 const EN: Dict = {
   nav: { home: "Home", projects: "Work", contact: "Contact" },
   hero: {
-    badge: "· Felipe Cámara / Portfolio 2026",
-    available: "Available for projects",
-    line1: "Development.",
-    line2: "Design.",
-    line3: "Strategy",
-    location: "Freelance · Spain",
-    bodyA: "Not just design, not just code, not just strategy.",
+    badge: "Development · Strategy · Automation",
+    available: "Available for new projects",
+    name: "Felipe Cámara",
+    headPre: "Development, AI and automation with",
+    headMark: "real results",
+    headPost: "for your business.",
+    location: "Freelance · Gran Canaria, Spain",
+    bodyA:
+      "I build websites, SaaS and automations that save time and bring in clients.",
     bodyB:
-      "All three: I understand the business, design the solution and build it.",
+      "I understand the business, design the solution and ship it — no middlemen.",
     scroll: "Scroll",
+    ctaPrimary: "Let's talk about your project",
+    ctaSecondary: "View work",
   },
   projects: {
     label: "· 02 / Work",
-    title: "Latest",
+    title: "Selected work",
     titleAccent: ".",
     seeAll: "View all",
     seeOne: "View →",
@@ -476,20 +487,24 @@ const EN: Dict = {
 const DE: Dict = {
   nav: { home: "Start", projects: "Projekte", contact: "Kontakt" },
   hero: {
-    badge: "· Felipe Cámara / Portfolio 2026",
-    available: "Verfügbar für Projekte",
-    line1: "Entwicklung.",
-    line2: "Design.",
-    line3: "Strategie",
-    location: "Freelance · Spanien",
-    bodyA: "Nicht nur Design, nicht nur Code, nicht nur Strategie.",
+    badge: "Entwicklung · Strategie · Automatisierung",
+    available: "Verfügbar für neue Projekte",
+    name: "Felipe Cámara",
+    headPre: "Entwicklung, KI und Automatisierung mit",
+    headMark: "echten Ergebnissen",
+    headPost: "für dein Business.",
+    location: "Freelance · Gran Canaria, Spanien",
+    bodyA:
+      "Ich baue Websites, SaaS und Automatisierungen, die Zeit sparen und Kunden bringen.",
     bodyB:
-      "Alle drei: Ich verstehe das Geschäft, entwerfe die Lösung und baue sie.",
+      "Ich verstehe das Geschäft, gestalte die Lösung und setze sie um — ohne Mittelsmänner.",
     scroll: "Scrollen",
+    ctaPrimary: "Sprechen wir über dein Projekt",
+    ctaSecondary: "Projekte ansehen",
   },
   projects: {
     label: "· 02 / Projekte",
-    title: "Aktuelles",
+    title: "Aktuelle Arbeit",
     titleAccent: ".",
     seeAll: "Alle ansehen",
     seeOne: "Ansehen →",

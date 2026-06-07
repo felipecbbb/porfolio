@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useLang, LANGS, type Lang } from "@/lib/i18n";
+import { FcLogo } from "@/lib/brand";
 
-const INK = "#0a0a0a";
+const INK = "#1a1916";
 const BG = "#ffffff";
-const CORAL = "#c65248";
+const YELLOW = "#ece84d";
 
 type Active = "home" | "projects" | "contact" | "none";
 
@@ -96,16 +97,17 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
     };
   }, [open]);
 
-  // When the header is "solid" (scrolled or drawer open) we drop mix-blend-mode
-  // and switch to a dark surface with a backdrop blur. This is what fixes the
-  // illegible header on mobile when scrolling over colored sections.
+  // Header sólido (crema) al hacer scroll o con el drawer abierto. Sin
+  // mix-blend-mode: ese era el causante de la "transparencia"/inversión al
+  // deslizar sobre las secciones. Texto siempre en tinta sobre claro.
   const solid = scrolled || open;
 
   const linkStyle = (isActive: boolean) => ({
-    color: "#fff",
+    color: INK,
     textDecoration: "none" as const,
-    borderBottom: isActive ? "1px solid #fff" : "1px solid transparent",
+    borderBottom: isActive ? `1.5px solid ${INK}` : "1.5px solid transparent",
     paddingBottom: 2,
+    fontWeight: isActive ? 600 : 500,
   });
 
   return (
@@ -117,21 +119,20 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
           left: 0,
           right: 0,
           paddingTop: solid
-            ? "calc(14px + env(safe-area-inset-top))"
-            : "calc(20px + env(safe-area-inset-top))",
-          paddingBottom: solid ? 14 : 20,
+            ? "calc(12px + env(safe-area-inset-top))"
+            : "calc(18px + env(safe-area-inset-top))",
+          paddingBottom: solid ? 12 : 18,
           paddingLeft: "clamp(16px, 5vw, 77px)",
           paddingRight: "clamp(16px, 5vw, 77px)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           zIndex: 100,
-          mixBlendMode: solid ? "normal" : "difference",
-          background: solid ? "rgba(10,10,10,0.78)" : "transparent",
-          backdropFilter: solid ? "saturate(140%) blur(14px)" : "none",
-          WebkitBackdropFilter: solid ? "saturate(140%) blur(14px)" : "none",
-          borderBottom: solid && !open ? "1px solid rgba(255,255,255,0.08)" : "1px solid transparent",
-          color: "#fff",
+          background: solid ? "rgba(243,239,228,0.88)" : "transparent",
+          backdropFilter: solid ? "saturate(120%) blur(14px)" : "none",
+          WebkitBackdropFilter: solid ? "saturate(120%) blur(14px)" : "none",
+          borderBottom: solid && !open ? `1px solid ${"rgba(26,25,22,0.1)"}` : "1px solid transparent",
+          color: INK,
           transform: hidden ? "translateY(-100%)" : "translateY(0)",
           transition:
             "transform 0.5s cubic-bezier(.2,.8,.2,1), background 0.25s ease, padding 0.25s ease, border-color 0.25s ease",
@@ -140,15 +141,11 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
       >
         <Link
           href="/"
-          style={{
-            color: "#fff",
-            textDecoration: "none",
-            fontWeight: 600,
-            fontSize: 16,
-            letterSpacing: "-0.01em",
-          }}
+          aria-label="Felipe Cámara — inicio"
+          className="blendnav-logo"
+          style={{ color: INK, textDecoration: "none", display: "inline-flex", alignItems: "center" }}
         >
-          Felipe Cámara
+          <FcLogo size={32} color={INK} withWordmark tone="dark" />
         </Link>
 
         <nav
@@ -176,11 +173,11 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
             style={{
               width: 1,
               height: 16,
-              background: "rgba(255,255,255,0.35)",
+              background: "rgba(26,25,22,0.25)",
               display: "inline-block",
             }}
           />
-          <LangSwitcher tone="light" />
+          <LangSwitcher tone="dark" />
         </nav>
 
         <button
@@ -193,7 +190,7 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
             display: "none",
             background: "transparent",
             border: 0,
-            color: "#fff",
+            color: open ? BG : INK,
             padding: 12,
             margin: -8,
             minWidth: 44,
@@ -275,7 +272,7 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
             style={{ color: BG, textDecoration: "none", padding: "10px 0" }}
           >
             {t.nav.home}
-            <span style={{ color: CORAL }}>.</span>
+            <span style={{ color: YELLOW }}>.</span>
           </Link>
           <Link
             onClick={() => setOpen(false)}
@@ -283,7 +280,7 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
             style={{ color: BG, textDecoration: "none", padding: "10px 0" }}
           >
             {t.nav.projects}
-            <span style={{ color: CORAL }}>.</span>
+            <span style={{ color: YELLOW }}>.</span>
           </Link>
           <Link
             onClick={() => setOpen(false)}
@@ -291,7 +288,7 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
             style={{ color: BG, textDecoration: "none", padding: "10px 0" }}
           >
             {t.nav.contact}
-            <span style={{ color: CORAL }}>.</span>
+            <span style={{ color: YELLOW }}>.</span>
           </Link>
         </nav>
         <div
@@ -324,6 +321,9 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
         @media (max-width: 760px) {
           .blendnav-desktop { display: none !important; }
           .blendnav-burger { display: inline-flex !important; flex-direction: column; align-items: center; justify-content: center; }
+        }
+        @media (max-width: 420px) {
+          .blendnav-logo .fc-wordmark { display: none !important; }
         }
       `}</style>
     </>

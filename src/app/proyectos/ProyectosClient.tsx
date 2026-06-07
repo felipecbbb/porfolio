@@ -1,18 +1,13 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
-import Link from "next/link";
+import { useState, useMemo } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { L, type ProjectDetail } from "@/data/projects";
+import { type ProjectDetail } from "@/data/projects";
 import { useLang } from "@/lib/i18n";
 import BlendNav from "@/components/BlendNav";
-import ProjectCover from "@/components/ProjectCover";
-
-const INK = "#0a0a0a";
-const BG = "#ffffff";
-const MUTED = "#949494";
-const LINE = "#e5e5e5";
-const CORAL = "#c65248";
+import ProjectCardVertical from "@/components/ProjectCardVertical";
+import SiteFooter from "@/components/SiteFooter";
+import { INK, BG, CREAM, MUTED, LINE, Mark } from "@/lib/brand";
 
 interface Props {
   projects: ProjectDetail[];
@@ -91,15 +86,11 @@ export default function ProyectosClient({ projects }: Props) {
     [filter, projects]
   );
 
-  const FEATURED_SLUG = "lorena-amadio";
-  const featured =
-    filtered.find((p) => p.slug === FEATURED_SLUG) ?? filtered[0];
-  const rest = filtered.filter((p) => p.slug !== featured?.slug);
-
   return (
     <main
+      className="grid-paper"
       style={{
-        background: BG,
+        background: CREAM,
         color: INK,
         minHeight: "100dvh",
         fontFamily:
@@ -117,43 +108,31 @@ export default function ProyectosClient({ projects }: Props) {
         filterLabel={t.filter}
       />
 
-      <div style={{ padding: "0 clamp(20px, 5vw, 77px) 80px" }}>
-        {featured && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
-            style={{ marginBottom: 80 }}
-          >
-            <FeatureCard project={featured} t={t} />
-          </motion.div>
-        )}
-
+      <div style={{ padding: "0 clamp(20px, 5vw, 77px) 100px" }}>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gap: "clamp(30px, 5vw, 80px) clamp(20px, 3vw, 40px)",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "clamp(20px, 2vw, 32px)",
           }}
           className="proy-grid"
         >
           <AnimatePresence mode="popLayout">
-            {rest.map((p, i) => (
+            {filtered.map((p, i) => (
               <motion.div
                 key={p.slug}
                 layout
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-10%" }}
-                exit={{ opacity: 0, scale: 0.95 }}
+                viewport={{ once: true, margin: "-8%" }}
+                exit={{ opacity: 0, scale: 0.96 }}
                 transition={{
-                  duration: 0.65,
-                  delay: i * 0.06,
+                  duration: 0.5,
+                  delay: (i % 4) * 0.05,
                   ease: [0.2, 0.8, 0.2, 1],
                 }}
               >
-                <ProjectCard project={p} t={t} />
+                <ProjectCardVertical project={p} ctaLabel={t.seeOne} />
               </motion.div>
             ))}
           </AnimatePresence>
@@ -173,36 +152,14 @@ export default function ProyectosClient({ projects }: Props) {
         )}
       </div>
 
-      <Marquee />
-
-      <footer
-        style={{
-          borderTop: `1px solid ${LINE}`,
-          padding: "26px clamp(20px, 5vw, 77px)",
-          display: "flex",
-          justifyContent: "space-between",
-          fontSize: 13,
-          color: MUTED,
-          letterSpacing: "0.02em",
-          flexWrap: "wrap",
-          gap: 16,
-        }}
-      >
-        <span>{t.rights}</span>
-        <Link
-          href="/"
-          style={{ color: INK, textDecoration: "none", fontWeight: 500 }}
-        >
-          {t.back}
-        </Link>
-      </footer>
+      <SiteFooter />
 
       <style jsx global>{`
-        @media (max-width: 860px) {
-          .proy-grid {
-            grid-template-columns: 1fr !important;
-            gap: 50px !important;
-          }
+        @media (max-width: 1100px) {
+          .proy-grid { grid-template-columns: repeat(3, 1fr) !important; }
+        }
+        @media (max-width: 760px) {
+          .proy-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; }
         }
       `}</style>
     </main>
@@ -260,16 +217,15 @@ function HeroBlock({ count, t }: { count: number; t: T }) {
 
         <h1
           style={{
-            fontSize: "clamp(64px, 14vw, 220px)",
-            lineHeight: 0.9,
-            fontWeight: 500,
-            letterSpacing: "-0.06em",
+            fontSize: "clamp(52px, 9vw, 120px)",
+            lineHeight: 0.95,
+            fontWeight: 700,
+            letterSpacing: "-0.045em",
             margin: 0,
             wordBreak: "break-word",
           }}
         >
-          {t.title}
-          <span style={{ color: CORAL, fontStyle: "italic" }}>.</span>
+          <Mark>{t.title}</Mark>
         </h1>
 
         <div
@@ -386,364 +342,6 @@ function FilterBar({
           {labels(k)}
         </button>
       ))}
-    </div>
-  );
-}
-
-function FeatureCard({ project, t }: { project: ProjectDetail; t: T }) {
-  const { lang } = useLang();
-  return (
-    <Link
-      href={`/proyecto/${project.slug}`}
-      style={{ textDecoration: "none", color: "inherit", display: "block" }}
-    >
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1.3fr 1fr",
-          gap: "clamp(20px, 3vw, 60px)",
-          alignItems: "center",
-        }}
-        className="proy-feature"
-      >
-        <MagneticMedia
-          project={project}
-          large
-          ctaLabel={t.seeOne}
-        />
-        <div>
-          <div
-            style={{
-              fontSize: 13,
-              fontWeight: 500,
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: MUTED,
-              marginBottom: 18,
-            }}
-          >
-            · {t.featured} · {project.year}
-          </div>
-          <h2
-            style={{
-              fontSize: "clamp(34px, 5vw, 72px)",
-              lineHeight: 0.98,
-              fontWeight: 500,
-              letterSpacing: "-0.03em",
-              margin: "0 0 20px",
-            }}
-          >
-            {project.title}
-            <ArrowInline />
-          </h2>
-          <p
-            style={{
-              fontSize: "clamp(16px, 1.3vw, 18px)",
-              lineHeight: 1.5,
-              color: "#333",
-              marginBottom: 24,
-              maxWidth: 520,
-            }}
-          >
-            {L(project.description, lang)}
-          </p>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 8,
-            }}
-          >
-            {project.tags.slice(0, 5).map((tag) => (
-              <Tag key={tag}>{tag}</Tag>
-            ))}
-          </div>
-        </div>
-      </div>
-      <style jsx>{`
-        @media (max-width: 860px) {
-          :global(.proy-feature) {
-            grid-template-columns: 1fr !important;
-            gap: 28px !important;
-          }
-        }
-      `}</style>
-    </Link>
-  );
-}
-
-function ProjectCard({ project, t }: { project: ProjectDetail; t: T }) {
-  const { lang } = useLang();
-  return (
-    <Link
-      href={`/proyecto/${project.slug}`}
-      style={{ textDecoration: "none", color: "inherit", display: "block" }}
-    >
-      <MagneticMedia project={project} ctaLabel={t.seeOne} />
-      <div
-        style={{
-          marginTop: 18,
-          display: "flex",
-          flexDirection: "column",
-          gap: 10,
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
-          <h3
-            style={{
-              fontSize: "clamp(22px, 2.2vw, 34px)",
-              lineHeight: 1.05,
-              fontWeight: 500,
-              letterSpacing: "-0.02em",
-              margin: 0,
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            {project.title}
-            <ArrowInline />
-          </h3>
-          <span
-            style={{
-              fontSize: 12,
-              fontWeight: 500,
-              color: MUTED,
-              letterSpacing: "0.1em",
-              whiteSpace: "nowrap",
-              alignSelf: "flex-start",
-              marginTop: 8,
-            }}
-          >
-            {project.year}
-          </span>
-        </div>
-        <div
-          style={{
-            fontSize: 13,
-            letterSpacing: "0.05em",
-            color: MUTED,
-          }}
-        >
-          {L(project.category, lang)}
-        </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-          {project.tags.slice(0, 4).map((tag) => (
-            <Tag key={tag} small>
-              {tag}
-            </Tag>
-          ))}
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-function MagneticMedia({
-  project,
-  large,
-  ctaLabel,
-}: {
-  project: ProjectDetail;
-  large?: boolean;
-  ctaLabel: string;
-}) {
-  const wrap = useRef<HTMLDivElement>(null);
-  const btn = useRef<HTMLDivElement>(null);
-  const [hover, setHover] = useState(false);
-
-  const onMove = (e: React.MouseEvent) => {
-    if (!wrap.current || !btn.current) return;
-    const r = wrap.current.getBoundingClientRect();
-    const x = e.clientX - r.left;
-    const y = e.clientY - r.top;
-    btn.current.style.left = `${x}px`;
-    btn.current.style.top = `${y}px`;
-  };
-
-  return (
-    <div
-      ref={wrap}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onMouseMove={onMove}
-      style={{
-        position: "relative",
-        borderRadius: 20,
-        overflow: "hidden",
-        aspectRatio: large ? "16 / 11" : "4 / 3",
-        background: project.theme.bg || "#f0f0f0",
-        cursor: "none",
-      }}
-    >
-      <ProjectCover project={project} large={large} hover={hover} />
-
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.5) 100%)",
-          opacity: hover ? 1 : 0,
-          transition: "opacity 0.65s ease",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div
-        ref={btn}
-        style={{
-          position: "absolute",
-          width: large ? 220 : 160,
-          height: large ? 220 : 160,
-          borderRadius: "50%",
-          border: "1.5px solid #fff",
-          color: "#fff",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          transform: `translate(-50%, -50%) scale(${hover ? 1 : 0})`,
-          transition: "transform 0.4s cubic-bezier(.2,.8,.2,1)",
-          pointerEvents: "none",
-          fontSize: large ? 13 : 12,
-          fontWeight: 500,
-          letterSpacing: "0.22em",
-          textTransform: "uppercase",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(6px)",
-          background: "rgba(0,0,0,0.15)",
-          zIndex: 2,
-          textAlign: "center",
-          padding: "0 16px",
-        }}
-      >
-        {ctaLabel}
-      </div>
-    </div>
-  );
-}
-
-function Tag({
-  children,
-  small,
-}: {
-  children: React.ReactNode;
-  small?: boolean;
-}) {
-  return (
-    <span
-      style={{
-        padding: small ? "4px 10px" : "6px 14px",
-        borderRadius: 999,
-        border: `1px solid ${LINE}`,
-        fontSize: small ? 11 : 12,
-        fontWeight: 500,
-        letterSpacing: "0.03em",
-        color: "#555",
-        whiteSpace: "nowrap",
-      }}
-    >
-      {children}
-    </span>
-  );
-}
-
-function ArrowInline() {
-  return (
-    <span
-      aria-hidden
-      style={{
-        display: "inline-block",
-        marginLeft: "0.3em",
-        color: CORAL,
-        fontWeight: 400,
-      }}
-    >
-      ↗
-    </span>
-  );
-}
-
-function Marquee() {
-  const { lang } = useLang();
-  const items: Record<typeof lang, string[]> = {
-    es: [
-      "Desarrollo",
-      "Diseño",
-      "Estrategia",
-      "SaaS",
-      "Web",
-      "E-commerce",
-      "Landing",
-      "Automatización",
-    ],
-    en: [
-      "Development",
-      "Design",
-      "Strategy",
-      "SaaS",
-      "Web",
-      "E-commerce",
-      "Landing",
-      "Automation",
-    ],
-    de: [
-      "Entwicklung",
-      "Design",
-      "Strategie",
-      "SaaS",
-      "Web",
-      "E-Commerce",
-      "Landing",
-      "Automatisierung",
-    ],
-  };
-  const row = [...items[lang], ...items[lang], ...items[lang]];
-  return (
-    <div
-      style={{
-        borderTop: `1px solid ${LINE}`,
-        borderBottom: `1px solid ${LINE}`,
-        overflow: "hidden",
-        padding: "26px 0",
-        background: INK,
-        color: BG,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          gap: 60,
-          whiteSpace: "nowrap",
-          animation: "proy-scroll 40s linear infinite",
-          fontSize: "clamp(32px, 6vw, 72px)",
-          fontWeight: 500,
-          letterSpacing: "-0.03em",
-        }}
-      >
-        {row.map((label, i) => (
-          <span
-            key={i}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 60,
-            }}
-          >
-            {label}
-            <span style={{ color: CORAL }}>·</span>
-          </span>
-        ))}
-      </div>
-      <style jsx>{`
-        @keyframes proy-scroll {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(-33.333%);
-          }
-        }
-      `}</style>
     </div>
   );
 }

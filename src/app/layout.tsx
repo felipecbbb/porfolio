@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import CustomCursor from "@/components/CustomCursor";
 import { LanguageProvider } from "@/lib/i18n";
 
 const geistSans = Geist({
@@ -14,16 +13,26 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-serif",
+  weight: "400",
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
-  title: "Felipe Cámara — Desarrollo, Diseño y Estrategia Digital",
+  title:
+    "Felipe Cámara — Desarrollo, IA y Automatización para tu negocio",
   description:
-    "Portfolio de Felipe Cámara Barroso. Desarrollo de software, diseño web y gestión de redes sociales. Soluciones digitales que funcionan.",
+    "Desarrollo web, software a medida (SaaS) e inteligencia artificial con resultados reales. Felipe Cámara: entiendo el negocio, diseño la solución y la construyo.",
   keywords: [
     "desarrollo web",
-    "diseño web",
+    "inteligencia artificial",
+    "automatización",
+    "SaaS",
     "freelance",
-    "portfolio",
     "Felipe Cámara",
+    "Gran Canaria",
   ],
 };
 
@@ -42,11 +51,10 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
       <body className="noise min-h-full flex flex-col">
         <LanguageProvider>
-          <CustomCursor />
           {children}
         </LanguageProvider>
       </body>

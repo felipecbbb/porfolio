@@ -1,66 +1,65 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { L, type ProjectDetail } from "@/data/projects";
-import { useLang, type Lang } from "@/lib/i18n";
-import BlendNav, { LangSwitcher } from "@/components/BlendNav";
-import ProjectCover from "@/components/ProjectCover";
+import { type ProjectDetail } from "@/data/projects";
+import { useLang } from "@/lib/i18n";
+import BlendNav from "@/components/BlendNav";
+import ProjectCardVertical from "@/components/ProjectCardVertical";
 import ContactForm from "@/components/ContactForm";
+import SiteFooter from "@/components/SiteFooter";
+import { INK, BG, CREAM, YELLOW, MUTED, LINE, Mark, Serif } from "@/lib/brand";
 
-const INK = "#0a0a0a";
-const BG = "#ffffff";
-const MUTED = "#949494";
-const LINE = "#e5e5e5";
-const CORAL = "#c65248";
-const ACCENT = "#f6f361";
+const SANS =
+  "'Inter', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif";
 
 export default function HomeClient({ projects }: { projects: ProjectDetail[] }) {
   return (
     <main
       style={{
-        background: BG,
+        background: CREAM,
         color: INK,
         minHeight: "100dvh",
-        fontFamily:
-          "'Inter', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif",
+        fontFamily: SANS,
         letterSpacing: "-0.005em",
         overflow: "hidden",
       }}
     >
       <BlendNav active="home" />
       <HeroXXL />
-      <NameMarquee />
+      <ThreeWords />
       <FeaturedProjects projects={projects.slice(0, 4)} />
-      <WordMarquee />
+      <Manifesto />
       <ServicesList />
       <AboutSplit />
       <TestimonialsBlock />
       <ContactCTA />
-      <Footer />
+      <SiteFooter />
     </main>
   );
 }
 
 /* =========================================
-   HERO XXL
+   HERO — propuesta de valor (vender)
    ========================================= */
 function HeroXXL() {
   const { t } = useLang();
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, -80]);
+  const y = useTransform(scrollY, [0, 500], [0, -60]);
   const opacity = useTransform(scrollY, [0, 400], [1, 0.2]);
 
   return (
     <section
+      className="grid-paper"
       style={{
-        padding: "clamp(120px, 18vh, 220px) clamp(20px, 5vw, 77px) 60px",
+        padding: "clamp(120px, 18vh, 200px) clamp(20px, 5vw, 77px) 60px",
         minHeight: "100dvh",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         position: "relative",
+        background: CREAM,
       }}
     >
       <motion.div style={{ y, opacity }}>
@@ -69,7 +68,7 @@ function HeroXXL() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "baseline",
-            marginBottom: 24,
+            marginBottom: 28,
             flexWrap: "wrap",
             gap: 16,
           }}
@@ -77,13 +76,13 @@ function HeroXXL() {
           <span
             style={{
               fontSize: 13,
-              fontWeight: 500,
-              letterSpacing: "0.2em",
+              fontWeight: 600,
+              letterSpacing: "0.16em",
               textTransform: "uppercase",
-              color: MUTED,
+              color: INK,
             }}
           >
-            {t.hero.badge}
+            {t.hero.name}
           </span>
           <span
             style={{
@@ -92,7 +91,7 @@ function HeroXXL() {
               gap: 10,
               fontSize: 13,
               fontWeight: 500,
-              letterSpacing: "0.15em",
+              letterSpacing: "0.12em",
               textTransform: "uppercase",
               color: INK,
             }}
@@ -110,27 +109,98 @@ function HeroXXL() {
           </span>
         </div>
 
+        <div
+          style={{
+            fontSize: 13,
+            fontWeight: 600,
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            color: MUTED,
+            marginBottom: 22,
+          }}
+        >
+          {t.hero.badge}
+        </div>
+
         <motion.h1
-          initial={{ opacity: 0, y: 60 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1] }}
           style={{
-            fontSize: "clamp(54px, 12vw, 200px)",
-            lineHeight: 0.9,
-            fontWeight: 500,
-            letterSpacing: "-0.06em",
+            fontSize: "clamp(38px, 6.4vw, 96px)",
+            lineHeight: 1.02,
+            fontWeight: 700,
+            letterSpacing: "-0.04em",
             margin: 0,
-            wordBreak: "break-word",
-            hyphens: "auto",
+            maxWidth: 1100,
           }}
         >
-          {t.hero.line1}
-          <br />
-          <span style={{ color: MUTED }}>{t.hero.line2}</span>
-          <br />
-          {t.hero.line3}
-          <span style={{ color: CORAL, fontStyle: "italic" }}>.</span>
+          {t.hero.headPre}{" "}
+          <Mark>{t.hero.headMark}</Mark> {t.hero.headPost}
         </motion.h1>
+
+        <div
+          style={{
+            display: "flex",
+            gap: 14,
+            flexWrap: "wrap",
+            marginTop: 44,
+          }}
+        >
+          <Link
+            href="/#contacto"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "16px 30px",
+              borderRadius: 999,
+              background: INK,
+              color: BG,
+              textDecoration: "none",
+              fontSize: 15,
+              fontWeight: 600,
+              letterSpacing: "0.01em",
+              transition: "transform 0.25s ease, opacity 0.25s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+            }}
+          >
+            {t.hero.ctaPrimary} <span>→</span>
+          </Link>
+          <Link
+            href="/proyectos"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "16px 30px",
+              borderRadius: 999,
+              border: `1.5px solid ${INK}`,
+              color: INK,
+              background: "transparent",
+              textDecoration: "none",
+              fontSize: 15,
+              fontWeight: 600,
+              letterSpacing: "0.01em",
+              transition: "background 0.25s ease, color 0.25s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = INK;
+              e.currentTarget.style.color = BG;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "transparent";
+              e.currentTarget.style.color = INK;
+            }}
+          >
+            {t.hero.ctaSecondary}
+          </Link>
+        </div>
 
         <div
           style={{
@@ -140,15 +210,15 @@ function HeroXXL() {
             marginTop: 56,
             paddingTop: 36,
             borderTop: `1px solid ${LINE}`,
-            maxWidth: 1200,
+            maxWidth: 1100,
           }}
           className="hero-foot"
         >
           <div
             style={{
-              fontSize: 14,
-              fontWeight: 500,
-              letterSpacing: "0.15em",
+              fontSize: 13,
+              fontWeight: 600,
+              letterSpacing: "0.14em",
               textTransform: "uppercase",
               color: MUTED,
             }}
@@ -158,7 +228,7 @@ function HeroXXL() {
           <p
             style={{
               fontSize: "clamp(16px, 1.3vw, 20px)",
-              lineHeight: 1.45,
+              lineHeight: 1.5,
               margin: 0,
               maxWidth: 560,
               fontWeight: 400,
@@ -194,7 +264,7 @@ function ScrollHint() {
         bottom: 32,
         left: "clamp(20px, 5vw, 77px)",
         fontSize: 11,
-        fontWeight: 500,
+        fontWeight: 600,
         letterSpacing: "0.3em",
         textTransform: "uppercase",
         color: MUTED,
@@ -202,61 +272,184 @@ function ScrollHint() {
         alignItems: "center",
         gap: 10,
       }}
+      className="hero-scroll"
     >
       <span
-        style={{
-          width: 28,
-          height: 1,
-          background: MUTED,
-          display: "inline-block",
-        }}
+        style={{ width: 28, height: 1, background: MUTED, display: "inline-block" }}
       />
       {t.hero.scroll}
+      <style jsx>{`
+        @media (max-width: 720px) {
+          .hero-scroll {
+            display: none;
+          }
+        }
+      `}</style>
     </div>
   );
 }
 
 /* =========================================
-   NAME MARQUEE (big black)
+   EN 3 PALABRAS (pág. 4 del PDF)
    ========================================= */
-function NameMarquee() {
-  const row = Array.from({ length: 10 });
+function ThreeWords() {
+  const { lang } = useLang();
+  const d = {
+    es: { lead: "En 3 palabras:", words: ["Desarrollo", "Estrategia", "Automatización"] },
+    en: { lead: "In 3 words:", words: ["Development", "Strategy", "Automation"] },
+    de: { lead: "In 3 Worten:", words: ["Entwicklung", "Strategie", "Automatisierung"] },
+  }[lang];
+
   return (
-    <div
+    <section
+      className="grid-paper-dark"
       style={{
-        overflow: "hidden",
-        padding: "20px 0",
         background: INK,
         color: BG,
-        borderTop: `1px solid ${INK}`,
-        borderBottom: `1px solid ${INK}`,
+        padding: "clamp(72px, 11vw, 130px) clamp(20px, 5vw, 77px)",
+        overflow: "hidden",
+      }}
+    >
+      <Serif
+        style={{
+          display: "block",
+          color: YELLOW,
+          fontSize: "clamp(34px, 6vw, 80px)",
+          lineHeight: 1,
+          marginBottom: "clamp(28px, 4vw, 48px)",
+        }}
+      >
+        {d.lead}
+      </Serif>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        {d.words.map((w, i) => (
+          <div
+            key={w}
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: "clamp(14px, 2.5vw, 32px)",
+              padding: "clamp(12px, 1.6vw, 20px) 0",
+              borderTop: i === 0 ? "none" : "1px solid rgba(255,255,255,0.12)",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "clamp(13px, 1.2vw, 16px)",
+                fontWeight: 600,
+                color: YELLOW,
+                letterSpacing: "0.1em",
+                width: "1.6em",
+                flexShrink: 0,
+              }}
+            >
+              0{i + 1}
+            </span>
+            <span
+              style={{
+                fontSize: "clamp(30px, 5.5vw, 76px)",
+                fontWeight: 700,
+                letterSpacing: "-0.035em",
+                textTransform: "uppercase",
+                lineHeight: 1,
+              }}
+            >
+              {w}
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* =========================================
+   MANIFIESTO (págs. 2-3 del PDF, con subrayado)
+   ========================================= */
+function Manifesto() {
+  const { lang } = useLang();
+  const d = {
+    es: {
+      label: "· El contexto",
+      p1mark: "La inteligencia artificial está cambiando la forma de trabajar, vender y construir negocios.",
+      p1rest:
+        " Pero para muchas empresas sigue siendo un territorio complejo, lleno de ruido, promesas exageradas y herramientas difíciles de implementar.",
+      p2mark: "Yo actúo como puente entre la tecnología y los resultados reales.",
+      p2rest:
+        " Combino desarrollo web, aplicaciones digitales e inteligencia artificial para crear soluciones prácticas: trabajar mejor, automatizar procesos y crecer de forma más eficiente.",
+    },
+    en: {
+      label: "· The context",
+      p1mark: "Artificial intelligence is changing how we work, sell and build businesses.",
+      p1rest:
+        " But for many companies it's still a complex territory — full of noise, overblown promises and tools that are hard to implement.",
+      p2mark: "I act as the bridge between technology and real results.",
+      p2rest:
+        " I combine web development, digital apps and AI to create practical solutions: work better, automate processes and grow more efficiently.",
+    },
+    de: {
+      label: "· Der Kontext",
+      p1mark: "Künstliche Intelligenz verändert, wie wir arbeiten, verkaufen und Unternehmen aufbauen.",
+      p1rest:
+        " Doch für viele Firmen bleibt es komplexes Terrain — voller Lärm, übertriebener Versprechen und schwer umsetzbarer Tools.",
+      p2mark: "Ich bin die Brücke zwischen Technologie und echten Ergebnissen.",
+      p2rest:
+        " Ich verbinde Webentwicklung, digitale Apps und KI zu praktischen Lösungen: besser arbeiten, Prozesse automatisieren und effizienter wachsen.",
+    },
+  }[lang];
+
+  const para: React.CSSProperties = {
+    fontSize: "clamp(24px, 3.4vw, 46px)",
+    lineHeight: 1.32,
+    letterSpacing: "-0.02em",
+    fontWeight: 500,
+    margin: 0,
+    maxWidth: 1180,
+  };
+
+  return (
+    <section
+      className="grid-paper"
+      style={{
+        background: CREAM,
+        color: INK,
+        padding: "clamp(90px, 14vw, 150px) clamp(20px, 5vw, 77px)",
+        borderTop: "1px solid rgba(26,25,22,0.1)",
       }}
     >
       <div
         style={{
-          display: "flex",
-          gap: 50,
-          whiteSpace: "nowrap",
-          animation: "home-mq-a 28s linear infinite",
-          fontSize: "clamp(40px, 8vw, 100px)",
-          fontWeight: 500,
-          letterSpacing: "-0.04em",
-          lineHeight: 1,
+          fontSize: 13,
+          fontWeight: 600,
+          letterSpacing: "0.2em",
+          textTransform: "uppercase",
+          color: MUTED,
+          marginBottom: 40,
         }}
       >
-        {row.map((_, i) => (
-          <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 50 }}>
-            Felipe Cámara <span style={{ color: CORAL }}>✦</span>
-          </span>
-        ))}
+        {d.label}
       </div>
-      <style jsx>{`
-        @keyframes home-mq-a {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-      `}</style>
-    </div>
+      <motion.p
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-12%" }}
+        transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+        style={{ ...para, marginBottom: "clamp(36px, 5vw, 64px)" }}
+      >
+        <Mark>{d.p1mark}</Mark>
+        <span style={{ color: MUTED }}>{d.p1rest}</span>
+      </motion.p>
+      <motion.p
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-12%" }}
+        transition={{ duration: 0.7, delay: 0.1, ease: [0.2, 0.8, 0.2, 1] }}
+        style={para}
+      >
+        <Mark>{d.p2mark}</Mark>
+        <span style={{ color: MUTED }}>{d.p2rest}</span>
+      </motion.p>
+    </section>
   );
 }
 
@@ -267,8 +460,10 @@ function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
   const { t } = useLang();
   return (
     <section
+      className="grid-paper"
       style={{
         padding: "clamp(80px, 12vw, 120px) clamp(20px, 5vw, 77px)",
+        background: CREAM,
       }}
     >
       <div
@@ -285,7 +480,7 @@ function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
           <div
             style={{
               fontSize: 13,
-              fontWeight: 500,
+              fontWeight: 600,
               letterSpacing: "0.2em",
               textTransform: "uppercase",
               color: MUTED,
@@ -296,15 +491,14 @@ function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
           </div>
           <h2
             style={{
-              fontSize: "clamp(48px, 10vw, 160px)",
-              lineHeight: 0.9,
-              fontWeight: 500,
-              letterSpacing: "-0.06em",
+              fontSize: "clamp(40px, 6vw, 84px)",
+              lineHeight: 0.95,
+              fontWeight: 700,
+              letterSpacing: "-0.04em",
               margin: 0,
             }}
           >
             {t.projects.title}
-            <span style={{ color: CORAL, fontStyle: "italic" }}>{t.projects.titleAccent}</span>
           </h2>
         </div>
         <Link
@@ -315,12 +509,12 @@ function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
             gap: 10,
             padding: "14px 28px",
             borderRadius: 999,
-            border: `1px solid ${INK}`,
+            border: `1.5px solid ${INK}`,
             color: INK,
             background: "transparent",
             textDecoration: "none",
             fontSize: 14,
-            fontWeight: 500,
+            fontWeight: 600,
             letterSpacing: "0.02em",
             transition: "all 0.3s ease",
           }}
@@ -340,29 +534,34 @@ function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          gap: "clamp(40px, 6vw, 100px) clamp(20px, 3vw, 40px)",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "clamp(20px, 2vw, 32px)",
         }}
         className="home-proj-grid"
       >
         {projects.map((p, i) => (
           <motion.div
             key={p.slug}
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.7, delay: i * 0.08, ease: [0.2, 0.8, 0.2, 1] }}
+            viewport={{ once: true, margin: "-8%" }}
+            transition={{ duration: 0.55, delay: i * 0.06, ease: [0.2, 0.8, 0.2, 1] }}
           >
-            <FeaturedCard project={p} />
+            <ProjectCardVertical project={p} ctaLabel={t.projects.seeOne} />
           </motion.div>
         ))}
       </div>
 
       <style jsx>{`
-        @media (max-width: 860px) {
+        @media (max-width: 1100px) {
           :global(.home-proj-grid) {
-            grid-template-columns: 1fr !important;
-            gap: 50px !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+          }
+        }
+        @media (max-width: 760px) {
+          :global(.home-proj-grid) {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 14px !important;
           }
         }
       `}</style>
@@ -370,173 +569,24 @@ function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
   );
 }
 
-function FeaturedCard({ project }: { project: ProjectDetail }) {
-  const { t, lang } = useLang();
-  const wrap = useRef<HTMLDivElement>(null);
-  const btn = useRef<HTMLDivElement>(null);
-  const [hover, setHover] = useState(false);
-
-  const onMove = (e: React.MouseEvent) => {
-    if (!wrap.current || !btn.current) return;
-    const r = wrap.current.getBoundingClientRect();
-    btn.current.style.left = `${e.clientX - r.left}px`;
-    btn.current.style.top = `${e.clientY - r.top}px`;
-  };
-
-  return (
-    <Link
-      href={`/proyecto/${project.slug}`}
-      style={{ textDecoration: "none", color: "inherit", display: "block" }}
-    >
-      <div
-        ref={wrap}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        onMouseMove={onMove}
-        style={{
-          position: "relative",
-          borderRadius: 20,
-          overflow: "hidden",
-          aspectRatio: "4 / 3",
-          background: project.theme.bg,
-          cursor: "none",
-        }}
-      >
-        <ProjectCover project={project} hover={hover} />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.5) 100%)",
-            opacity: hover ? 1 : 0,
-            transition: "opacity 0.65s ease",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          ref={btn}
-          style={{
-            position: "absolute",
-            width: 160,
-            height: 160,
-            borderRadius: "50%",
-            border: "1.5px solid #fff",
-            color: "#fff",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            transform: `translate(-50%, -50%) scale(${hover ? 1 : 0})`,
-            transition: "transform 0.4s cubic-bezier(.2,.8,.2,1)",
-            pointerEvents: "none",
-            fontSize: 12,
-            fontWeight: 500,
-            letterSpacing: "0.25em",
-            textTransform: "uppercase",
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(6px)",
-            background: "rgba(0,0,0,0.15)",
-            zIndex: 2,
-          }}
-        >
-          {t.projects.seeOne}
-        </div>
-      </div>
-      <div style={{ marginTop: 20, display: "flex", justifyContent: "space-between", gap: 16 }}>
-        <h3
-          style={{
-            fontSize: "clamp(22px, 2.4vw, 36px)",
-            fontWeight: 500,
-            letterSpacing: "-0.02em",
-            margin: 0,
-            lineHeight: 1.05,
-          }}
-        >
-          {project.title}
-          <span style={{ color: CORAL, fontStyle: "italic", marginLeft: "0.3em" }}>↗</span>
-        </h3>
-        <span
-          style={{
-            fontSize: 12,
-            fontWeight: 500,
-            color: MUTED,
-            letterSpacing: "0.1em",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {project.year}
-        </span>
-      </div>
-      <div
-        style={{
-          marginTop: 8,
-          fontSize: 13,
-          color: MUTED,
-          letterSpacing: "0.02em",
-        }}
-      >
-        {L(project.category, lang)}
-      </div>
-    </Link>
-  );
-}
-
 /* =========================================
-   WORD MARQUEE (second, lighter)
-   ========================================= */
-function WordMarquee() {
-  const { lang } = useLang();
-  const wordsByLang: Record<Lang, string[]> = {
-    es: ["desarrollo", "diseño", "estrategia", "producto", "growth"],
-    en: ["development", "design", "strategy", "product", "growth"],
-    de: ["entwicklung", "design", "strategie", "produkt", "growth"],
-  };
-  const words = wordsByLang[lang];
-  const row = [...words, ...words, ...words, ...words];
-  return (
-    <div
-      style={{
-        overflow: "hidden",
-        padding: "26px 0",
-        borderTop: `1px solid ${LINE}`,
-        borderBottom: `1px solid ${LINE}`,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          gap: 40,
-          whiteSpace: "nowrap",
-          animation: "home-mq-b 38s linear infinite",
-          fontSize: "clamp(36px, 6vw, 80px)",
-          fontWeight: 500,
-          letterSpacing: "-0.04em",
-          lineHeight: 1,
-          fontStyle: "italic",
-        }}
-      >
-        {row.map((w, i) => (
-          <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 40 }}>
-            {w} <span style={{ color: CORAL, fontStyle: "normal" }}>·</span>
-          </span>
-        ))}
-      </div>
-      <style jsx>{`
-        @keyframes home-mq-b {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-      `}</style>
-    </div>
-  );
-}
-
-/* =========================================
-   SERVICES (editorial list)
+   SERVICES (editorial list, dark)
    ========================================= */
 function ServicesList() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  const lead = {
+    es: "Cuatro formas de",
+    en: "Four ways to",
+    de: "Vier Wege,",
+  }[lang];
+  const leadAccent = {
+    es: "trabajar juntos.",
+    en: "work together.",
+    de: "zusammenzuarbeiten.",
+  }[lang];
   return (
     <section
+      className="grid-paper-dark"
       style={{
         padding: "clamp(90px, 14vw, 140px) clamp(20px, 5vw, 77px)",
         background: INK,
@@ -547,7 +597,7 @@ function ServicesList() {
         <div
           style={{
             fontSize: 13,
-            fontWeight: 500,
+            fontWeight: 600,
             letterSpacing: "0.2em",
             textTransform: "uppercase",
             color: MUTED,
@@ -558,16 +608,28 @@ function ServicesList() {
         </div>
         <h2
           style={{
-            fontSize: "clamp(48px, 10vw, 160px)",
-            lineHeight: 0.9,
-            fontWeight: 500,
-            letterSpacing: "-0.06em",
+            fontSize: "clamp(40px, 6vw, 84px)",
+            lineHeight: 0.95,
+            fontWeight: 700,
+            letterSpacing: "-0.04em",
             margin: 0,
           }}
         >
           {t.services.title}
-          <span style={{ color: CORAL, fontStyle: "italic" }}>.</span>
+          <span style={{ color: YELLOW }}>.</span>
         </h2>
+        <p
+          style={{
+            fontSize: "clamp(20px, 2.4vw, 32px)",
+            lineHeight: 1.25,
+            margin: "20px 0 0",
+            fontWeight: 500,
+            color: "rgba(255,255,255,0.7)",
+            letterSpacing: "-0.02em",
+          }}
+        >
+          {lead} <Serif style={{ color: YELLOW }}>{leadAccent}</Serif>
+        </p>
       </div>
 
       <div>
@@ -618,24 +680,17 @@ function ServiceRow({
         }}
         className="home-svc-row"
       >
-        <span
-          style={{
-            fontSize: 13,
-            color: MUTED,
-            letterSpacing: "0.15em",
-            fontWeight: 500,
-          }}
-        >
+        <span style={{ fontSize: 13, color: MUTED, letterSpacing: "0.15em", fontWeight: 600 }}>
           / {id}
         </span>
         <h3
           style={{
-            fontSize: "clamp(26px, 5vw, 68px)",
+            fontSize: "clamp(26px, 5vw, 64px)",
             lineHeight: 1.05,
-            fontWeight: 500,
+            fontWeight: 600,
             letterSpacing: "-0.03em",
             margin: 0,
-            color: open ? CORAL : BG,
+            color: open ? YELLOW : BG,
             transition: "color 0.4s ease",
           }}
         >
@@ -644,12 +699,7 @@ function ServiceRow({
         <motion.span
           animate={{ rotate: open ? 45 : 0 }}
           transition={{ duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }}
-          style={{
-            fontSize: 22,
-            fontWeight: 300,
-            color: BG,
-            display: "inline-block",
-          }}
+          style={{ fontSize: 22, fontWeight: 300, color: open ? YELLOW : BG, display: "inline-block" }}
         >
           +
         </motion.span>
@@ -672,15 +722,7 @@ function ServiceRow({
           className="home-svc-row-open"
         >
           <div />
-          <p
-            style={{
-              fontSize: 17,
-              lineHeight: 1.5,
-              margin: 0,
-              color: "rgba(255,255,255,0.75)",
-              maxWidth: 520,
-            }}
-          >
+          <p style={{ fontSize: 17, lineHeight: 1.5, margin: 0, color: "rgba(255,255,255,0.75)", maxWidth: 520 }}>
             {desc}
           </p>
           <ul
@@ -697,7 +739,7 @@ function ServiceRow({
           >
             {includes.map((it) => (
               <li key={it} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <span style={{ color: CORAL }}>·</span> {it}
+                <span style={{ color: YELLOW }}>·</span> {it}
               </li>
             ))}
           </ul>
@@ -726,14 +768,16 @@ function AboutSplit() {
   const { t } = useLang();
   return (
     <section
+      className="grid-paper"
       style={{
         padding: "clamp(90px, 14vw, 140px) clamp(20px, 5vw, 77px)",
+        background: CREAM,
       }}
     >
       <div
         style={{
           fontSize: 13,
-          fontWeight: 500,
+          fontWeight: 600,
           letterSpacing: "0.2em",
           textTransform: "uppercase",
           color: MUTED,
@@ -758,10 +802,10 @@ function AboutSplit() {
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
           style={{
-            fontSize: "clamp(34px, 5.5vw, 88px)",
+            fontSize: "clamp(32px, 5vw, 72px)",
             lineHeight: 1.05,
-            fontWeight: 500,
-            letterSpacing: "-0.03em",
+            fontWeight: 700,
+            letterSpacing: "-0.035em",
             margin: 0,
           }}
         >
@@ -771,12 +815,11 @@ function AboutSplit() {
           <br />
           {t.about.headlineC}
           <br />
-          <span style={{ color: MUTED }}>{t.about.headlineD}</span>
-          <span style={{ color: CORAL, fontStyle: "italic" }}>.</span>
+          <Mark>{t.about.headlineD}</Mark>
         </motion.h2>
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <p style={{ fontSize: 17, lineHeight: 1.55, margin: 0 }}>
-            <strong style={{ fontWeight: 600 }}>{t.about.body1Strong}</strong> {t.about.body1}
+            <strong style={{ fontWeight: 700 }}>{t.about.body1Strong}</strong> {t.about.body1}
           </p>
           <p style={{ fontSize: 17, lineHeight: 1.55, margin: 0, color: MUTED }}>
             {t.about.body2Pre}
@@ -805,7 +848,7 @@ function AboutSplit() {
         <div
           style={{
             fontSize: 12,
-            fontWeight: 500,
+            fontWeight: 600,
             letterSpacing: "0.25em",
             textTransform: "uppercase",
             color: MUTED,
@@ -854,14 +897,7 @@ function AboutSplit() {
 function Stat({ num, label }: { num: string; label: string }) {
   return (
     <div>
-      <div
-        style={{
-          fontSize: "clamp(38px, 6vw, 80px)",
-          fontWeight: 500,
-          letterSpacing: "-0.03em",
-          lineHeight: 1,
-        }}
-      >
+      <div style={{ fontSize: "clamp(38px, 6vw, 76px)", fontWeight: 600, letterSpacing: "-0.03em", lineHeight: 1 }}>
         {num}
       </div>
       <div
@@ -871,7 +907,7 @@ function Stat({ num, label }: { num: string; label: string }) {
           textTransform: "uppercase",
           color: MUTED,
           marginTop: 10,
-          fontWeight: 500,
+          fontWeight: 600,
         }}
       >
         {label}
@@ -881,21 +917,23 @@ function Stat({ num, label }: { num: string; label: string }) {
 }
 
 /* =========================================
-   TESTIMONIALS
+   TESTIMONIALS (papel crema + cuadrícula)
    ========================================= */
 function TestimonialsBlock() {
   const { t } = useLang();
   return (
     <section
+      className="grid-paper"
       style={{
         padding: "clamp(90px, 14vw, 140px) clamp(20px, 5vw, 77px)",
-        background: "#f7f7f7",
+        background: CREAM,
+        borderTop: "1px solid rgba(26,25,22,0.1)",
       }}
     >
       <div
         style={{
           fontSize: 13,
-          fontWeight: 500,
+          fontWeight: 600,
           letterSpacing: "0.2em",
           textTransform: "uppercase",
           color: MUTED,
@@ -906,17 +944,17 @@ function TestimonialsBlock() {
       </div>
       <h2
         style={{
-          fontSize: "clamp(40px, 8vw, 120px)",
-          lineHeight: 0.95,
-          fontWeight: 500,
-          letterSpacing: "-0.05em",
+          fontSize: "clamp(34px, 5vw, 72px)",
+          lineHeight: 1,
+          fontWeight: 700,
+          letterSpacing: "-0.035em",
           margin: "0 0 60px",
         }}
       >
         {t.testimonials.titleA}
         <br />
-        <span style={{ color: MUTED }}>{t.testimonials.titleB}</span> {t.testimonials.titleC}
-        <span style={{ color: CORAL, fontStyle: "italic" }}>.</span>
+        <span style={{ color: MUTED }}>{t.testimonials.titleB}</span>{" "}
+        <Mark>{t.testimonials.titleC}</Mark>
       </h2>
       <div
         style={{
@@ -940,23 +978,21 @@ function TestimonialsBlock() {
               borderBottom: `1px solid ${LINE}`,
             }}
           >
-            <span
+            <Serif
               style={{
                 display: "block",
                 fontSize: 64,
-                fontWeight: 500,
-                color: CORAL,
                 lineHeight: 0.5,
                 marginBottom: 24,
-                fontStyle: "italic",
+                color: INK,
               }}
             >
-              “
-            </span>
+              &ldquo;
+            </Serif>
             <p
               style={{
-                fontSize: "clamp(19px, 2vw, 30px)",
-                lineHeight: 1.35,
+                fontSize: "clamp(19px, 2vw, 28px)",
+                lineHeight: 1.4,
                 fontWeight: 400,
                 letterSpacing: "-0.01em",
                 margin: "0 0 32px",
@@ -965,7 +1001,7 @@ function TestimonialsBlock() {
               {it.quote}
             </p>
             <footer style={{ fontSize: 14, color: MUTED }}>
-              <strong style={{ color: INK, fontWeight: 600 }}>{it.name}</strong> · {it.role}
+              <strong style={{ color: INK, fontWeight: 700 }}>{it.name}</strong> · {it.role}
             </footer>
           </motion.blockquote>
         ))}
@@ -982,13 +1018,14 @@ function TestimonialsBlock() {
 }
 
 /* =========================================
-   CONTACT CTA
+   CONTACT CTA (dark)
    ========================================= */
 function ContactCTA() {
   const { t } = useLang();
   return (
     <section
       id="contacto"
+      className="grid-paper-dark"
       style={{
         padding: "clamp(110px, 16vw, 160px) clamp(20px, 5vw, 77px)",
         background: INK,
@@ -1005,23 +1042,9 @@ function ContactCTA() {
           left: "-10%",
           width: "40vw",
           height: "40vw",
-          background: CORAL,
+          background: YELLOW,
           filter: "blur(180px)",
-          opacity: 0.18,
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          bottom: "-20%",
-          right: "-10%",
-          width: "40vw",
-          height: "40vw",
-          background: ACCENT,
-          filter: "blur(180px)",
-          opacity: 0.12,
+          opacity: 0.16,
           pointerEvents: "none",
         }}
       />
@@ -1029,7 +1052,7 @@ function ContactCTA() {
         <div
           style={{
             fontSize: 13,
-            fontWeight: 500,
+            fontWeight: 600,
             letterSpacing: "0.2em",
             textTransform: "uppercase",
             color: MUTED,
@@ -1044,10 +1067,10 @@ function ContactCTA() {
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
           style={{
-            fontSize: "clamp(48px, 12vw, 200px)",
-            lineHeight: 0.95,
-            fontWeight: 500,
-            letterSpacing: "-0.06em",
+            fontSize: "clamp(40px, 6.5vw, 96px)",
+            lineHeight: 1,
+            fontWeight: 700,
+            letterSpacing: "-0.04em",
             margin: "0 0 50px",
             wordBreak: "break-word",
           }}
@@ -1056,7 +1079,7 @@ function ContactCTA() {
           <br />
           {t.contact.titleB}
           <br />
-          <span style={{ fontStyle: "italic", color: CORAL }}>{t.contact.titleAccent}</span>
+          <Serif style={{ color: YELLOW }}>{t.contact.titleAccent}</Serif>
         </motion.h2>
 
         <div
@@ -1102,7 +1125,7 @@ function ContactCTA() {
                 color: BG,
                 textDecoration: "none",
                 fontSize: 15,
-                fontWeight: 500,
+                fontWeight: 600,
                 letterSpacing: "0.01em",
                 border: "1.5px solid rgba(255,255,255,0.2)",
                 transition: "transform 0.3s ease, background 0.3s ease, color 0.3s ease",
@@ -1112,13 +1135,15 @@ function ContactCTA() {
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.background = CORAL;
+                e.currentTarget.style.background = YELLOW;
                 e.currentTarget.style.color = INK;
+                e.currentTarget.style.borderColor = YELLOW;
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
                 e.currentTarget.style.background = "transparent";
                 e.currentTarget.style.color = BG;
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
               }}
             >
               felipegestion03@gmail.com <span style={{ fontSize: 18 }}>→</span>
@@ -1126,7 +1151,7 @@ function ContactCTA() {
             <div
               style={{
                 fontSize: 12,
-                fontWeight: 500,
+                fontWeight: 600,
                 letterSpacing: "0.25em",
                 textTransform: "uppercase",
                 color: MUTED,
@@ -1136,16 +1161,8 @@ function ContactCTA() {
               {t.contact.follow}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <SocialLink
-                label="Instagram"
-                handle="@felippe.camara"
-                href="https://instagram.com/felippe.camara"
-              />
-              <SocialLink
-                label="TikTok"
-                handle="@felippe.camara"
-                href="https://tiktok.com/@felippe.camara"
-              />
+              <SocialLink label="Instagram" handle="@felippe.camara" href="https://instagram.com/felippe.camara" />
+              <SocialLink label="TikTok" handle="@felippe.camara" href="https://tiktok.com/@felippe.camara" />
             </div>
           </div>
         </div>
@@ -1182,7 +1199,7 @@ function SocialLink({ label, handle, href }: { label: string; handle: string; hr
         transition: "color 0.3s ease, padding-left 0.3s ease",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.color = CORAL;
+        e.currentTarget.style.color = YELLOW;
         e.currentTarget.style.paddingLeft = "8px";
       }}
       onMouseLeave={(e) => {
@@ -1191,44 +1208,20 @@ function SocialLink({ label, handle, href }: { label: string; handle: string; hr
       }}
     >
       <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis" }}>
-        <span style={{ color: MUTED, fontSize: 13, letterSpacing: "0.15em", textTransform: "uppercase", marginRight: 14 }}>
+        <span
+          style={{
+            color: MUTED,
+            fontSize: 13,
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
+            marginRight: 14,
+          }}
+        >
           {label}
         </span>
         {handle}
       </span>
       <span style={{ fontSize: 18 }}>↗</span>
     </a>
-  );
-}
-
-/* =========================================
-   FOOTER
-   ========================================= */
-function Footer() {
-  const { t } = useLang();
-  return (
-    <footer
-      style={{
-        padding: "26px clamp(20px, 5vw, 77px)",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        fontSize: 13,
-        color: MUTED,
-        letterSpacing: "0.02em",
-        flexWrap: "wrap",
-        gap: 16,
-        background: INK,
-        borderTop: "1px solid rgba(255,255,255,0.1)",
-      }}
-    >
-      <span style={{ color: MUTED }}>{t.footer.rights}</span>
-      <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-        <LangSwitcher tone="light" />
-        <Link href="/proyectos" style={{ color: BG, textDecoration: "none", fontWeight: 500 }}>
-          {t.footer.seeProjects}
-        </Link>
-      </div>
-    </footer>
   );
 }

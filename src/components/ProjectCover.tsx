@@ -8,11 +8,9 @@ import type { ProjectDetail } from "@/data/projects";
    ========================================= */
 export default function ProjectCover({
   project,
-  large = false,
   hover,
 }: {
   project: ProjectDetail;
-  large?: boolean;
   hover: boolean;
 }) {
   // Slugs que siempre usan cover diseñado (SaaS sin foto + casos editoriales)
@@ -32,11 +30,7 @@ export default function ProjectCover({
         src={project.featuredImage}
         alt={project.title}
         fill
-        sizes={
-          large
-            ? "(max-width: 860px) 100vw, 60vw"
-            : "(max-width: 860px) 100vw, 45vw"
-        }
+        sizes="(max-width: 440px) 100vw, (max-width: 760px) 50vw, (max-width: 1100px) 33vw, 25vw"
         style={{
           objectFit: "cover",
           transition: "transform 1s cubic-bezier(.2,.8,.2,1)",
@@ -127,11 +121,12 @@ function WavepanelCover({ hover }: { hover: boolean }) {
           · SaaS · escuelas
         </span>
         <span
-          className="text-[clamp(36px,7vw,72px)] leading-[0.9]"
+          className="leading-[0.9]"
           style={{
             fontFamily: "'Inter', system-ui, sans-serif",
             fontWeight: 900,
             letterSpacing: "-0.04em",
+            fontSize: "clamp(20px, 15cqi, 54px)",
           }}
         >
           <span style={{ color: "#fff", fontWeight: 400 }}>wave</span>
@@ -252,12 +247,13 @@ function NoaCover({ hover }: { hover: boolean }) {
           ✦ asistente IA
         </span>
         <span
-          className="text-[clamp(64px,11vw,128px)] leading-[0.9]"
+          className="leading-[0.9]"
           style={{
             fontFamily: "'Inter', system-ui, sans-serif",
             fontWeight: 700,
             letterSpacing: "-0.05em",
             color: "#0a1628",
+            fontSize: "clamp(34px, 28cqi, 86px)",
           }}
         >
           Noa
@@ -338,12 +334,13 @@ function LorenaCover({ hover }: { hover: boolean }) {
           Psicología clínica
         </span>
         <h3
-          className="text-[clamp(34px,6vw,64px)] leading-[1.05]"
+          className="leading-[1.05]"
           style={{
             fontFamily: "Georgia, 'Times New Roman', serif",
             fontWeight: 500,
             letterSpacing: "-0.02em",
             color: "#3d3528",
+            fontSize: "clamp(26px, 19cqi, 58px)",
           }}
         >
           Lorena
@@ -369,131 +366,18 @@ function LorenaCover({ hover }: { hover: boolean }) {
    ------------------------------------------------------------ */
 function LaInquietaCover({ hover }: { hover: boolean }) {
   return (
-    <div
-      className="absolute inset-0 overflow-hidden"
-      style={{ background: "#f3e7cf" }}
-    >
-      <svg
-        aria-hidden
-        className="absolute inset-0 w-full h-full"
-        style={{ opacity: 0.09 }}
-      >
-        <defs>
-          <pattern
-            id="andalusi-stars"
-            x="0"
-            y="0"
-            width="56"
-            height="56"
-            patternUnits="userSpaceOnUse"
-          >
-            <g
-              fill="none"
-              stroke="#0d4a42"
-              strokeWidth="0.9"
-              strokeLinejoin="round"
-            >
-              <path d="M28 6 L33 18 L46 19 L36 28 L39 41 L28 34 L17 41 L20 28 L10 19 L23 18 Z" />
-              <circle cx="28" cy="28" r="2.4" />
-            </g>
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#andalusi-stars)" />
-      </svg>
-
-      <div
-        aria-hidden
-        className="absolute -top-24 -right-24 w-[70%] aspect-square rounded-full"
-        style={{
-          background: "radial-gradient(circle, #c6524833 0%, transparent 70%)",
-          filter: "blur(22px)",
-          transition: "transform 1.1s cubic-bezier(.2,.8,.2,1)",
-          transform: hover ? "scale(1.18)" : "scale(1)",
-        }}
-      />
-      <div
-        aria-hidden
-        className="absolute -bottom-20 -left-16 w-[55%] aspect-square rounded-full"
-        style={{
-          background: "radial-gradient(circle, #0d4a4226 0%, transparent 70%)",
-          filter: "blur(24px)",
-        }}
-      />
-
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-        <span
-          className="text-[10px] uppercase tracking-[0.4em] mb-5"
-          style={{
-            color: "#c65248",
-            fontFamily: "'Inter', system-ui, sans-serif",
-            fontWeight: 600,
-          }}
-        >
-          · Feria de Jerez · Nº154
-        </span>
-
-        <div
-          className="relative"
-          style={{
-            paddingTop: 18,
-            paddingBottom: 8,
-            paddingLeft: "clamp(20px, 4vw, 44px)",
-            paddingRight: "clamp(20px, 4vw, 44px)",
-          }}
-        >
-          <svg
-            aria-hidden
-            viewBox="0 0 240 160"
-            preserveAspectRatio="none"
-            className="absolute inset-0 w-full h-full"
-            style={{
-              transition: "transform 1s cubic-bezier(.2,.8,.2,1)",
-              transform: hover ? "translateY(-4px)" : "translateY(0)",
-            }}
-          >
-            <path
-              d="M14 158 L14 80 C 14 38, 60 14, 120 14 C 180 14, 226 38, 226 80 L226 158"
-              fill="none"
-              stroke="#0d4a42"
-              strokeWidth="1.4"
-              opacity="0.55"
-            />
-            <path
-              d="M30 158 L30 86 C 30 50, 70 30, 120 30 C 170 30, 210 50, 210 86 L210 158"
-              fill="none"
-              stroke="#0d4a42"
-              strokeWidth="0.7"
-              opacity="0.3"
-            />
-          </svg>
-
-          <h3
-            className="relative text-[clamp(34px,6.4vw,66px)] leading-[1.02]"
-            style={{
-              fontFamily: "Georgia, 'Times New Roman', serif",
-              fontWeight: 500,
-              letterSpacing: "-0.025em",
-              color: "#0d4a42",
-            }}
-          >
-            La{" "}
-            <span style={{ fontStyle: "italic", color: "#c65248" }}>
-              Inquieta.
-            </span>
-          </h3>
-        </div>
-
-        <span
-          className="mt-5 text-[10px] uppercase tracking-[0.32em]"
-          style={{
-            color: "rgba(13,74,66,0.55)",
-            fontFamily: "'Inter', system-ui, sans-serif",
-          }}
-        >
-          transporte · bebidas · dj
-        </span>
-      </div>
-    </div>
+    <Image
+      src="/projects/la-inquieta/cartel.png"
+      alt="Cartel de La Inquieta · Caseta Nº154 · Feria de Jerez"
+      fill
+      sizes="(max-width: 440px) 100vw, (max-width: 760px) 50vw, (max-width: 1100px) 33vw, 25vw"
+      style={{
+        objectFit: "cover",
+        objectPosition: "center top",
+        transition: "transform 1s cubic-bezier(.2,.8,.2,1)",
+        transform: hover ? "scale(1.04)" : "scale(1)",
+      }}
+    />
   );
 }
 
@@ -537,7 +421,7 @@ function IPLCover({ hover }: { hover: boolean }) {
         style={{
           right: "-2%",
           bottom: "-12%",
-          fontSize: "clamp(280px, 38vw, 520px)",
+          fontSize: "clamp(150px, 95cqi, 360px)",
           lineHeight: 1,
           color: "#c5a059",
           opacity: 0.22,
@@ -598,7 +482,7 @@ function IPLCover({ hover }: { hover: boolean }) {
             fontWeight: 700,
             letterSpacing: "-0.025em",
             color: "#f9f8f6",
-            fontSize: "clamp(40px, 7.2vw, 80px)",
+            fontSize: "clamp(28px, 17cqi, 66px)",
           }}
         >
           Pedro
@@ -629,7 +513,7 @@ function IPLCover({ hover }: { hover: boolean }) {
         <span
           style={{
             fontFamily: "Georgia, 'Times New Roman', serif",
-            fontSize: "clamp(22px, 3vw, 32px)",
+            fontSize: "clamp(16px, 9cqi, 30px)",
             fontWeight: 700,
             color: "#c5a059",
             letterSpacing: "-0.02em",
@@ -783,7 +667,7 @@ function JMPadelCover({ hover }: { hover: boolean }) {
             textTransform: "uppercase",
             letterSpacing: "-0.025em",
             color: "#ffffff",
-            fontSize: "clamp(40px, 7.5vw, 90px)",
+            fontSize: "clamp(24px, 16cqi, 62px)",
             textShadow: "0 2px 24px rgba(0,0,0,0.18)",
           }}
         >
@@ -799,7 +683,7 @@ function JMPadelCover({ hover }: { hover: boolean }) {
             fontStyle: "italic",
             textTransform: "uppercase",
             color: "#E0F657",
-            fontSize: "clamp(14px, 1.6vw, 20px)",
+            fontSize: "clamp(10px, 4.5cqi, 18px)",
             letterSpacing: "0.02em",
           }}
         >
@@ -954,7 +838,7 @@ function KujmeCover({ hover }: { hover: boolean }) {
             fontWeight: 700,
             letterSpacing: "-0.04em",
             color: "#1a1a2e",
-            fontSize: "clamp(56px, 10vw, 120px)",
+            fontSize: "clamp(34px, 25cqi, 88px)",
           }}
         >
           kujme
@@ -1065,15 +949,15 @@ function TypographicCover({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: 40,
+        padding: "clamp(16px, 7cqi, 40px)",
       }}
     >
       <span
         style={{
-          fontSize: "clamp(36px, 7vw, 100px)",
-          fontWeight: 500,
+          fontSize: "clamp(24px, 14cqi, 64px)",
+          fontWeight: 600,
           letterSpacing: "-0.04em",
-          lineHeight: 0.95,
+          lineHeight: 0.98,
           textAlign: "center",
         }}
       >

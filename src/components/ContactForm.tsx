@@ -4,10 +4,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "@/lib/i18n";
 
-const INK = "#0a0a0a";
+const INK = "#1a1916";
 const BG = "#ffffff";
 const MUTED = "#949494";
-const CORAL = "#c65248";
+const ACCENT = "#ece84d"; // amarillo de marca
+const ERROR = "#ff8a80"; // rojo suave legible sobre oscuro
 const LINE_DARK = "rgba(255,255,255,0.18)";
 const LINE_DARK_SOFT = "rgba(255,255,255,0.08)";
 
@@ -41,10 +42,19 @@ export default function ContactForm() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  // No autofocus on first mount: focusing the input on load makes the browser
+  // scroll the whole page down to the contact form. Only autofocus once the
+  // user actually starts interacting (changes step).
+  const firstRun = useRef(true);
   useEffect(() => {
+    if (firstRun.current) {
+      firstRun.current = false;
+      return;
+    }
     const id = window.setTimeout(() => {
-      if (step === 0 || step === 1) inputRef.current?.focus();
-      if (step === 4) textareaRef.current?.focus();
+      // preventScroll keeps the viewport steady even when focusing.
+      if (step === 0 || step === 1) inputRef.current?.focus({ preventScroll: true });
+      if (step === 4) textareaRef.current?.focus({ preventScroll: true });
     }, 380);
     return () => window.clearTimeout(id);
   }, [step]);
@@ -447,7 +457,7 @@ function FormHeader({
           transition={{ duration: 0.55, ease: [0.2, 0.8, 0.2, 1] }}
           style={{
             height: "100%",
-            background: CORAL,
+            background: ACCENT,
             borderRadius: 999,
           }}
         />
@@ -554,7 +564,7 @@ function BigInput({
         transition: "border-color .3s ease",
         fontFamily: "inherit",
       }}
-      onFocus={(e) => (e.currentTarget.style.borderBottomColor = CORAL)}
+      onFocus={(e) => (e.currentTarget.style.borderBottomColor = ACCENT)}
       onBlur={(e) => (e.currentTarget.style.borderBottomColor = LINE_DARK)}
     />
   );
@@ -592,7 +602,7 @@ function BigTextarea({
         fontFamily: "inherit",
         transition: "border-color .3s ease",
       }}
-      onFocus={(e) => (e.currentTarget.style.borderColor = CORAL)}
+      onFocus={(e) => (e.currentTarget.style.borderColor = ACCENT)}
       onBlur={(e) => (e.currentTarget.style.borderColor = LINE_DARK)}
     />
   );
@@ -627,8 +637,8 @@ function ChipGrid({
             style={{
               padding: "12px 20px",
               borderRadius: 999,
-              border: `1.5px solid ${active ? CORAL : LINE_DARK}`,
-              background: active ? CORAL : "transparent",
+              border: `1.5px solid ${active ? ACCENT : LINE_DARK}`,
+              background: active ? ACCENT : "transparent",
               color: active ? INK : BG,
               fontSize: 15,
               fontWeight: 500,
@@ -675,7 +685,7 @@ function FooterNav({
           gap: 10,
           padding: "14px 26px",
           borderRadius: 999,
-          background: primary ? CORAL : BG,
+          background: primary ? ACCENT : BG,
           color: INK,
           border: "none",
           fontSize: 15,
@@ -683,7 +693,7 @@ function FooterNav({
           letterSpacing: "0.01em",
           cursor: "pointer",
           fontFamily: "inherit",
-          boxShadow: primary ? "0 10px 30px rgba(198,82,72,.35)" : "none",
+          boxShadow: primary ? "0 10px 30px rgba(0,0,0,.35)" : "none",
         }}
       >
         {nextLabel} <span style={{ fontSize: 18 }}>→</span>
@@ -702,7 +712,7 @@ function FieldError({ msg }: { msg: string | null }) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
           style={{
-            color: CORAL,
+            color: ERROR,
             fontSize: 13,
             letterSpacing: "0.01em",
           }}
@@ -788,7 +798,7 @@ function SuccessView({
           width: 56,
           height: 56,
           borderRadius: "50%",
-          background: CORAL,
+          background: ACCENT,
           color: INK,
           display: "flex",
           alignItems: "center",
@@ -836,7 +846,7 @@ function SuccessView({
           style={{
             padding: "12px 22px",
             borderRadius: 999,
-            background: CORAL,
+            background: ACCENT,
             color: INK,
             border: "none",
             fontSize: 14,
