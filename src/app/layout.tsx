@@ -26,19 +26,104 @@ const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://felippecamara.com";
+const DESCRIPTION =
+  "Desarrollador y diseñador web freelance en Gran Canaria. Webs a medida, SaaS, e-commerce y automatización con IA que convierten visitas en clientes.";
+
 export const metadata: Metadata = {
-  title:
-    "Felipe Cámara — Desarrollo, IA y Automatización para tu negocio",
-  description:
-    "Desarrollo web, software a medida (SaaS) e inteligencia artificial con resultados reales. Felipe Cámara: entiendo el negocio, diseño la solución y la construyo.",
+  metadataBase: new URL(SITE_URL),
+  title: "Felipe Cámara — Desarrollo web, software a medida e IA · Gran Canaria",
+  description: DESCRIPTION,
+  applicationName: "Felipe Cámara",
+  authors: [{ name: "Felipe Cámara", url: SITE_URL }],
+  creator: "Felipe Cámara",
+  publisher: "Felipe Cámara",
+  category: "technology",
   keywords: [
     "desarrollo web",
+    "diseñador web",
+    "desarrollador freelance",
+    "Gran Canaria",
+    "Canarias",
+    "software a medida",
+    "SaaS",
     "inteligencia artificial",
     "automatización",
-    "SaaS",
-    "freelance",
+    "e-commerce",
+    "landing pages",
+    "Next.js",
+    "páginas web",
     "Felipe Cámara",
-    "Gran Canaria",
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "es_ES",
+    url: SITE_URL,
+    siteName: "Felipe Cámara",
+    title: "Felipe Cámara — Desarrollo web, software a medida e IA",
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Felipe Cámara — Desarrollo web, IA y diseño",
+    description: DESCRIPTION,
+    creator: "@felippe.camara",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  icons: { icon: "/icon.svg", apple: "/icon.svg" },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#felipe`,
+      name: "Felipe Cámara",
+      alternateName: "Felipe Cámara Barroso",
+      url: SITE_URL,
+      jobTitle: "Desarrollador y diseñador web freelance",
+      description: DESCRIPTION,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Las Palmas de Gran Canaria",
+        addressRegion: "Canarias",
+        addressCountry: "ES",
+      },
+      sameAs: [
+        "https://www.instagram.com/felippe.camara",
+        "https://www.tiktok.com/@felippe.camara",
+      ],
+      knowsAbout: [
+        "Desarrollo web",
+        "Next.js",
+        "Inteligencia artificial",
+        "Automatización",
+        "Diseño web",
+        "SaaS",
+        "E-commerce",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Felipe Cámara",
+      description: DESCRIPTION,
+      inLanguage: "es-ES",
+      publisher: { "@id": `${SITE_URL}/#felipe` },
+    },
   ],
 };
 
@@ -46,7 +131,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#ffffff",
+  themeColor: "#1a1916",
 };
 
 export default function RootLayout({
@@ -60,6 +145,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${raleway.variable} h-full antialiased`}
     >
       <body className="noise min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <LanguageProvider>
           {children}
         </LanguageProvider>

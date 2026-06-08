@@ -3,9 +3,19 @@ import { projects } from "@/data/projects";
 import HomeClient from "./HomeClient";
 
 export const metadata: Metadata = {
-  title: "Felipe Cámara — Desarrollo, Diseño y Estrategia Digital",
+  title: {
+    absolute: "Felipe Cámara — Desarrollo web, software a medida e IA · Gran Canaria",
+  },
   description:
-    "Desarrollador de software y diseñador web. SaaS, webs, landings y plataformas a medida. Freelance en España.",
+    "Desarrollador y diseñador web freelance en Gran Canaria. Webs a medida, SaaS, e-commerce, landings y automatización con IA que convierten visitas en clientes. Hablemos de tu proyecto.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "https://felippecamara.com",
+    title: "Felipe Cámara — Desarrollo web, software a medida e IA",
+    description:
+      "Webs a medida, SaaS, e-commerce y automatización con IA. Freelance en Gran Canaria.",
+  },
 };
 
 export default function Home() {
