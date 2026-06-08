@@ -84,7 +84,7 @@ export function FcLogotype({
   return (
     <svg
       viewBox="0 0 2398 917"
-      aria-label="Felippe Cámara"
+      aria-label="Felipe Cámara"
       role="img"
       style={{ display: "block", width: "100%", height: "auto", ...style }}
     >
@@ -129,7 +129,7 @@ export function FcLogo({
               whiteSpace: "nowrap",
             }}
           >
-            Felippe Cámara
+            Felipe Cámara
           </span>
           {withTagline && (
             <span

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import { LangSwitcher } from "@/components/BlendNav";
-import { INK, BG, YELLOW, MUTED, Mark, FcLogotype } from "@/lib/brand";
+import { INK, BG, YELLOW, MUTED, Mark, FcLogo } from "@/lib/brand";
 
 export default function SiteFooter() {
   const { t, lang } = useLang();
@@ -27,9 +27,9 @@ export default function SiteFooter() {
         padding: "clamp(64px, 9vw, 110px) clamp(20px, 5vw, 77px) 28px",
       }}
     >
-      {/* Logotipo */}
+      {/* Logo (lockup tipografiado — sustituir por el logotipo nuevo cuando llegue) */}
       <div style={{ marginBottom: "clamp(40px, 6vw, 72px)" }}>
-        <FcLogotype color={BG} style={{ width: "100%", maxWidth: 420 }} />
+        <FcLogo size={46} color={BG} withWordmark withTagline tone="light" />
       </div>
 
       {/* Columnas */}
