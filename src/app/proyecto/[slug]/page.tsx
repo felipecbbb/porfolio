@@ -4,6 +4,7 @@ import ProjectDetailClient from "./ProjectDetailClient";
 
 const CUSTOM_SLUGS = new Set([
   "lunin",
+  "icaro",
   "wavepanel",
   "grupo-axial",
   "noa",

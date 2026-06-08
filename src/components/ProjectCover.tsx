@@ -16,6 +16,7 @@ export default function ProjectCover({
   // Slugs que siempre usan cover diseñado (SaaS sin foto + casos editoriales)
   const designedOnly = new Set([
     "lunin",
+    "icaro",
     "wavepanel",
     "noa",
     "la-inquieta",
@@ -44,6 +45,8 @@ export default function ProjectCover({
   switch (project.slug) {
     case "lunin":
       return <LuninCover hover={hover} />;
+    case "icaro":
+      return <IcaroCover hover={hover} />;
     case "wavepanel":
       return <WavepanelCover hover={hover} />;
     case "noa":
@@ -124,6 +127,52 @@ function LuninCover({ hover }: { hover: boolean }) {
           Cocktail Bar
         </span>
       </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------
+   ÍCARO — sneakers · foto real + logo (minimalista)
+   ------------------------------------------------------------ */
+function IcaroCover({ hover }: { hover: boolean }) {
+  return (
+    <div className="absolute inset-0 overflow-hidden" style={{ background: "#0a0a0a" }}>
+      <Image
+        src="/projects/icaro/cover.jpg"
+        alt="ÍCARO"
+        fill
+        quality={92}
+        sizes="(max-width: 440px) 100vw, (max-width: 760px) 50vw, (max-width: 1100px) 33vw, 25vw"
+        style={{
+          objectFit: "cover",
+          objectPosition: "center",
+          transition: "transform 1s cubic-bezier(.2,.8,.2,1)",
+          transform: hover ? "scale(1.05)" : "scale(1)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, transparent 45%, rgba(0,0,0,0.55) 100%)",
+        }}
+      />
+      {/* Logo ÍCARO vectorial (invertido a blanco) */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/projects/icaro/logo.svg"
+        alt=""
+        aria-hidden
+        style={{
+          position: "absolute",
+          left: "50%",
+          bottom: "7cqi",
+          transform: "translateX(-50%)",
+          width: "52cqi",
+          filter: "brightness(0) invert(1)",
+        }}
+      />
     </div>
   );
 }

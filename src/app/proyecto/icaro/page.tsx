@@ -1,0 +1,12 @@
+import type { Metadata } from "next";
+import IcaroDetailClient from "./IcaroDetailClient";
+
+export const metadata: Metadata = {
+  title: "ÍCARO — Felipe Cámara",
+  description:
+    "Tienda online a medida en Shopify para ÍCARO, sneakers hechas a mano en Portugal. Tema custom minimalista, bilingüe, con drops y reseñas.",
+};
+
+export default function IcaroPage() {
+  return <IcaroDetailClient />;
+}
