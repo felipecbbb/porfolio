@@ -91,8 +91,8 @@ const T: Record<Lang, {
     sceneHl: "Gente real.",
     scenePhotos: "Fotos del cliente",
     capTeam: "Equipo · Roche",
-    capVilla: "Villa · drone",
-    capRooftop: "Terraza · golden hour",
+    capVilla: "Clases · Roche",
+    capRooftop: "Playa de Roche",
     proj: "El proyecto",
     projA: "Una web que",
     projHl: "vende surf.",
@@ -186,8 +186,8 @@ const T: Record<Lang, {
     sceneHl: "Real people.",
     scenePhotos: "Client photos",
     capTeam: "Team · Roche",
-    capVilla: "Villa · drone",
-    capRooftop: "Terrace · golden hour",
+    capVilla: "Lessons · Roche",
+    capRooftop: "Roche beach",
     proj: "The project",
     projA: "A site that",
     projHl: "sells surf.",
@@ -281,8 +281,8 @@ const T: Record<Lang, {
     sceneHl: "Echte Menschen.",
     scenePhotos: "Fotos des Kunden",
     capTeam: "Team · Roche",
-    capVilla: "Villa · Drohne",
-    capRooftop: "Terrasse · goldene Stunde",
+    capVilla: "Kurse · Roche",
+    capRooftop: "Strand Roche",
     proj: "Das Projekt",
     projA: "Eine Site, die",
     projHl: "Surf verkauft.",
@@ -584,11 +584,11 @@ export default function EntreOlasDetailClient() {
           className="absolute inset-0 -top-8 -bottom-8"
         >
           <Image
-            src="/projects/entre-olas-surf/aerial-beach.jpg"
+            src="/projects/entre-olas-surf/surf-hero.jpg"
             alt=""
             fill
             priority
-            quality={85}
+            quality={82}
             sizes="100vw"
             className="object-cover"
             style={{ filter: "saturate(0.95)" }}
@@ -784,8 +784,8 @@ export default function EntreOlasDetailClient() {
             style={{ background: NAVY }}
           >
             <Image
-              src="/projects/entre-olas-surf/aerial-house.jpg"
-              alt="Villa from drone"
+              src="/projects/entre-olas-surf/surf-class.jpg"
+              alt="Clase de surf en la Playa de Roche"
               fill
               sizes="(max-width: 768px) 100vw, 58vw"
               quality={85}
@@ -809,8 +809,8 @@ export default function EntreOlasDetailClient() {
             style={{ background: NAVY }}
           >
             <Image
-              src="/projects/entre-olas-surf/rooftop.jpg"
-              alt="Terrace with pool"
+              src="/projects/entre-olas-surf/surf-group.jpg"
+              alt="Surfistas en la Playa de Roche"
               fill
               sizes="(max-width: 768px) 100vw, 58vw"
               quality={85}
@@ -1167,8 +1167,8 @@ export default function EntreOlasDetailClient() {
               style={{ background: NAVY_SOFT }}
             >
               <Image
-                src="/projects/entre-olas-surf/interior-living.jpg"
-                alt="Villa living room"
+                src="/projects/entre-olas-surf/camp-yoga.jpg"
+                alt="Yoga en la playa al amanecer"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 quality={85}
@@ -1180,8 +1180,8 @@ export default function EntreOlasDetailClient() {
               style={{ background: NAVY_SOFT }}
             >
               <Image
-                src="/projects/entre-olas-surf/interior-pool.jpg"
-                alt="Villa pool patio"
+                src="/projects/entre-olas-surf/camp-kids.jpg"
+                alt="Grupo de la surf school en la Playa de Roche"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 quality={85}

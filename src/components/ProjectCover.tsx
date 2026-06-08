@@ -25,20 +25,110 @@ export default function ProjectCover({
     "kujme",
   ]);
 
+  // Logo de imagen disponible (se mostrará en blanco sobre la foto). Para el
+  // resto se usa el NOMBRE tipografiado (como en Lunin).
+  const BRAND_LOGO: Record<string, { src: string; h: string; keepColor?: boolean }> = {
+    "waya-surf": { src: "/projects/waya-surf/waya-isotipo.png", h: "30cqi" },
+    "grupo-axial": { src: "/projects/grupo-axial/logo.png", h: "8.5cqi" },
+    "samba-trips": { src: "/projects/samba-trips/logo.png", h: "26cqi" },
+    "alma-de-nomada": { src: "/projects/alma-de-nomada/logo.png", h: "28cqi" },
+    // Isotipo oficial a todo color (cartel amarillo): no invertir a blanco.
+    "entre-olas-surf": { src: "/projects/entre-olas-surf/isotipo.png", h: "34cqi", keepColor: true },
+  };
+
+  // Logos de TEXTO (sus webs no tienen logo-imagen): replicamos su tipografía.
+  const WORDMARK: Record<string, { text: string; font: string; weight: number; ls: string; sun?: boolean }> = {
+    "lorena-amadio": { text: "Lorena Amadio", font: "var(--font-raleway), system-ui, sans-serif", weight: 500, ls: "0.01em", sun: true },
+  };
+
   // Si tiene foto real y no está en la lista de "solo diseño", muestra la foto
+  // con la marca (logo o nombre) integrada abajo, estilo Lunin/ÍCARO.
   if (project.featuredImage && !designedOnly.has(project.slug)) {
+    const logo = BRAND_LOGO[project.slug];
+    const wm = WORDMARK[project.slug];
     return (
-      <Image
-        src={project.featuredImage}
-        alt={project.title}
-        fill
-        sizes="(max-width: 440px) 100vw, (max-width: 760px) 50vw, (max-width: 1100px) 33vw, 25vw"
-        style={{
-          objectFit: "cover",
-          transition: "transform 1s cubic-bezier(.2,.8,.2,1)",
-          transform: hover ? "scale(1.04)" : "scale(1)",
-        }}
-      />
+      <>
+        <Image
+          src={project.featuredImage}
+          alt={project.title}
+          fill
+          quality={90}
+          sizes="(max-width: 440px) 100vw, (max-width: 760px) 50vw, (max-width: 1100px) 33vw, 25vw"
+          style={{
+            objectFit: "cover",
+            transition: "transform 1s cubic-bezier(.2,.8,.2,1)",
+            transform: hover ? "scale(1.05)" : "scale(1)",
+          }}
+        />
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(180deg, transparent 48%, rgba(0,0,0,0.62) 100%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: "7cqi",
+            display: "flex",
+            justifyContent: "center",
+            padding: "0 8cqi",
+            textAlign: "center",
+            pointerEvents: "none",
+          }}
+        >
+          {logo ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={logo.src}
+              alt={project.title}
+              style={{
+                height: logo.h,
+                width: "auto",
+                maxWidth: "86%",
+                filter: logo.keepColor
+                  ? "drop-shadow(0 6px 22px rgba(0,0,0,0.5))"
+                  : "brightness(0) invert(1)",
+              }}
+            />
+          ) : (
+            <span style={{ display: "inline-flex", alignItems: "center", gap: wm?.sun ? "3.5cqi" : 0, justifyContent: "center" }}>
+              {wm?.sun && (
+                <span
+                  aria-hidden
+                  style={{
+                    width: "7cqi",
+                    height: "7cqi",
+                    borderRadius: "50%",
+                    flexShrink: 0,
+                    background:
+                      "radial-gradient(circle at 48% 44%, rgba(246,164,85,0.98) 0%, rgba(249,181,105,0.7) 38%, rgba(255,238,213,0.12) 92%)",
+                  }}
+                />
+              )}
+              <span
+                style={{
+                  color: "#fff",
+                  fontFamily: wm?.font ?? project.theme.font,
+                  fontWeight: wm?.weight ?? 600,
+                  fontSize: "clamp(17px, 10.5cqi, 40px)",
+                  letterSpacing: wm?.ls ?? "-0.01em",
+                  lineHeight: 1,
+                  textShadow: "0 2px 18px rgba(0,0,0,0.45)",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {wm?.text ?? project.title}
+              </span>
+            </span>
+          )}
+        </div>
+      </>
     );
   }
 

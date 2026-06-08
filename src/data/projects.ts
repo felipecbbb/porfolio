@@ -1050,7 +1050,7 @@ export const projects: ProjectDetail[] = [
     },
     tags: ["Next.js", "Stripe", "Reservas", "E-commerce", "SEO"],
     year: "2025",
-    featuredImage: "/projects/entre-olas-surf/aerial-house.jpg",
+    featuredImage: "/projects/entre-olas-surf/surf-hero.jpg",
     client: "Entre Olas Surf · Cádiz",
     liveUrl: "https://entreolasurf.com",
     longDescription: {
