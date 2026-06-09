@@ -297,6 +297,46 @@ function ReelVideo({ src, poster }: { src: string; poster: string }) {
   );
 }
 
+function LuninCarousel({ images }: { images: string[] }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [idx, setIdx] = useState(0);
+  const go = (d: number) => {
+    const el = ref.current;
+    if (!el) return;
+    const next = Math.max(0, Math.min(images.length - 1, idx + d));
+    el.scrollTo({ left: next * el.clientWidth, behavior: "smooth" });
+  };
+  const btn: React.CSSProperties = {
+    position: "absolute", top: "50%", transform: "translateY(-50%)", width: 42, height: 42,
+    borderRadius: 999, display: "flex", alignItems: "center", justifyContent: "center",
+    background: "rgba(13,13,13,0.55)", backdropFilter: "blur(6px)", color: GOLDB,
+    border: `1px solid ${LINE}`, cursor: "pointer", fontSize: 22, lineHeight: 1, zIndex: 2,
+  };
+  return (
+    <div style={{ position: "relative", maxWidth: 460, margin: "0 auto" }}>
+      <div
+        ref={ref}
+        className="lunin-carousel"
+        onScroll={(e) => setIdx(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))}
+        style={{ display: "flex", overflowX: "auto", scrollSnapType: "x mandatory", borderRadius: 14, border: `1px solid ${LINE}`, scrollbarWidth: "none" }}
+      >
+        {images.map((src, i) => (
+          <div key={src} style={{ flex: "0 0 100%", scrollSnapAlign: "center", aspectRatio: "4 / 5", position: "relative", background: ONYX }}>
+            <Image src={src} alt={`Lunin · carrusel ${i + 1}`} fill sizes="(max-width: 480px) 100vw, 460px" quality={84} style={{ objectFit: "cover" }} />
+          </div>
+        ))}
+      </div>
+      <button type="button" aria-label="Anterior" onClick={() => go(-1)} style={{ ...btn, left: 10 }}>‹</button>
+      <button type="button" aria-label="Siguiente" onClick={() => go(1)} style={{ ...btn, right: 10 }}>›</button>
+      <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 16 }}>
+        {images.map((_, i) => (
+          <span key={i} style={{ width: i === idx ? 22 : 8, height: 8, borderRadius: 999, background: i === idx ? GOLD : LINE, transition: "all 0.3s ease" }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function LuninDetailClient() {
   const { lang } = useLang();
   const t = T[lang];
@@ -572,9 +612,29 @@ export default function LuninDetailClient() {
               : "Neben der Website betreue ich ihre Social-Kanäle: Reels und Stories für Instagram und TikTok."}
           </p>
         </Reveal>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "clamp(12px,1.6vw,20px)", maxWidth: 560, margin: "0 auto" }}>
+        {/* Reels + story (vertical) */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(12px,1.6vw,20px)", maxWidth: 860, margin: "0 auto" }}>
           <Reveal><ReelVideo src={`${IMG}/reel-1.mp4`} poster={`${IMG}/reel-1-poster.jpg`} /></Reveal>
           <Reveal delay={0.08}><ReelVideo src={`${IMG}/reel-2.mp4`} poster={`${IMG}/reel-2-poster.jpg`} /></Reveal>
+          <Reveal delay={0.16}>
+            <div style={{ position: "relative", aspectRatio: "9 / 16", overflow: "hidden", borderRadius: 14, background: ONYX, border: `1px solid ${LINE}` }}>
+              <Image src={`${IMG}/story-cata.jpg`} alt="¿Preparado para probarlo? — story de Lunin" fill sizes="(max-width: 768px) 100vw, 33vw" quality={84} style={{ objectFit: "cover" }} />
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Carrusel para Instagram */}
+        <div style={{ marginTop: "clamp(48px,7vw,88px)" }}>
+          <Reveal>
+            <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.3em", color: GOLDB, fontFamily: SANS, textAlign: "center", margin: "0 0 24px" }}>
+              {lang === "es" ? "Carrusel · Instagram" : lang === "en" ? "Carousel · Instagram" : "Karussell · Instagram"}
+            </p>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <LuninCarousel
+              images={[`${IMG}/carrusel-1.jpg`, `${IMG}/carrusel-2.jpg`, `${IMG}/carrusel-3.jpg`, `${IMG}/carrusel-4.jpg`]}
+            />
+          </Reveal>
         </div>
       </section>
 
