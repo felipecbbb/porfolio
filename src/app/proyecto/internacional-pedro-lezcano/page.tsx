@@ -18,6 +18,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  openGraph: { type: "article", images: ["/projects/internacional-pedro-lezcano/poster.jpg"] },
   title: "Internacional Pedro Lezcano — Felipe Cámara",
   description:
     "Landing institucional para la XVIII Edición del Memorial Pedro Lezcano Montalvo 2026 — torneo internacional de ajedrez en Las Palmas. 22.000€ en premios, 9 rondas, validez FIDE.",

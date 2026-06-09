@@ -18,6 +18,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  openGraph: { type: "article", images: ["/projects/lorena-amadio/lorena-portrait.jpg"] },
   title: "Lorena Amadio — Felipe Cámara",
   description:
     "Web para psicóloga sanitaria. Terapia online, reservas en un solo paso y un espacio que cuida a quien entra.",

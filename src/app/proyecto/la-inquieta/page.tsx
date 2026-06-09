@@ -18,6 +18,7 @@ const yanone = Yanone_Kaffeesatz({
 });
 
 export const metadata: Metadata = {
+  openGraph: { type: "article", images: ["/projects/la-inquieta/cartel.png"] },
   title: "La Inquieta — Felipe Cámara",
   description:
     "Landing andaluza para La Inquieta · Caseta Nº154 de la Feria de Jerez 2026. Arco mozárabe, patrón geométrico, cartel SVG original y reservas por WhatsApp.",

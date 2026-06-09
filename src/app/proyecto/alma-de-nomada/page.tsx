@@ -24,6 +24,7 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  openGraph: { type: "article", images: ["/projects/alma-de-nomada/cover-freedom.jpg"] },
   title: "Alma de Nómada — Felipe Cámara",
   description:
     "Web para travel coach: asesoría de viaje y cambio de vida. 9 destinos, captación de leads y un proceso transparente.",

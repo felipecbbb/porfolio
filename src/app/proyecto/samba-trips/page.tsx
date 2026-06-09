@@ -24,6 +24,7 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  openGraph: { type: "article", images: ["/projects/samba-trips/hero-surf.jpg"] },
   title: "Samba Trips — Felipe Cámara",
   description:
     "Web para Samba Trips: viajes en grupo por Asia, África y Europa. Atlas de destinos, reservas y comunidad.",

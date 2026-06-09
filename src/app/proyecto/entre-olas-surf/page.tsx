@@ -24,6 +24,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
+  openGraph: { type: "article", images: ["/projects/entre-olas-surf/surf-hero.jpg"] },
   title: "Entre Olas Surf — Felipe Cámara",
   description:
     "Web completa para escuela de surf en Playa de Roche: bonos, e-commerce, reservas y surf camps. Cádiz en la pantalla.",
