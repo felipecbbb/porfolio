@@ -259,6 +259,44 @@ function Kicker({ children }: { children: React.ReactNode }) {
   );
 }
 
+function ReelVideo({ src, poster }: { src: string; poster: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+  return (
+    <div style={{ position: "relative", aspectRatio: "9 / 16", overflow: "hidden", borderRadius: 14, background: ONYX, border: `1px solid ${LINE}` }}>
+      <video
+        ref={ref}
+        src={src}
+        poster={poster}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      />
+      <button
+        type="button"
+        aria-label="Activar o silenciar audio"
+        onClick={() => {
+          const v = ref.current;
+          if (!v) return;
+          v.muted = !v.muted;
+          if (!v.muted) v.play().catch(() => {});
+          setMuted(v.muted);
+        }}
+        style={{ position: "absolute", bottom: 12, right: 12, width: 40, height: 40, borderRadius: 999, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(13,13,13,0.55)", backdropFilter: "blur(6px)", color: GOLDB, border: `1px solid ${LINE}`, cursor: "pointer" }}
+      >
+        {muted ? (
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5 6 9H2v6h4l5 4z" /><line x1="23" y1="9" x2="17" y2="15" /><line x1="17" y1="9" x2="23" y2="15" /></svg>
+        ) : (
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5 6 9H2v6h4l5 4z" /><path d="M15.54 8.46a5 5 0 0 1 0 7.07" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14" /></svg>
+        )}
+      </button>
+    </div>
+  );
+}
+
 export default function LuninDetailClient() {
   const { lang } = useLang();
   const t = T[lang];
@@ -514,6 +552,29 @@ export default function LuninDetailClient() {
           <GalleryImg src={`${IMG}/distillery.jpg`} alt="Destilería" span={7} ratio="4 / 3" />
           <GalleryImg src={`${IMG}/plum-vodka.jpg`} alt="Plum Horilka" span={7} ratio="4 / 3" />
           <GalleryImg src={`${IMG}/atmosphere.jpg`} alt="Ambiente Lunin" span={5} ratio="3 / 4" />
+        </div>
+      </section>
+
+      {/* ===== En redes / Reels ===== */}
+      <section style={{ padding: "0 clamp(20px,5vw,77px) clamp(80px,12vw,140px)" }}>
+        <Reveal><Kicker>{lang === "es" ? "Redes sociales" : lang === "en" ? "Social media" : "Social Media"}</Kicker></Reveal>
+        <Reveal delay={0.05}>
+          <h2 style={{ fontFamily: SERIF, fontWeight: 500, fontSize: "clamp(28px,4.2vw,56px)", lineHeight: 1.1, margin: "0 0 12px" }}>
+            {lang === "es" ? "Contenido que produzco para Lunin" : lang === "en" ? "Content I produce for Lunin" : "Content, den ich für Lunin produziere"}
+          </h2>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <p style={{ fontSize: "clamp(15px,1.3vw,18px)", lineHeight: 1.6, color: MUTED, maxWidth: 560, margin: "0 0 40px" }}>
+            {lang === "es"
+              ? "Además de la web, llevo sus redes: reels y stories para Instagram y TikTok."
+              : lang === "en"
+              ? "Beyond the website, I run their social: reels and stories for Instagram and TikTok."
+              : "Neben der Website betreue ich ihre Social-Kanäle: Reels und Stories für Instagram und TikTok."}
+          </p>
+        </Reveal>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "clamp(12px,1.6vw,20px)", maxWidth: 560, margin: "0 auto" }}>
+          <Reveal><ReelVideo src={`${IMG}/reel-1.mp4`} poster={`${IMG}/reel-1-poster.jpg`} /></Reveal>
+          <Reveal delay={0.08}><ReelVideo src={`${IMG}/reel-2.mp4`} poster={`${IMG}/reel-2-poster.jpg`} /></Reveal>
         </div>
       </section>
 
