@@ -312,25 +312,41 @@ function LuninStrip({ items, height }: { items: StripItem[]; height: string }) {
     border: `1px solid ${LINE}`, cursor: "pointer", fontSize: 22, lineHeight: 1, zIndex: 4,
   };
   return (
-    <div style={{ position: "relative" }}>
-      <div
-        ref={ref}
-        className="lunin-carousel"
-        style={{ display: "flex", gap: "clamp(10px,1.4vw,18px)", overflowX: "auto", scrollSnapType: "x mandatory", height, scrollbarWidth: "none", paddingBottom: 2 }}
-      >
+    <>
+      {/* Móvil: cuadrícula 2 columnas (nada de tira) */}
+      <div className="grid grid-cols-2 gap-3 md:hidden">
         {items.map((it, i) => (
-          <div key={i} style={{ height: "100%", aspectRatio: it.ar, flex: "0 0 auto", position: "relative", scrollSnapAlign: "center", borderRadius: 14, overflow: "hidden", background: ONYX, border: `1px solid ${LINE}` }}>
+          <div key={i} className="relative aspect-[4/5] overflow-hidden rounded-xl" style={{ background: ONYX, border: `1px solid ${LINE}` }}>
             {it.kind === "video" ? (
               <StripVideo src={it.src} poster={it.poster ?? ""} />
             ) : (
-              <Image src={it.src} alt={it.alt} fill sizes="(max-width: 768px) 60vw, 30vw" quality={84} style={{ objectFit: "cover" }} />
+              <Image src={it.src} alt={it.alt} fill sizes="50vw" quality={84} style={{ objectFit: "cover" }} />
             )}
           </div>
         ))}
       </div>
-      <button type="button" aria-label="Anterior" onClick={() => go(-1)} style={{ ...btn, left: 6 }}>‹</button>
-      <button type="button" aria-label="Siguiente" onClick={() => go(1)} style={{ ...btn, right: 6 }}>›</button>
-    </div>
+
+      {/* Escritorio: tira horizontal con flechas */}
+      <div className="relative hidden md:block">
+        <div
+          ref={ref}
+          className="lunin-carousel"
+          style={{ display: "flex", gap: "clamp(10px,1.4vw,18px)", overflowX: "auto", scrollSnapType: "x mandatory", height, scrollbarWidth: "none", paddingBottom: 2 }}
+        >
+          {items.map((it, i) => (
+            <div key={i} style={{ height: "100%", aspectRatio: it.ar, flex: "0 0 auto", position: "relative", scrollSnapAlign: "center", borderRadius: 14, overflow: "hidden", background: ONYX, border: `1px solid ${LINE}` }}>
+              {it.kind === "video" ? (
+                <StripVideo src={it.src} poster={it.poster ?? ""} />
+              ) : (
+                <Image src={it.src} alt={it.alt} fill sizes="30vw" quality={84} style={{ objectFit: "cover" }} />
+              )}
+            </div>
+          ))}
+        </div>
+        <button type="button" aria-label="Anterior" onClick={() => go(-1)} style={{ ...btn, left: 6 }}>‹</button>
+        <button type="button" aria-label="Siguiente" onClick={() => go(1)} style={{ ...btn, right: 6 }}>›</button>
+      </div>
+    </>
   );
 }
 
@@ -655,8 +671,8 @@ export default function LuninDetailClient() {
               : "Neben der Website betreue ich ihre Social-Kanäle: Reels und Stories für Instagram und TikTok."}
           </p>
         </Reveal>
-        {/* Reels + story en una línea */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(12px,1.6vw,20px)", maxWidth: 720, margin: "0 auto" }}>
+        {/* Reels + story: móvil apilado (2 col), escritorio en una línea (3) */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 max-w-[420px] sm:max-w-[720px] mx-auto">
           {[
             { kind: "video", src: `${IMG}/reel-1.mp4`, poster: `${IMG}/reel-1-poster.jpg` },
             { kind: "video", src: `${IMG}/reel-2.mp4`, poster: `${IMG}/reel-2-poster.jpg` },
