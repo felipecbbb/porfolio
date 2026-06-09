@@ -334,6 +334,46 @@ function LuninStrip({ items, height }: { items: StripItem[]; height: string }) {
   );
 }
 
+function LuninCarousel({ images }: { images: string[] }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [idx, setIdx] = useState(0);
+  const go = (d: number) => {
+    const el = ref.current;
+    if (!el) return;
+    const next = Math.max(0, Math.min(images.length - 1, idx + d));
+    el.scrollTo({ left: next * el.clientWidth, behavior: "smooth" });
+  };
+  const btn: React.CSSProperties = {
+    position: "absolute", top: "50%", transform: "translateY(-50%)", width: 42, height: 42,
+    borderRadius: 999, display: "flex", alignItems: "center", justifyContent: "center",
+    background: "rgba(13,13,13,0.55)", backdropFilter: "blur(6px)", color: GOLDB,
+    border: `1px solid ${LINE}`, cursor: "pointer", fontSize: 22, lineHeight: 1, zIndex: 2,
+  };
+  return (
+    <div style={{ position: "relative", maxWidth: 440, margin: "0 auto" }}>
+      <div
+        ref={ref}
+        className="lunin-carousel"
+        onScroll={(e) => setIdx(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))}
+        style={{ display: "flex", overflowX: "auto", scrollSnapType: "x mandatory", borderRadius: 14, border: `1px solid ${LINE}`, scrollbarWidth: "none" }}
+      >
+        {images.map((src, i) => (
+          <div key={src} style={{ flex: "0 0 100%", scrollSnapAlign: "center", aspectRatio: "4 / 5", position: "relative", background: ONYX }}>
+            <Image src={src} alt={`Lunin · carrusel ${i + 1}`} fill sizes="(max-width: 480px) 100vw, 440px" quality={84} style={{ objectFit: "cover" }} />
+          </div>
+        ))}
+      </div>
+      <button type="button" aria-label="Anterior" onClick={() => go(-1)} style={{ ...btn, left: 10 }}>‹</button>
+      <button type="button" aria-label="Siguiente" onClick={() => go(1)} style={{ ...btn, right: 10 }}>›</button>
+      <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 16 }}>
+        {images.map((_, i) => (
+          <span key={i} style={{ width: i === idx ? 22 : 8, height: 8, borderRadius: 999, background: i === idx ? GOLD : LINE, transition: "all 0.3s ease" }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function LuninDetailClient() {
   const { lang } = useLang();
   const t = T[lang];
@@ -587,10 +627,13 @@ export default function LuninDetailClient() {
         <LuninStrip
           height="clamp(300px,40vw,420px)"
           items={[
-            { kind: "image", src: `${IMG}/cover-cherry.jpg`, alt: "Licor de cereza", ar: "3 / 4" },
-            { kind: "image", src: `${IMG}/distillery.jpg`, alt: "Destilería", ar: "4 / 3" },
-            { kind: "image", src: `${IMG}/plum-vodka.jpg`, alt: "Plum Horilka", ar: "4 / 3" },
-            { kind: "image", src: `${IMG}/atmosphere.jpg`, alt: "Ambiente Lunin", ar: "3 / 4" },
+            { kind: "image", src: `${IMG}/cover-cherry.jpg`, alt: "Licor de cereza Lunin", ar: "2 / 3" },
+            { kind: "image", src: `${IMG}/bottle-gin.jpg`, alt: "Dry Gin Lunin", ar: "2 / 3" },
+            { kind: "image", src: `${IMG}/dry-gin-flatlay.jpg`, alt: "Dry Gin · flatlay", ar: "3 / 2" },
+            { kind: "image", src: `${IMG}/bottle-brandy.jpg`, alt: "Brandy de saúco y miel", ar: "2 / 3" },
+            { kind: "image", src: `${IMG}/plum-vodka.jpg`, alt: "Plum Horilka", ar: "2 / 3" },
+            { kind: "image", src: `${IMG}/bottle-liqueur.jpg`, alt: "Licor Lunin", ar: "2 / 3" },
+            { kind: "image", src: `${IMG}/atmosphere.jpg`, alt: "Copas · ambiente Lunin", ar: "3 / 4" },
           ]}
         />
       </section>
@@ -612,21 +655,36 @@ export default function LuninDetailClient() {
               : "Neben der Website betreue ich ihre Social-Kanäle: Reels und Stories für Instagram und TikTok."}
           </p>
         </Reveal>
-        {/* Reels + story + carrusel — todo en una sola línea */}
-        <Reveal>
-          <LuninStrip
-            height="clamp(300px,42vw,400px)"
-            items={[
-              { kind: "video", src: `${IMG}/reel-1.mp4`, poster: `${IMG}/reel-1-poster.jpg`, alt: "Reel de Lunin", ar: "9 / 16" },
-              { kind: "video", src: `${IMG}/reel-2.mp4`, poster: `${IMG}/reel-2-poster.jpg`, alt: "Reel de Lunin", ar: "9 / 16" },
-              { kind: "image", src: `${IMG}/story-cata.jpg`, alt: "¿Preparado para probarlo? — story de Lunin", ar: "9 / 16" },
-              { kind: "image", src: `${IMG}/carrusel-1.jpg`, alt: "Lunin · carrusel 1", ar: "4 / 5" },
-              { kind: "image", src: `${IMG}/carrusel-2.jpg`, alt: "Lunin · carrusel 2", ar: "4 / 5" },
-              { kind: "image", src: `${IMG}/carrusel-3.jpg`, alt: "Lunin · carrusel 3", ar: "4 / 5" },
-              { kind: "image", src: `${IMG}/carrusel-4.jpg`, alt: "Lunin · carrusel 4", ar: "4 / 5" },
-            ]}
-          />
-        </Reveal>
+        {/* Reels + story en una línea */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(12px,1.6vw,20px)", maxWidth: 720, margin: "0 auto" }}>
+          {[
+            { kind: "video", src: `${IMG}/reel-1.mp4`, poster: `${IMG}/reel-1-poster.jpg` },
+            { kind: "video", src: `${IMG}/reel-2.mp4`, poster: `${IMG}/reel-2-poster.jpg` },
+            { kind: "image", src: `${IMG}/story-cata.jpg`, poster: "" },
+          ].map((it, i) => (
+            <Reveal key={i} delay={i * 0.08}>
+              <div style={{ position: "relative", aspectRatio: "9 / 16", overflow: "hidden", borderRadius: 14, background: ONYX, border: `1px solid ${LINE}` }}>
+                {it.kind === "video" ? (
+                  <StripVideo src={it.src} poster={it.poster} />
+                ) : (
+                  <Image src={it.src} alt="¿Preparado para probarlo? — story de Lunin" fill sizes="(max-width: 768px) 100vw, 33vw" quality={84} style={{ objectFit: "cover" }} />
+                )}
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* Carrusel para Instagram (colapsado, una sola línea) */}
+        <div style={{ marginTop: "clamp(40px,6vw,72px)" }}>
+          <Reveal>
+            <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.3em", color: GOLDB, fontFamily: SANS, textAlign: "center", margin: "0 0 24px" }}>
+              {lang === "es" ? "Carrusel · Instagram" : lang === "en" ? "Carousel · Instagram" : "Karussell · Instagram"}
+            </p>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <LuninCarousel images={[`${IMG}/carrusel-1.jpg`, `${IMG}/carrusel-2.jpg`, `${IMG}/carrusel-3.jpg`, `${IMG}/carrusel-4.jpg`]} />
+          </Reveal>
+        </div>
       </section>
 
       {/* ===== CTA ===== */}
