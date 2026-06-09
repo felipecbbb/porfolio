@@ -561,6 +561,8 @@ const bonos = [
 export default function EntreOlasDetailClient() {
   const { lang } = useLang();
   const t = T[lang];
+  const campVideoRef = useRef<HTMLVideoElement>(null);
+  const [campMuted, setCampMuted] = useState(true);
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: heroProgress } = useScroll({
     target: heroRef,
@@ -1089,78 +1091,82 @@ export default function EntreOlasDetailClient() {
             </p>
           </motion.div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={
-              {
-                visible: { transition: { staggerChildren: 0.08 } },
-                hidden: {},
-              } as Variants
-            }
-            className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4"
-          >
-            {t.campStats.map((f) => (
-              <motion.div
-                key={f.u}
-                variants={
-                  {
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
-                  } as Variants
-                }
-                className="border-t pt-4"
-                style={{ borderColor: "rgba(255,253,247,0.2)" }}
+          {/* Vídeo del camp (autoplay · loop · mudo · control solo de audio) + datos */}
+          <div className="mt-12 md:mt-16 grid md:grid-cols-2 gap-8 md:gap-14 md:items-center">
+            <motion.div
+              initial={{ opacity: 0.01, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.9, ease: EASE }}
+              className="relative aspect-[9/16] w-full max-w-[300px] mx-auto md:mx-0 overflow-hidden rounded-xl"
+              style={{ background: NAVY_SOFT }}
+            >
+              <video
+                ref={campVideoRef}
+                src="/projects/entre-olas-surf/surfcamp-video.mp4"
+                poster="/projects/entre-olas-surf/surfcamp-poster.jpg"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-cover"
+              />
+              <button
+                type="button"
+                aria-label="Activar o silenciar audio"
+                onClick={() => {
+                  const v = campVideoRef.current;
+                  if (!v) return;
+                  v.muted = !v.muted;
+                  if (!v.muted) v.play().catch(() => {});
+                  setCampMuted(v.muted);
+                }}
+                className="absolute bottom-3 right-3 h-11 w-11 rounded-full flex items-center justify-center transition hover:scale-105"
+                style={{ background: "rgba(15,47,57,0.55)", backdropFilter: "blur(6px)", color: "#fff", border: "1px solid rgba(255,255,255,0.25)" }}
               >
-                <p
-                  className="text-4xl md:text-6xl leading-none"
-                  style={{ fontFamily: DISPLAY, color: YELLOW }}
-                >
-                  {f.n}
-                </p>
-                <p
-                  className="mt-2 text-[10px] uppercase tracking-[0.3em]"
-                  style={{ color: "rgba(255,253,247,0.5)", fontFamily: MONO }}
-                >
-                  {f.u}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
+                {campMuted ? (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5 6 9H2v6h4l5 4z" /><line x1="23" y1="9" x2="17" y2="15" /><line x1="17" y1="9" x2="23" y2="15" /></svg>
+                ) : (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5 6 9H2v6h4l5 4z" /><path d="M15.54 8.46a5 5 0 0 1 0 7.07" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14" /></svg>
+                )}
+              </button>
+            </motion.div>
 
-          {/* Vídeo del surf camp (vertical, de la web de Entre Olas) */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.8, ease: EASE }}
+              className="grid grid-cols-2 gap-x-6 gap-y-8"
+            >
+              {t.campStats.map((f) => (
+                <div key={f.u} className="border-t pt-4" style={{ borderColor: "rgba(255,253,247,0.2)" }}>
+                  <p className="text-4xl md:text-6xl leading-none" style={{ fontFamily: DISPLAY, color: YELLOW }}>{f.n}</p>
+                  <p className="mt-2 text-[10px] uppercase tracking-[0.3em]" style={{ color: "rgba(255,253,247,0.5)", fontFamily: MONO }}>{f.u}</p>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* La villa privada */}
           <motion.div
             initial={{ opacity: 0.01, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
+            viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.9, ease: EASE }}
-            className="mt-14 relative aspect-[9/16] w-full max-w-[320px] mx-auto overflow-hidden rounded-lg"
-            style={{ background: NAVY_SOFT }}
+            className="mt-10 md:mt-14"
           >
-            <video
-              src="/projects/entre-olas-surf/surfcamp-video.mp4"
-              poster="/projects/entre-olas-surf/surfcamp-poster.jpg"
-              controls
-              playsInline
-              preload="none"
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-
-          {/* La villa / casa del surf camp */}
-          <motion.div
-            initial={{ opacity: 0.01, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.9, ease: EASE }}
-            className="mt-4 grid grid-cols-2 gap-3 md:gap-4"
-          >
-            <div className="relative aspect-[3/2] overflow-hidden" style={{ background: NAVY_SOFT }}>
-              <Image src="/projects/entre-olas-surf/casa-017.jpg" alt="Casa del surf camp en Roche" fill sizes="50vw" quality={82} className="object-cover" />
-            </div>
-            <div className="relative aspect-[3/2] overflow-hidden" style={{ background: NAVY_SOFT }}>
-              <Image src="/projects/entre-olas-surf/casa-020.jpg" alt="Villa del surf camp · +1000 m²" fill sizes="50vw" quality={82} className="object-cover" />
+            <p className="text-[10px] uppercase tracking-[0.3em] mb-4" style={{ color: YELLOW, fontFamily: MONO }}>
+              {t.villaCapB} · {t.villaCapA}
+            </p>
+            <div className="grid grid-cols-2 gap-3 md:gap-4">
+              <div className="relative aspect-[3/2] overflow-hidden rounded-lg" style={{ background: NAVY_SOFT }}>
+                <Image src="/projects/entre-olas-surf/casa-017.jpg" alt="Casa del surf camp en Roche" fill sizes="50vw" quality={82} className="object-cover" />
+              </div>
+              <div className="relative aspect-[3/2] overflow-hidden rounded-lg" style={{ background: NAVY_SOFT }}>
+                <Image src="/projects/entre-olas-surf/casa-020.jpg" alt="Villa del surf camp · +1000 m²" fill sizes="50vw" quality={82} className="object-cover" />
+              </div>
             </div>
           </motion.div>
 
