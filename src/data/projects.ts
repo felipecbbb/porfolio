@@ -100,7 +100,7 @@ export const projects: ProjectDetail[] = [
       tagText: "#d4b988",
       heroGradient: "linear-gradient(180deg, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.95) 100%)",
     },
-    featuredImage: "/projects/arga-premium-cars/cars/gt3rs.jpg",
+    featuredImage: "/projects/arga-premium-cars/cars/f430.jpg",
     gallery: [
       { label: { es: "El line-up", en: "The line-up", de: "Das Line-up" }, description: { es: "Coches premium importados de Alemania.", en: "Premium cars imported from Germany.", de: "Premium-Autos aus Deutschland." } },
       { label: { es: "Desde Alemania", en: "From Germany", de: "Aus Deutschland" }, description: { es: "Búsqueda y verificación en origen.", en: "Sourcing and verification at origin.", de: "Beschaffung und Prüfung vor Ort." } },
