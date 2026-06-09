@@ -244,7 +244,7 @@ export default function SobreMiClient() {
           <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-[11px] uppercase tracking-[0.35em] mb-5" style={{ color: YELLOW }}>
             {t.eyebrow} · {t.intro}
           </motion.p>
-          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.05 }} className="text-6xl md:text-[8.5rem] font-bold leading-[0.9] tracking-tight max-w-5xl">
+          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.05 }} className="text-5xl sm:text-6xl md:text-[8.5rem] font-bold leading-[0.9] tracking-tight max-w-5xl">
             {t.title1} <Serif style={{ color: YELLOW }}>{t.titleItalic}</Serif>
           </motion.h1>
         </div>
@@ -270,7 +270,7 @@ export default function SobreMiClient() {
 
           {/* vídeo vertical + 4 fotos */}
           <div className="mt-12 grid md:grid-cols-12 gap-3 md:gap-4">
-            <motion.div {...fade()} className="md:col-span-4 relative aspect-[9/16] overflow-hidden rounded-lg" style={{ border: `1px solid ${LINE}22` }}>
+            <motion.div {...fade()} className="md:col-span-4 relative aspect-[9/16] w-full max-w-[280px] mx-auto md:max-w-none md:mx-0 overflow-hidden rounded-lg" style={{ border: `1px solid ${LINE}22` }}>
               <Clip src={`${A}/before-stage.mp4`} />
               <Cap>{t.ev.cap1}</Cap>
             </motion.div>
