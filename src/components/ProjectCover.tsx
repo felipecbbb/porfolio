@@ -34,6 +34,8 @@ export default function ProjectCover({
     "alma-de-nomada": { src: "/projects/alma-de-nomada/logo.png", h: "28cqi" },
     // Isotipo oficial a todo color (cartel amarillo): no invertir a blanco.
     "entre-olas-surf": { src: "/projects/entre-olas-surf/isotipo.png", h: "34cqi", keepColor: true },
+    // Logo blanco (wordmark): se renderiza en blanco sobre la foto.
+    "arga-premium-cars": { src: "/projects/arga-premium-cars/logo.png", h: "9cqi" },
   };
 
   // Logos de TEXTO (sus webs no tienen logo-imagen): replicamos su tipografía.

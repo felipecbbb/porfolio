@@ -18,13 +18,20 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
+  /* clip (no hidden) contiene cualquier desbordamiento horizontal SIN romper
+     position: sticky ni crear un contenedor de scroll extra. Mata el
+     desplazamiento horizontal en móvil de raíz. */
+  overflow-x: clip;
 }
 
 body {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   /* Safe-area aware on iOS — does not affect non-notched devices */

@@ -43,6 +43,71 @@ export interface ProjectDetail {
 
 export const projects: ProjectDetail[] = [
   {
+    slug: "arga-premium-cars",
+    id: "15",
+    title: "ARGA Premium Cars",
+    category: {
+      es: "Web — Importación de coches premium",
+      en: "Web — Premium car import",
+      de: "Web — Premium-Autoimport",
+    },
+    description: {
+      es: "Web completa para un importador de coches premium de Alemania a España. Estética dark & premium, blog optimizado para SEO y todo el proceso de importación explicado paso a paso.",
+      en: "Full website for a premium car importer bringing cars from Germany to Spain. Dark & premium look, SEO-optimised blog and the entire import process explained step by step.",
+      de: "Komplette Website für einen Premium-Autoimporteur aus Deutschland nach Spanien. Dark & Premium-Look, SEO-optimierter Blog und der gesamte Importprozess Schritt für Schritt erklärt.",
+    },
+    tags: ["HTML5", "CSS3", "JavaScript", "SEO", "Dark/Light", "Sin dependencias"],
+    metrics: {
+      es: "Web + blog SEO · Light/Dark · Proceso de importación 100% explicado",
+      en: "Website + SEO blog · Light/Dark · Full import process explained",
+      de: "Website + SEO-Blog · Light/Dark · Kompletter Importprozess erklärt",
+    },
+    year: "2026",
+    client: "ARGA Premium Cars · Asturias",
+    liveUrl: "https://argapremiumcars.es",
+    longDescription: {
+      es: "ARGA Premium Cars importa coches premium de Alemania a España bajo pedido, con verificación profesional y proceso 100% gestionado. Diseñé y desarrollé su web entera: una estética dark y premium con acentos dorados, fiel a la marca (rebrand de AR Premium Cars). Web rápida en HTML/CSS/JS sin dependencias, con modo claro/oscuro, formulario de presupuesto, catálogo de coches y un blog optimizado para SEO con artículos sobre cómo importar un coche de Alemania (costes, documentación, ITV, mejores modelos). Todo pensado para captar clientes que buscan importar en Google.",
+      en: "ARGA Premium Cars imports premium cars from Germany to Spain on demand, with professional verification and a fully managed process. I designed and built their entire website: a dark, premium look with gold accents, true to the brand (a rebrand of AR Premium Cars). Fast HTML/CSS/JS site with zero dependencies, light/dark mode, quote form, car catalogue and an SEO-optimised blog with articles on how to import a car from Germany (costs, paperwork, registration, best models). All built to capture clients searching to import on Google.",
+      de: "ARGA Premium Cars importiert Premium-Autos auf Bestellung aus Deutschland nach Spanien — mit professioneller Prüfung und vollständig gemanagtem Prozess. Ich gestaltete und entwickelte die gesamte Website: ein dunkler, edler Look mit Goldakzenten, markentreu (Rebrand von AR Premium Cars). Schnelle HTML/CSS/JS-Seite ohne Abhängigkeiten, Hell-/Dunkelmodus, Angebotsformular, Fahrzeugkatalog und ein SEO-Blog mit Artikeln zum Autoimport aus Deutschland.",
+    },
+    challenge: {
+      es: "La marca venía de un rebrand (AR → ARGA) y necesitaba una web premium que transmitiera confianza para una compra de alto importe, y que además posicionara en Google para búsquedas como «importar coche de Alemania». Sin confianza no hay venta, y sin SEO no hay clientes.",
+      en: "The brand came from a rebrand (AR → ARGA) and needed a premium site that conveyed trust for a high-ticket purchase, while also ranking on Google for searches like “import car from Germany”. No trust, no sale — and no SEO, no clients.",
+      de: "Die Marke kam aus einem Rebrand (AR → ARGA) und brauchte eine Premium-Website, die Vertrauen für einen hochpreisigen Kauf vermittelt und zugleich bei Google für Suchen wie „Auto aus Deutschland importieren“ rankt.",
+    },
+    solution: {
+      es: "Una web dark/premium con acento dorado y header negro (norma de marca), centrada en explicar el proceso de importación con claridad y en generar confianza: verificación, garantía y acompañamiento. Añadí un blog SEO con guías largas sobre importación, formulario de presupuesto y modo claro/oscuro. Cero dependencias = carga instantánea.",
+      en: "A dark/premium site with a gold accent and black header (brand rule), focused on explaining the import process clearly and building trust: verification, warranty, hand-holding. I added an SEO blog with long import guides, a quote form and light/dark mode. Zero dependencies = instant load.",
+      de: "Eine dunkle/edle Website mit Goldakzent und schwarzem Header (Markenregel), die den Importprozess klar erklärt und Vertrauen aufbaut. Dazu ein SEO-Blog mit langen Import-Guides, ein Angebotsformular und Hell-/Dunkelmodus. Null Abhängigkeiten = sofortiges Laden.",
+    },
+    results: {
+      es: ["Web premium fiel a la marca (negro + dorado)", "Blog SEO con guías de importación", "Carga instantánea (sin frameworks)", "Modo claro/oscuro + 100% responsive"],
+      en: ["Premium site true to the brand (black + gold)", "SEO blog with import guides", "Instant load (no frameworks)", "Light/dark mode + fully responsive"],
+      de: ["Premium-Website markentreu (Schwarz + Gold)", "SEO-Blog mit Import-Guides", "Sofortiges Laden (ohne Frameworks)", "Hell-/Dunkelmodus + voll responsiv"],
+    },
+    features: {
+      es: ["Estética dark/premium con dorado", "Blog optimizado para SEO", "Formulario de presupuesto", "Catálogo de coches", "Modo claro/oscuro persistente", "Animaciones al scroll"],
+      en: ["Dark/premium look with gold", "SEO-optimised blog", "Quote form", "Car catalogue", "Persistent light/dark mode", "Scroll animations"],
+      de: ["Dark/Premium-Look mit Gold", "SEO-optimierter Blog", "Angebotsformular", "Fahrzeugkatalog", "Persistenter Hell-/Dunkelmodus", "Scroll-Animationen"],
+    },
+    theme: {
+      bg: "#0a0a0a",
+      fg: "#ffffff",
+      accent: "#c5a572",
+      accentLight: "#d4b988",
+      font: "var(--font-geist-sans), system-ui, sans-serif",
+      tagBg: "rgba(197,165,114,0.14)",
+      tagText: "#d4b988",
+      heroGradient: "linear-gradient(180deg, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.95) 100%)",
+    },
+    featuredImage: "/projects/arga-premium-cars/hero.jpg",
+    gallery: [
+      { label: { es: "El line-up", en: "The line-up", de: "Das Line-up" }, description: { es: "Coches premium importados de Alemania.", en: "Premium cars imported from Germany.", de: "Premium-Autos aus Deutschland." } },
+      { label: { es: "Desde Alemania", en: "From Germany", de: "Aus Deutschland" }, description: { es: "Búsqueda y verificación en origen.", en: "Sourcing and verification at origin.", de: "Beschaffung und Prüfung vor Ort." } },
+      { label: { es: "El equipo", en: "The team", de: "Das Team" }, description: { es: "Trato cercano y acompañamiento.", en: "Close, hands-on service.", de: "Persönliche Begleitung." } },
+    ],
+  },
+  {
     slug: "lunin",
     id: "01",
     title: "Lunin Cocktail Bar",
