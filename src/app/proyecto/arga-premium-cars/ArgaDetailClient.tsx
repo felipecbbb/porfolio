@@ -241,7 +241,7 @@ export default function ArgaDetailClient() {
         <motion.div {...fade} className="flex flex-wrap items-center justify-center gap-x-10 gap-y-8">
           {BRANDS.map((b) => (
             // eslint-disable-next-line @next/next/no-img-element
-            <img key={b} src={`/projects/arga-premium-cars/brands/${b}.svg`} alt={b} className="h-7 md:h-9 w-auto" style={{ filter: "brightness(0) invert(1)", opacity: 0.55 }} />
+            <img key={b} src={`/projects/arga-premium-cars/brands/${b}.svg`} alt={b} width={40} height={40} className="h-9 w-9 md:h-11 md:w-11 object-contain" style={{ filter: "brightness(0) invert(1)", opacity: 0.6 }} />
           ))}
         </motion.div>
       </section>
