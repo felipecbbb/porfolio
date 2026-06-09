@@ -9,7 +9,7 @@ const INK = "#1a1916";
 const BG = "#ffffff";
 const YELLOW = "#ece84d";
 
-type Active = "home" | "projects" | "contact" | "none";
+type Active = "home" | "projects" | "about" | "contact" | "none";
 
 export function LangSwitcher({ tone = "light" }: { tone?: "light" | "dark" }) {
   const { lang, setLang } = useLang();
@@ -165,6 +165,9 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
           <Link href="/proyectos" style={linkStyle(active === "projects")}>
             {t.nav.projects}
           </Link>
+          <Link href="/sobre-mi" style={linkStyle(active === "about")}>
+            {t.nav.about}
+          </Link>
           <Link href="/#contacto" style={linkStyle(active === "contact")}>
             {t.nav.contact}
           </Link>
@@ -280,6 +283,14 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
             style={{ color: BG, textDecoration: "none", padding: "10px 0" }}
           >
             {t.nav.projects}
+            <span style={{ color: YELLOW }}>.</span>
+          </Link>
+          <Link
+            onClick={() => setOpen(false)}
+            href="/sobre-mi"
+            style={{ color: BG, textDecoration: "none", padding: "10px 0" }}
+          >
+            {t.nav.about}
             <span style={{ color: YELLOW }}>.</span>
           </Link>
           <Link

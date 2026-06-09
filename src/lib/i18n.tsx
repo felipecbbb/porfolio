@@ -14,6 +14,7 @@ type Dict = {
   nav: {
     home: string;
     projects: string;
+    about: string;
     contact: string;
   };
   hero: {
@@ -106,7 +107,7 @@ type Dict = {
 };
 
 const ES: Dict = {
-  nav: { home: "Inicio", projects: "Proyectos", contact: "Contacto" },
+  nav: { home: "Inicio", projects: "Proyectos", about: "Sobre mí", contact: "Contacto" },
   hero: {
     badge: "Desarrollo · Estrategia · Automatización",
     available: "Disponible para nuevos proyectos",
@@ -296,7 +297,7 @@ const ES: Dict = {
 };
 
 const EN: Dict = {
-  nav: { home: "Home", projects: "Work", contact: "Contact" },
+  nav: { home: "Home", projects: "Work", about: "About", contact: "Contact" },
   hero: {
     badge: "Development · Strategy · Automation",
     available: "Available for new projects",
@@ -485,7 +486,7 @@ const EN: Dict = {
 };
 
 const DE: Dict = {
-  nav: { home: "Start", projects: "Projekte", contact: "Kontakt" },
+  nav: { home: "Start", projects: "Projekte", about: "Über mich", contact: "Kontakt" },
   hero: {
     badge: "Entwicklung · Strategie · Automatisierung",
     available: "Verfügbar für neue Projekte",
