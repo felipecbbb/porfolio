@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: "ARGA Premium Cars — Felipe Cámara",
     description:
       "Web premium para un importador de coches de Alemania. Dark & dorado, blog SEO y formulario de presupuesto.",
-    images: ["/projects/arga-premium-cars/hero.jpg"],
+    images: ["/projects/arga-premium-cars/cars/gt3rs.jpg"],
   },
 };
 

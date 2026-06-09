@@ -17,6 +17,18 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 const BRANDS = ["porsche", "bmw", "mercedes", "audi", "ferrari", "lamborghini", "bentley", "rollsroyce"];
 
+const CARS = [
+  { f: "gt3rs.jpg", n: "Porsche 911 GT3 RS" },
+  { f: "f430.jpg", n: "Ferrari F430" },
+  { f: "urus.jpg", n: "Lamborghini Urus" },
+  { f: "rs6.jpg", n: "Audi RS6" },
+  { f: "gt3.jpg", n: "Porsche 911 GT3" },
+  { f: "panamera.jpg", n: "Porsche Panamera" },
+  { f: "m2cs.jpg", n: "BMW M2 CS" },
+  { f: "911gts.jpg", n: "Porsche 911 GTS" },
+  { f: "cabrio.jpg", n: "Porsche 911 Cabrio" },
+];
+
 type Dict = {
   back: string;
   badge: string;
@@ -175,11 +187,11 @@ export default function ArgaDetailClient() {
       {/* HERO */}
       <section className="relative min-h-dvh flex items-end overflow-hidden">
         <Image
-          src="/projects/arga-premium-cars/hero.jpg"
-          alt="ARGA Premium Cars"
+          src="/projects/arga-premium-cars/cars/gt3rs.jpg"
+          alt="Porsche 911 GT3 RS importado por ARGA Premium Cars"
           fill
           priority
-          quality={84}
+          quality={86}
           sizes="100vw"
           className="object-cover"
         />
@@ -199,6 +211,12 @@ export default function ArgaDetailClient() {
         <motion.p {...fade} className="text-[11px] uppercase tracking-[0.3em] mb-5" style={{ color: GOLD, fontFamily: MONO }}>{t.introLabel}</motion.p>
         <motion.h2 {...fade} className="text-3xl md:text-5xl font-bold leading-[1.1] tracking-tight">{t.introTitle}</motion.h2>
         <motion.p {...fade} className="mt-7 text-lg leading-relaxed text-white/70 max-w-2xl">{t.introText}</motion.p>
+      </section>
+
+      {/* BANDA CINEMÁTICA */}
+      <section className="relative w-full aspect-[21/9] overflow-hidden">
+        <Image src="/projects/arga-premium-cars/garaje.jpg" alt="" fill quality={82} sizes="100vw" className="object-cover" />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(10,10,10,0.45) 0%, transparent 35%, rgba(10,10,10,0.7) 100%)" }} />
       </section>
 
       {/* PROCESS */}
@@ -228,18 +246,24 @@ export default function ArgaDetailClient() {
         </motion.div>
       </section>
 
-      {/* GALLERY */}
-      <section className="mx-auto max-w-6xl px-5 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {[
-            { src: "/projects/arga-premium-cars/garaje.jpg", cls: "md:col-span-2 aspect-[16/10]" },
-            { src: "/projects/arga-premium-cars/alemania.jpg", cls: "aspect-[16/10] md:aspect-auto" },
-            { src: "/projects/arga-premium-cars/equipo.jpg", cls: "aspect-[16/10]" },
-            { src: "/projects/arga-premium-cars/comunidad.jpg", cls: "aspect-[16/10]" },
-            { src: "/projects/arga-premium-cars/finca.jpg", cls: "aspect-[16/10]" },
-          ].map((g, i) => (
-            <motion.div key={i} {...fade} transition={{ ...fade.transition, delay: (i % 3) * 0.08 }} className={`relative overflow-hidden rounded-lg ${g.cls}`} style={{ background: ONYX }}>
-              <Image src={g.src} alt="" fill quality={82} sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+      {/* CATÁLOGO DE COCHES */}
+      <section className="mx-auto max-w-6xl px-5 py-20">
+        <motion.p {...fade} className="text-[11px] uppercase tracking-[0.3em] mb-3" style={{ color: GOLD, fontFamily: MONO }}>{t.galLabel}</motion.p>
+        <motion.h2 {...fade} className="text-3xl md:text-5xl font-bold tracking-tight mb-12">
+          {lang === "es" ? "Algunos coches importados" : lang === "en" ? "Some imported cars" : "Einige importierte Autos"}
+        </motion.h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {CARS.map((c, i) => (
+            <motion.div
+              key={i}
+              {...fade}
+              transition={{ ...fade.transition, delay: (i % 3) * 0.07 }}
+              className="group relative overflow-hidden rounded-lg aspect-[4/3]"
+              style={{ background: ONYX }}
+            >
+              <Image src={`/projects/arga-premium-cars/cars/${c.f}`} alt={c.n} fill quality={80} sizes="(max-width: 768px) 50vw, 33vw" className="object-cover transition duration-700 group-hover:scale-105" />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 50%, rgba(10,10,10,0.85) 100%)" }} />
+              <span className="absolute bottom-3 left-3 right-3 text-sm font-semibold">{c.n}</span>
             </motion.div>
           ))}
         </div>
