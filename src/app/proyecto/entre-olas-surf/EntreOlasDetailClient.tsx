@@ -716,7 +716,27 @@ export default function EntreOlasDetailClient() {
 
       <Marquee items={t.marqueeItems} color={NAVY} bg={SAND} />
 
-      <section className="px-6 md:px-12 py-16 md:py-28">
+      {/* Vídeo de la escuela (el del inicio de la web de Entre Olas) */}
+      <section className="px-6 md:px-12 pt-12 md:pt-16">
+        <motion.div
+          initial={{ opacity: 0.01, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.9, ease: EASE }}
+          className="max-w-4xl mx-auto relative aspect-video overflow-hidden"
+          style={{ background: NAVY }}
+        >
+          <iframe
+            src="https://www.youtube.com/embed/reT-B1fcJZY?rel=0&modestbranding=1"
+            title="Entre Olas Surf"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            className="absolute inset-0 w-full h-full"
+          />
+        </motion.div>
+      </section>
+
+      <section className="px-6 md:px-12 py-10 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -755,7 +775,7 @@ export default function EntreOlasDetailClient() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.9, ease: EASE }}
-            className="md:col-span-5 md:row-span-2 relative aspect-[3/4] overflow-hidden"
+            className="md:col-span-5 md:row-span-2 relative aspect-[4/5] overflow-hidden"
             style={{ background: NAVY }}
           >
             <Image
@@ -780,7 +800,7 @@ export default function EntreOlasDetailClient() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.05 }}
             transition={{ delay: 0.1, duration: 0.9, ease: EASE }}
-            className="md:col-span-7 relative aspect-[16/10] overflow-hidden"
+            className="md:col-span-7 relative aspect-[16/9] overflow-hidden"
             style={{ background: NAVY }}
           >
             <Image
@@ -805,7 +825,7 @@ export default function EntreOlasDetailClient() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.05 }}
             transition={{ delay: 0.2, duration: 0.9, ease: EASE }}
-            className="md:col-span-7 relative aspect-[16/10] overflow-hidden"
+            className="md:col-span-7 relative aspect-[16/9] overflow-hidden"
             style={{ background: NAVY }}
           >
             <Image
@@ -826,7 +846,7 @@ export default function EntreOlasDetailClient() {
         </div>
       </section>
 
-      <section className="px-6 md:px-12 py-20 md:py-32">
+      <section className="px-6 md:px-12 py-12 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_1.3fr] gap-10 md:gap-20">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -901,7 +921,7 @@ export default function EntreOlasDetailClient() {
       </section>
 
       <section
-        className="px-6 md:px-12 py-20 md:py-32 overflow-hidden"
+        className="px-6 md:px-12 py-12 md:py-20 overflow-hidden"
         style={{ background: SAND }}
       >
         <motion.div
@@ -993,7 +1013,7 @@ export default function EntreOlasDetailClient() {
         </div>
       </section>
 
-      <section className="px-6 md:px-12 py-20 md:py-32">
+      <section className="px-6 md:px-12 py-12 md:py-20">
         <div className="flex items-baseline justify-between mb-12 flex-wrap gap-3">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -1036,7 +1056,7 @@ export default function EntreOlasDetailClient() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.05 }}
           transition={{ duration: 1, ease: EASE }}
-          className="relative w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden"
+          className="relative w-full aspect-[2/1] md:aspect-[21/9] overflow-hidden"
           style={{ background: NAVY }}
         >
           <Image
@@ -1073,7 +1093,7 @@ export default function EntreOlasDetailClient() {
       </section>
 
       <section
-        className="px-6 md:px-12 py-20 md:py-32 relative overflow-hidden"
+        className="px-6 md:px-12 py-12 md:py-20 relative overflow-hidden"
         style={{ background: NAVY, color: BG }}
       >
         <motion.div
@@ -1155,38 +1175,38 @@ export default function EntreOlasDetailClient() {
             ))}
           </motion.div>
 
+          {/* Vídeo del surf camp (de la web de Entre Olas) */}
           <motion.div
             initial={{ opacity: 0.01, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.9, ease: EASE }}
-            className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4"
+            className="mt-14 relative aspect-video max-h-[60vh] overflow-hidden mx-auto"
+            style={{ background: NAVY_SOFT }}
           >
-            <div
-              className="relative aspect-[4/3] overflow-hidden"
-              style={{ background: NAVY_SOFT }}
-            >
-              <Image
-                src="/projects/entre-olas-surf/camp-yoga.jpg"
-                alt="Yoga en la playa al amanecer"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                quality={85}
-                className="object-cover"
-              />
+            <video
+              src="/projects/entre-olas-surf/surfcamp-video.mp4"
+              poster="/projects/entre-olas-surf/surfcamp-poster.jpg"
+              controls
+              playsInline
+              preload="none"
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+
+          {/* La villa / casa del surf camp */}
+          <motion.div
+            initial={{ opacity: 0.01, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.9, ease: EASE }}
+            className="mt-4 grid grid-cols-2 gap-3 md:gap-4"
+          >
+            <div className="relative aspect-[3/2] overflow-hidden" style={{ background: NAVY_SOFT }}>
+              <Image src="/projects/entre-olas-surf/casa-017.jpg" alt="Casa del surf camp en Roche" fill sizes="50vw" quality={82} className="object-cover" />
             </div>
-            <div
-              className="relative aspect-[4/3] overflow-hidden"
-              style={{ background: NAVY_SOFT }}
-            >
-              <Image
-                src="/projects/entre-olas-surf/camp-kids.jpg"
-                alt="Grupo de la surf school en la Playa de Roche"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                quality={85}
-                className="object-cover"
-              />
+            <div className="relative aspect-[3/2] overflow-hidden" style={{ background: NAVY_SOFT }}>
+              <Image src="/projects/entre-olas-surf/casa-020.jpg" alt="Villa del surf camp · +1000 m²" fill sizes="50vw" quality={82} className="object-cover" />
             </div>
           </motion.div>
 
@@ -1233,7 +1253,7 @@ export default function EntreOlasDetailClient() {
         </div>
       </section>
 
-      <section className="px-6 md:px-12 py-20 md:py-32">
+      <section className="px-6 md:px-12 py-12 md:py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1310,7 +1330,7 @@ export default function EntreOlasDetailClient() {
       </section>
 
       <section
-        className="px-6 md:px-12 py-20 md:py-32"
+        className="px-6 md:px-12 py-12 md:py-20"
         style={{ background: SAND }}
       >
         <motion.h2
@@ -1362,7 +1382,7 @@ export default function EntreOlasDetailClient() {
       </section>
 
       <section
-        className="px-6 md:px-12 py-20 md:py-32 border-t"
+        className="px-6 md:px-12 py-12 md:py-20 border-t"
         style={{ borderColor: LINE }}
       >
         <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-20">
