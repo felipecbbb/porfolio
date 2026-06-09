@@ -583,6 +583,7 @@ export default function EntreOlasDetailClient() {
           style={{ y: heroY, opacity: heroFade }}
           className="absolute inset-0 -top-8 -bottom-8"
         >
+          {/* Fallback (mientras carga el vídeo) */}
           <Image
             src="/projects/entre-olas-surf/surf-hero.jpg"
             alt=""
@@ -593,10 +594,21 @@ export default function EntreOlasDetailClient() {
             className="object-cover"
             style={{ filter: "saturate(0.95)" }}
           />
+          {/* Vídeo de YouTube de fondo: autoplay, mudo, en bucle, sin controles */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <iframe
+              src="https://www.youtube.com/embed/reT-B1fcJZY?autoplay=1&mute=1&loop=1&playlist=reT-B1fcJZY&controls=0&modestbranding=1&playsinline=1&showinfo=0&rel=0&disablekb=1&fs=0&iv_load_policy=3"
+              title=""
+              allow="autoplay; encrypted-media; picture-in-picture"
+              tabIndex={-1}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.78vh] h-[56.25vw]"
+              style={{ border: 0 }}
+            />
+          </div>
           <div
             className="absolute inset-0"
             style={{
-              background: `linear-gradient(180deg, ${BG}ee 0%, ${BG}99 35%, ${BG}99 70%, ${BG}f5 100%), radial-gradient(ellipse at 80% 20%, ${SAND}cc 0%, transparent 55%)`,
+              background: `linear-gradient(180deg, ${BG}55 0%, ${BG}33 28%, ${BG}99 62%, ${BG}f7 100%), radial-gradient(ellipse at 80% 15%, ${SAND}55 0%, transparent 55%)`,
             }}
           />
         </motion.div>
@@ -716,26 +728,6 @@ export default function EntreOlasDetailClient() {
 
       <Marquee items={t.marqueeItems} color={NAVY} bg={SAND} />
 
-      {/* Vídeo de la escuela (el del inicio de la web de Entre Olas) */}
-      <section className="px-6 md:px-12 pt-12 md:pt-16">
-        <motion.div
-          initial={{ opacity: 0.01, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.9, ease: EASE }}
-          className="max-w-4xl mx-auto relative aspect-video overflow-hidden"
-          style={{ background: NAVY }}
-        >
-          <iframe
-            src="https://www.youtube.com/embed/reT-B1fcJZY?rel=0&modestbranding=1"
-            title="Entre Olas Surf"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="absolute inset-0 w-full h-full"
-          />
-        </motion.div>
-      </section>
-
       <section className="px-6 md:px-12 py-10 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -769,80 +761,42 @@ export default function EntreOlasDetailClient() {
           </span>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5">
-          <motion.div
-            initial={{ opacity: 0.01, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.9, ease: EASE }}
-            className="md:col-span-5 md:row-span-2 relative aspect-[4/5] overflow-hidden"
-            style={{ background: NAVY }}
-          >
-            <Image
-              src="/projects/entre-olas-surf/team-beach.jpg"
-              alt="Entre Olas team"
-              fill
-              sizes="(max-width: 768px) 100vw, 40vw"
-              quality={85}
-              loading="eager"
-              className="object-cover"
-            />
-            <span
-              className="absolute bottom-4 left-4 text-[10px] uppercase tracking-[0.3em]"
-              style={{ color: "white", fontFamily: MONO, textShadow: "0 1px 10px rgba(0,0,0,0.6)" }}
+        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+          {[
+            { src: "team-beach.jpg", cap: t.capTeam, alt: "Equipo de Entre Olas en Roche" },
+            { src: "surf-class.jpg", cap: t.capVilla, alt: "Clase de surf en la Playa de Roche" },
+            { src: "surf-group.jpg", cap: t.capRooftop, alt: "Surfistas en la Playa de Roche" },
+          ].map((p, i) => (
+            <motion.div
+              key={p.src}
+              initial={{ opacity: 0.01, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ delay: i * 0.1, duration: 0.8, ease: EASE }}
+              className="relative aspect-[3/4] overflow-hidden rounded-lg"
+              style={{ background: NAVY }}
             >
-              {t.capTeam}
-            </span>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0.01, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ delay: 0.1, duration: 0.9, ease: EASE }}
-            className="md:col-span-7 relative aspect-[16/9] overflow-hidden"
-            style={{ background: NAVY }}
-          >
-            <Image
-              src="/projects/entre-olas-surf/surf-class.jpg"
-              alt="Clase de surf en la Playa de Roche"
-              fill
-              sizes="(max-width: 768px) 100vw, 58vw"
-              quality={85}
-              loading="eager"
-              className="object-cover"
-            />
-            <span
-              className="absolute bottom-4 left-4 text-[10px] uppercase tracking-[0.3em]"
-              style={{ color: "white", fontFamily: MONO, textShadow: "0 1px 10px rgba(0,0,0,0.6)" }}
-            >
-              {t.capVilla}
-            </span>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0.01, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ delay: 0.2, duration: 0.9, ease: EASE }}
-            className="md:col-span-7 relative aspect-[16/9] overflow-hidden"
-            style={{ background: NAVY }}
-          >
-            <Image
-              src="/projects/entre-olas-surf/surf-group.jpg"
-              alt="Surfistas en la Playa de Roche"
-              fill
-              sizes="(max-width: 768px) 100vw, 58vw"
-              quality={85}
-              className="object-cover"
-            />
-            <span
-              className="absolute bottom-4 left-4 text-[10px] uppercase tracking-[0.3em]"
-              style={{ color: "white", fontFamily: MONO, textShadow: "0 1px 10px rgba(0,0,0,0.6)" }}
-            >
-              {t.capRooftop}
-            </span>
-          </motion.div>
+              <Image
+                src={`/projects/entre-olas-surf/${p.src}`}
+                alt={p.alt}
+                fill
+                sizes="(max-width: 640px) 100vw, 33vw"
+                quality={84}
+                className="object-cover"
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0"
+                style={{ background: "linear-gradient(180deg, transparent 58%, rgba(15,47,57,0.72) 100%)" }}
+              />
+              <span
+                className="absolute bottom-3 left-3 text-[10px] uppercase tracking-[0.3em]"
+                style={{ color: "white", fontFamily: MONO, textShadow: "0 1px 10px rgba(0,0,0,0.6)" }}
+              >
+                {p.cap}
+              </span>
+            </motion.div>
+          ))}
         </div>
       </section>
 
@@ -1175,13 +1129,13 @@ export default function EntreOlasDetailClient() {
             ))}
           </motion.div>
 
-          {/* Vídeo del surf camp (de la web de Entre Olas) */}
+          {/* Vídeo del surf camp (vertical, de la web de Entre Olas) */}
           <motion.div
             initial={{ opacity: 0.01, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.9, ease: EASE }}
-            className="mt-14 relative aspect-video max-h-[60vh] overflow-hidden mx-auto"
+            className="mt-14 relative aspect-[9/16] w-full max-w-[320px] mx-auto overflow-hidden rounded-lg"
             style={{ background: NAVY_SOFT }}
           >
             <video
