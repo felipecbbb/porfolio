@@ -17,6 +17,8 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/proyecto/kujme" },
+  openGraph: { type: "article", url: "https://felippecamara.com/proyecto/kujme" },
   title: "Kujme — Felipe Cámara",
   description:
     "Doce agentes IA jerárquicos que generan, publican y miden contenido todos los días por menos de 6€/mes. Newsletter, blog SEO, posts LinkedIn y emails de conversión — sin tocar nada.",

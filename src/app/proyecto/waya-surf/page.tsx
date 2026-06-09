@@ -17,7 +17,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  openGraph: { type: "article", images: ["/projects/waya-surf/about-victor.jpg"] },
+  alternates: { canonical: "/proyecto/waya-surf" },
+  openGraph: { url: "https://felippecamara.com/proyecto/waya-surf", type: "article", images: ["/projects/waya-surf/about-victor.jpg"] },
   title: "Waya Surf — Felipe Cámara",
   description:
     "Web para escuela de surf en Playa del Hombre, Gran Canaria. 15 años de método propio, sistema de niveles y bono residente — en una web que enseña antes de vender.",

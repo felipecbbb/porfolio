@@ -18,7 +18,8 @@ const interTight = Inter_Tight({
 });
 
 export const metadata: Metadata = {
-  openGraph: { type: "article", images: ["/projects/jm-padel-academy/cover-court.png"] },
+  alternates: { canonical: "/proyecto/jm-padel-academy" },
+  openGraph: { url: "https://felippecamara.com/proyecto/jm-padel-academy", type: "article", images: ["/projects/jm-padel-academy/cover-court.png"] },
   title: "JM Padel Academy — Felipe Cámara",
   description:
     "Sistema completo para academia de pádel: branding, web full-stack con e-commerce, 3 vídeos de método, 8 guías formativas y ebook. Stack Vite + React + Stripe + Vercel.",

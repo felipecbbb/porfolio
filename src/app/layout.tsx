@@ -39,6 +39,8 @@ export const metadata: Metadata = {
   creator: "Felipe Cámara",
   publisher: "Felipe Cámara",
   category: "technology",
+  // canonical y og:url se definen por página (no globalmente) para no
+  // apuntar todas las URLs al home.
   keywords: [
     "desarrollo web",
     "diseñador web",
@@ -55,7 +57,6 @@ export const metadata: Metadata = {
     "páginas web",
     "Felipe Cámara",
   ],
-  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "es_ES",
