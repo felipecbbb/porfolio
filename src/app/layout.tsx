@@ -82,7 +82,7 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  icons: { icon: "/icon.svg", apple: "/icon.svg" },
+  // Iconos autodetectados por file convention (app/favicon.ico, app/icon.svg, app/apple-icon.png).
 };
 
 const jsonLd = {
