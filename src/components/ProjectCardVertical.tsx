@@ -98,31 +98,18 @@ export default function ProjectCardVertical({
             flex: 1,
           }}
         >
-          <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "baseline" }}>
-            <h3
-              style={{
-                fontSize: 18,
-                fontWeight: 700,
-                letterSpacing: "-0.02em",
-                margin: 0,
-                lineHeight: 1.12,
-                color: INK,
-              }}
-            >
-              {project.title}
-            </h3>
-            <span
-              style={{
-                fontSize: 11,
-                fontWeight: 600,
-                color: MUTED,
-                letterSpacing: "0.08em",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {project.year}
-            </span>
-          </div>
+          <h3
+            style={{
+              fontSize: 18,
+              fontWeight: 700,
+              letterSpacing: "-0.02em",
+              margin: 0,
+              lineHeight: 1.12,
+              color: INK,
+            }}
+          >
+            {project.title}
+          </h3>
           <p
             style={{
               fontSize: 13.5,

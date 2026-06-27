@@ -43,6 +43,152 @@ export interface ProjectDetail {
 
 export const projects: ProjectDetail[] = [
   {
+    slug: "davidwcoffe",
+    id: "16",
+    title: "David W. Coffe",
+    category: {
+      es: "Web — Coach de mindset & hábitos",
+      en: "Web — Mindset & habits coach",
+      de: "Web — Mindset- & Gewohnheits-Coach",
+    },
+    description: {
+      es: "Web multipágina para David W. Coffe, coach de mindset y hábitos con +260K de comunidad. Paleta bloqueada de 2 colores, fotografía en blanco y negro y modelo de sesiones de pago 1 a 1 — sin embudo de llamada gratis.",
+      en: "Multi-page website for David W. Coffe, a mindset & habits coach with a 260K+ community. Locked two-colour palette, black-and-white photography and a paid 1-on-1 session model — no free-call funnel.",
+      de: "Mehrseitige Website für David W. Coffe, Mindset- & Gewohnheits-Coach mit einer Community von über 260K. Festgelegte Zwei-Farben-Palette, Schwarz-Weiß-Fotografie und ein bezahltes 1-zu-1-Sitzungsmodell — ohne Gratis-Call-Funnel.",
+    },
+    tags: ["HTML5", "CSS3", "JavaScript", "SEO", "Multipágina", "Sin dependencias"],
+    metrics: {
+      es: "7 páginas · Comunidad +260K · davidwcoffe.com",
+      en: "7 pages · 260K+ community · davidwcoffe.com",
+      de: "7 Seiten · Community +260K · davidwcoffe.com",
+    },
+    year: "2026",
+    client: "David W. Coffe · Mindset & Habits Coach",
+    liveUrl: "https://davidwcoffe.com",
+    featuredImage: "/projects/davidwcoffe/portrait.jpg",
+    longDescription: {
+      es: "David W. Coffe es coach de mindset y hábitos con una comunidad de más de 260.000 personas entre Instagram, TikTok y YouTube. Diseñé y desarrollé su web entera: un sitio editorial multipágina (inicio, sobre mí, método, servicios, testimonios, reserva y contacto) en HTML/CSS/JS sin dependencias. Estética de dos colores —granate quemado y albaricoque dorado— con fotografía exclusivamente en blanco y negro, fiel a la dirección de marca que marcó el cliente. El modelo de negocio es de sesiones de pago 1 a 1 (nada de embudo de «llamada gratis»), con tres packs de sesiones y un producto de entrada: «La Libreta de los 90 días», en pre-reserva.",
+      en: "David W. Coffe is a mindset & habits coach with a community of over 260,000 across Instagram, TikTok and YouTube. I designed and built his entire website: an editorial multi-page site (home, about, method, services, testimonials, booking and contact) in HTML/CSS/JS with zero dependencies. A two-colour aesthetic —burnt merlot and golden apricot— with strictly black-and-white photography, true to the brand direction the client set. The business model is paid 1-on-1 sessions (no \"free call\" funnel), with three session packs and an entry-level product: \"La Libreta de los 90 días\", on pre-order.",
+      de: "David W. Coffe ist Mindset- & Gewohnheits-Coach mit einer Community von über 260.000 auf Instagram, TikTok und YouTube. Ich gestaltete und entwickelte seine gesamte Website: eine redaktionelle mehrseitige Site (Start, Über mich, Methode, Leistungen, Testimonials, Buchung und Kontakt) in HTML/CSS/JS ohne Abhängigkeiten. Eine Zwei-Farben-Ästhetik —Burnt Merlot und goldenes Apricot— mit ausschließlich Schwarz-Weiß-Fotografie, treu zur vom Kunden vorgegebenen Markenrichtung. Das Geschäftsmodell sind bezahlte 1-zu-1-Sitzungen (kein „Gratis-Call\"-Funnel), mit drei Sitzungspaketen und einem Einstiegsprodukt: „La Libreta de los 90 días\", im Vorverkauf.",
+    },
+    challenge: {
+      es: "David tenía una comunidad enorme en redes pero ninguna web. El reto: transmitir la seriedad de un servicio premium 1 a 1 sin caer en la estética de infoproducto (llamadas gratis, setters, urgencias falsas), respetando una dirección de marca muy cerrada por el cliente —solo dos colores y fotografía en blanco y negro— y posicionando en Google para captar más allá de las redes.",
+      en: "David had a huge social community but no website. The challenge: convey the seriousness of a premium 1-on-1 service without falling into info-product aesthetics (free calls, setters, fake urgency), respecting a tightly locked brand direction —only two colours and black-and-white photography— while ranking on Google to capture beyond social.",
+      de: "David hatte eine riesige Social-Community, aber keine Website. Die Herausforderung: die Seriosität eines Premium-1-zu-1-Service vermitteln, ohne in Infoprodukt-Ästhetik zu verfallen (Gratis-Calls, Setter, falsche Dringlichkeit), eine eng festgelegte Markenrichtung respektieren —nur zwei Farben und Schwarz-Weiß-Fotografie— und zugleich bei Google ranken, um über Social hinaus zu gewinnen.",
+    },
+    solution: {
+      es: "Una web editorial de dos colores (granate + albaricoque) con fotografía B/N y tipografía expresiva (Anton para los titulares, Fraunces en cursiva para los acentos, Inter para el cuerpo). Siete páginas que cuentan la historia y el método, con tres packs de sesiones (Impulso, Evolución, Transformación) y el producto «La Libreta de los 90 días» como entrada. Reserva integrada con Calendly y todos los CTA apuntando a sesiones de pago. Cero frameworks = carga instantánea y SEO con datos estructurados schema.org.",
+      en: "An editorial two-colour site (merlot + apricot) with B&W photography and expressive type (Anton for headlines, italic Fraunces for accents, Inter for body). Seven pages telling the story and the method, with three session packs (Impulso, Evolución, Transformación) and the \"La Libreta de los 90 días\" product as an entry point. Booking integrated with Calendly and every CTA pointing to paid sessions. Zero frameworks = instant load and SEO with schema.org structured data.",
+      de: "Eine redaktionelle Zwei-Farben-Site (Merlot + Apricot) mit S/W-Fotografie und ausdrucksstarker Typografie (Anton für Überschriften, kursive Fraunces für Akzente, Inter für den Fließtext). Sieben Seiten erzählen die Geschichte und die Methode, mit drei Sitzungspaketen (Impulso, Evolución, Transformación) und dem Produkt „La Libreta de los 90 días\" als Einstieg. Buchung über Calendly integriert und alle CTAs führen zu bezahlten Sitzungen. Null Frameworks = sofortiges Laden und SEO mit schema.org-Daten.",
+    },
+    results: {
+      es: [
+        "Web multipágina en producción: davidwcoffe.com",
+        "7 páginas: inicio, sobre mí, método, servicios, testimonios, reserva y contacto",
+        "Dirección de marca respetada: 2 colores + fotografía 100% B/N",
+        "3 packs de sesiones (75€ / 350€ / 680€) sin embudo de llamada gratis",
+        "Producto de entrada «La Libreta de los 90 días» en pre-reserva",
+        "Reserva integrada con Calendly",
+        "SEO con datos estructurados (schema.org) · carga instantánea sin frameworks",
+      ],
+      en: [
+        "Multi-page website live: davidwcoffe.com",
+        "7 pages: home, about, method, services, testimonials, booking and contact",
+        "Brand direction respected: 2 colours + 100% B&W photography",
+        "3 session packs (€75 / €350 / €680) with no free-call funnel",
+        "Entry product \"La Libreta de los 90 días\" on pre-order",
+        "Booking integrated with Calendly",
+        "SEO with structured data (schema.org) · instant load, no frameworks",
+      ],
+      de: [
+        "Mehrseitige Website live: davidwcoffe.com",
+        "7 Seiten: Start, Über mich, Methode, Leistungen, Testimonials, Buchung und Kontakt",
+        "Markenrichtung respektiert: 2 Farben + 100% S/W-Fotografie",
+        "3 Sitzungspakete (75€ / 350€ / 680€) ohne Gratis-Call-Funnel",
+        "Einstiegsprodukt „La Libreta de los 90 días\" im Vorverkauf",
+        "Buchung über Calendly integriert",
+        "SEO mit strukturierten Daten (schema.org) · sofortiges Laden, ohne Frameworks",
+      ],
+    },
+    features: {
+      es: [
+        "Paleta bloqueada de 2 colores (granate + albaricoque)",
+        "Fotografía exclusivamente en blanco y negro",
+        "Tipografía editorial: Anton + Fraunces cursiva + Inter",
+        "3 packs de sesiones 1 a 1 (Impulso / Evolución / Transformación)",
+        "Producto «La Libreta de los 90 días»",
+        "Reserva integrada con Calendly",
+        "SEO con schema.org · sitemap + robots",
+        "HTML/CSS/JS sin dependencias",
+      ],
+      en: [
+        "Locked two-colour palette (merlot + apricot)",
+        "Strictly black-and-white photography",
+        "Editorial type: Anton + italic Fraunces + Inter",
+        "3 one-on-one session packs (Impulso / Evolución / Transformación)",
+        "\"La Libreta de los 90 días\" product",
+        "Booking integrated with Calendly",
+        "SEO with schema.org · sitemap + robots",
+        "HTML/CSS/JS with zero dependencies",
+      ],
+      de: [
+        "Festgelegte Zwei-Farben-Palette (Merlot + Apricot)",
+        "Ausschließlich Schwarz-Weiß-Fotografie",
+        "Redaktionelle Typografie: Anton + kursive Fraunces + Inter",
+        "3 Einzel-Sitzungspakete (Impulso / Evolución / Transformación)",
+        "Produkt „La Libreta de los 90 días\"",
+        "Buchung über Calendly integriert",
+        "SEO mit schema.org · Sitemap + robots",
+        "HTML/CSS/JS ohne Abhängigkeiten",
+      ],
+    },
+    theme: {
+      bg: "#3b0000",
+      fg: "#ffd482",
+      accent: "#ffd482",
+      accentLight: "#ffe4ad",
+      font: "'Fraunces', Georgia, serif",
+      tagBg: "rgba(255,212,130,0.14)",
+      tagText: "#ffd482",
+      heroGradient:
+        "linear-gradient(135deg, #3b0000 0%, #5a0a0a 55%, #ffd48230 100%)",
+    },
+    gallery: [
+      {
+        label: { es: "Hero editorial", en: "Editorial hero", de: "Editorial-Hero" },
+        description: {
+          es: "«Construye la versión de ti que no se rinde» — titular Anton sobre granate, con marquesina de valores en bucle.",
+          en: "\"Build the version of you that doesn't quit\" — Anton headline on merlot, with a looping values marquee.",
+          de: "„Bau die Version von dir, die nicht aufgibt\" — Anton-Headline auf Merlot, mit laufendem Werte-Marquee.",
+        },
+      },
+      {
+        label: { es: "El método", en: "The method", de: "Die Methode" },
+        description: {
+          es: "El sistema de hábitos y mindset explicado por fases, sin frases vacías ni atajos.",
+          en: "The habits-and-mindset system explained in phases — no empty phrases, no shortcuts.",
+          de: "Das Gewohnheits- und Mindset-System in Phasen erklärt — ohne leere Phrasen, ohne Abkürzungen.",
+        },
+      },
+      {
+        label: { es: "Servicios", en: "Services", de: "Leistungen" },
+        description: {
+          es: "Tres packs de sesiones 1 a 1 (Impulso, Evolución, Transformación). Sin llamada gratis: CTA directo a sesión de pago.",
+          en: "Three 1-on-1 session packs (Impulso, Evolución, Transformación). No free call: CTA straight to a paid session.",
+          de: "Drei 1-zu-1-Sitzungspakete (Impulso, Evolución, Transformación). Kein Gratis-Call: CTA direkt zur bezahlten Sitzung.",
+        },
+      },
+      {
+        label: { es: "La Libreta", en: "La Libreta", de: "La Libreta" },
+        description: {
+          es: "«La Libreta de los 90 días», producto de entrada en pre-reserva para convertir al público que aún no está listo para una sesión.",
+          en: "\"La Libreta de los 90 días\", an entry product on pre-order to convert audience not yet ready for a session.",
+          de: "„La Libreta de los 90 días\", ein Einstiegsprodukt im Vorverkauf, um Publikum zu konvertieren, das noch nicht für eine Sitzung bereit ist.",
+        },
+      },
+    ],
+  },
+  {
     slug: "arga-premium-cars",
     id: "15",
     title: "ARGA Premium Cars",
