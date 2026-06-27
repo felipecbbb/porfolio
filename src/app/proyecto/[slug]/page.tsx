@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import ProjectDetailClient from "./ProjectDetailClient";
 
 const CUSTOM_SLUGS = new Set([
+  "davidwcoffe",
   "arga-premium-cars",
   "lunin",
   "icaro",
