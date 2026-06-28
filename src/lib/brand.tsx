@@ -5,12 +5,12 @@ import type { CSSProperties, ReactNode } from "react";
    Identidad: carbón cálido + papel crema + amarillo rotulador.
    (El verde/naranja del PDF era de SCF graphics, no de Felipe.)
    ========================================================= */
-export const INK = "#1a1916"; // carbón cálido (texto + superficies oscuras)
-export const BG = "#ffffff"; // blanco
-export const CREAM = "#f3efe4"; // papel hueso (secciones alternas)
-export const YELLOW = "#ece84d"; // amarillo rotulador (acento)
+export const INK = "#1c1b1b"; // negro de marca (no puro)
+export const BG = "#f5f4ec"; // blanco de marca (off-white cálido)
+export const CREAM = "#ece5d3"; // papel hueso (secciones alternas, un paso más cálido)
+export const YELLOW = "#f0e875"; // amarillo pastel de marca (acento)
 export const MUTED = "#8c8a82"; // gris cálido secundario
-export const LINE = "#e6e3d8"; // línea suave
+export const LINE = "#e3ddcd"; // línea suave
 
 /* Regla de uso del amarillo:
    - Sobre claro  -> SOLO como subrayado/rotulador detrás de texto oscuro (Mark).

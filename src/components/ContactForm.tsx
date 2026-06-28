@@ -4,10 +4,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "@/lib/i18n";
 
-const INK = "#1a1916";
+const INK = "#1c1b1b";
 const BG = "#ffffff";
 const MUTED = "#949494";
-const ACCENT = "#ece84d"; // amarillo de marca
+const ACCENT = "#f0e875"; // amarillo de marca
 const ERROR = "#ff8a80"; // rojo suave legible sobre oscuro
 const LINE_DARK = "rgba(255,255,255,0.18)";
 const LINE_DARK_SOFT = "rgba(255,255,255,0.08)";

@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-  --accent: #0a0a0a;
+  --background: #f5f4ec; /* blanco de marca (off-white) */
+  --foreground: #1c1b1b; /* negro de marca */
+  --accent: #1c1b1b;
 }
 
 @theme inline {
@@ -58,8 +58,14 @@ p, h1, h2, h3, h4, h5, h6, li, td, th, blockquote, span {
 }
 
 ::selection {
-  background: #ece84d;
-  color: #1a1916;
+  background: #f0e875;
+  color: #1c1b1b;
+}
+
+/* Titulares de marca: tracking -50 (≈ -0.05em). Los componentes con
+   letter-spacing inline siguen mandando por especificidad. */
+h1, h2 {
+  letter-spacing: -0.04em;
 }
 
 /* Custom scrollbar */
@@ -70,7 +76,7 @@ p, h1, h2, h3, h4, h5, h6, li, td, th, blockquote, span {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1a1916;
+  background: #1c1b1b;
   border-radius: 2px;
 }
 

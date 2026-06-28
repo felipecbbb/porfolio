@@ -14,18 +14,18 @@ export default function Image() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#1a1916",
+          background: "#1c1b1b",
           padding: "72px",
           fontFamily: "sans-serif",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <div style={{ width: "44px", height: "44px", background: "#ece84d", borderRadius: "10px" }} />
-          <div style={{ color: "#f3efe4", fontSize: "26px", letterSpacing: "3px" }}>FELIPPECAMARA.COM</div>
+          <div style={{ width: "44px", height: "44px", background: "#f0e875", borderRadius: "10px" }} />
+          <div style={{ color: "#f5f4ec", fontSize: "26px", letterSpacing: "3px" }}>FELIPPECAMARA.COM</div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ color: "#f3efe4", fontSize: "98px", fontWeight: 700, lineHeight: 1.02 }}>
+          <div style={{ color: "#f5f4ec", fontSize: "98px", fontWeight: 700, lineHeight: 1.02 }}>
             Felipe Cámara
           </div>
           <div style={{ color: "#bdb9ad", fontSize: "40px", marginTop: "20px" }}>
@@ -34,7 +34,7 @@ export default function Image() {
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ color: "#ece84d", fontSize: "28px" }}>Gran Canaria · Canarias</div>
+          <div style={{ color: "#f0e875", fontSize: "28px" }}>Gran Canaria · Canarias</div>
           <div style={{ color: "#8c8a82", fontSize: "24px" }}>Webs que convierten visitas en clientes</div>
         </div>
       </div>

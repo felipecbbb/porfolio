@@ -1,17 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif, Raleway } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n";
 
-const geistSans = Geist({
+// Tipografía principal de marca: Akzidenz-Grotesk BQ (Light / Medium / Bold).
+// Mantiene la variable --font-geist-sans para no tocar las referencias existentes.
+const geistSans = localFont({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const raleway = Raleway({
-  variable: "--font-raleway",
-  weight: ["500", "600"],
-  subsets: ["latin"],
+  display: "swap",
+  src: [
+    { path: "./fonts/akzidenz-light.woff2", weight: "300", style: "normal" },
+    { path: "./fonts/akzidenz-light-italic.woff2", weight: "300", style: "italic" },
+    { path: "./fonts/akzidenz-medium.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/akzidenz-bold.woff2", weight: "700", style: "normal" },
+  ],
 });
 
 const geistMono = Geist_Mono({
@@ -19,11 +22,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const instrumentSerif = Instrument_Serif({
+// Tipografía secundaria de marca: The Seasons (solo Italic), recurso de contraste.
+// Mantiene la variable --font-serif.
+const instrumentSerif = localFont({
   variable: "--font-serif",
-  weight: "400",
-  style: ["normal", "italic"],
-  subsets: ["latin"],
+  display: "swap",
+  src: [
+    { path: "./fonts/theseasons-light-italic.woff2", weight: "300", style: "italic" },
+    { path: "./fonts/theseasons-italic.woff2", weight: "400", style: "italic" },
+  ],
 });
 
 const SITE_URL = "https://felippecamara.com";
@@ -133,7 +140,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   viewportFit: "cover",
-  themeColor: "#1a1916",
+  themeColor: "#1c1b1b",
 };
 
 export default function RootLayout({
@@ -144,7 +151,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${raleway.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
       <body className="noise min-h-full flex flex-col">
         <script

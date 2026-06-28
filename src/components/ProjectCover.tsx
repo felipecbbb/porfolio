@@ -40,7 +40,7 @@ export default function ProjectCover({
 
   // Logos de TEXTO (sus webs no tienen logo-imagen): replicamos su tipografía.
   const WORDMARK: Record<string, { text: string; font: string; weight: number; ls: string; sun?: boolean }> = {
-    "lorena-amadio": { text: "Lorena Amadio", font: "var(--font-raleway), system-ui, sans-serif", weight: 500, ls: "0.01em", sun: true },
+    "lorena-amadio": { text: "Lorena Amadio", font: "var(--font-geist-sans), system-ui, sans-serif", weight: 500, ls: "0.01em", sun: true },
   };
 
   // Si tiene foto real y no está en la lista de "solo diseño", muestra la foto

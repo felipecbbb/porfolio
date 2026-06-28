@@ -5,9 +5,9 @@ import Link from "next/link";
 import { useLang, LANGS, type Lang } from "@/lib/i18n";
 import { FcLogo } from "@/lib/brand";
 
-const INK = "#1a1916";
+const INK = "#1c1b1b";
 const BG = "#ffffff";
-const YELLOW = "#ece84d";
+const YELLOW = "#f0e875";
 
 type Active = "home" | "projects" | "about" | "contact" | "none";
 
@@ -129,7 +129,7 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
           justifyContent: "space-between",
           alignItems: "center",
           zIndex: 100,
-          background: bar ? "#f3efe4" : "transparent",
+          background: bar ? "#f5f4ec" : "transparent",
           borderBottom: bar ? "1px solid rgba(26,25,22,0.12)" : "1px solid transparent",
           boxShadow: bar ? "0 6px 20px rgba(26,25,22,0.06)" : "none",
           color: fg,
