@@ -14,6 +14,8 @@ export interface ProjectDetail {
   slug: string;
   id: string;
   title: string;
+  /** Aparece en la sección Destacados (banda horizontal de /proyectos). */
+  destacado?: boolean;
   category: LStr;
   description: LStr;
   tags: string[];
@@ -43,9 +45,132 @@ export interface ProjectDetail {
 
 export const projects: ProjectDetail[] = [
   {
+    slug: "aolelim",
+    id: "17",
+    title: "AOLELIM",
+    destacado: true,
+    category: {
+      es: "E-commerce — Moda baño & beachwear",
+      en: "E-commerce — Swim & beachwear fashion",
+      de: "E-Commerce — Bade- & Beachwear-Mode",
+    },
+    description: {
+      es: "Tienda Shopify completa para AOLELIM, la marca de baño y beachwear de Sofía. «Eleva tu rollo»: lujo minimalista en blanco y negro, copy íntegro de la marca, secciones a medida y catálogo listo para vender.",
+      en: "Complete Shopify store for AOLELIM, Sofía's swim & beachwear brand. \"Eleva tu rollo\": minimalist luxury in black and white, full brand copywriting, custom sections and a catalogue ready to sell.",
+      de: "Kompletter Shopify-Shop für AOLELIM, Sofías Bade- und Beachwear-Marke. „Eleva tu rollo\": minimalistischer Luxus in Schwarz-Weiß, komplettes Marken-Copywriting, maßgeschneiderte Sektionen und ein verkaufsfertiger Katalog.",
+    },
+    tags: ["Shopify", "Liquid", "E-commerce", "Copywriting", "Branding", "Secciones custom"],
+    metrics: {
+      es: "Tienda completa · Copy de marca íntegro · Secciones Liquid a medida",
+      en: "Complete store · Full brand copy · Custom Liquid sections",
+      de: "Kompletter Shop · Vollständiger Marken-Copy · Maßgeschneiderte Liquid-Sektionen",
+    },
+    year: "2026",
+    client: "AOLELIM · Marca de moda baño",
+    featuredImage: "/projects/aolelim/portrait.jpg",
+    longDescription: {
+      es: "AOLELIM es la marca de baño y beachwear de Sofía: prendas minimalistas, tejidos segunda piel y una actitud clara — «eleva tu rollo». Monté su tienda Shopify de arriba a abajo: personalización profunda del tema, todo el copy de la marca (home, colecciones, sobre nosotros, fichas de producto), secciones Liquid a medida como «Completa el set» para subir el ticket medio, y el catálogo entero preparado para el lanzamiento. El nombre viene de quitarle el límite a «Lim» — y la web está a la altura: nada sobra, todo vende.",
+      en: "AOLELIM is Sofía's swim & beachwear brand: minimalist pieces, second-skin fabrics and a clear attitude — \"eleva tu rollo\". I built her Shopify store top to bottom: deep theme customisation, all the brand copy (home, collections, about, product pages), custom Liquid sections like \"Complete the set\" to raise average order value, and the full catalogue prepared for launch. The name comes from removing the limit from \"Lim\" — and the site lives up to it: nothing spare, everything sells.",
+      de: "AOLELIM ist Sofías Bade- und Beachwear-Marke: minimalistische Teile, Second-Skin-Stoffe und eine klare Haltung — „eleva tu rollo\". Ich baute ihren Shopify-Shop von Grund auf: tiefe Theme-Anpassung, der gesamte Marken-Copy (Home, Kollektionen, Über uns, Produktseiten), maßgeschneiderte Liquid-Sektionen wie „Complete the set\" für einen höheren Warenkorbwert und der komplette Katalog, bereit zum Launch. Der Name entsteht, indem man „Lim\" das Limit nimmt — und die Website hält mit: nichts ist überflüssig, alles verkauft.",
+    },
+    challenge: {
+      es: "Lanzar una marca de moda desde cero con presupuesto de emprendedora: una tienda que transmitiera lujo minimalista sin parecer plantilla, con un copy que sonara a la marca (atrevida, sin rodeos) y mecánicas de venta reales — no solo una web bonita.",
+      en: "Launching a fashion brand from scratch on a founder's budget: a store that conveyed minimalist luxury without looking like a template, copy that sounded like the brand (bold, straight to the point) and real selling mechanics — not just a pretty site.",
+      de: "Eine Modemarke von Null mit Gründerinnen-Budget launchen: ein Shop, der minimalistischen Luxus vermittelt, ohne nach Vorlage auszusehen, Copy im Ton der Marke (mutig, direkt) und echte Verkaufsmechaniken — nicht nur eine hübsche Website.",
+    },
+    solution: {
+      es: "Shopify como base sólida y el tema exprimido a fondo: dirección visual en blanco y negro con fotografía editorial del shooting real, copy completo en la voz de la marca (mayúsculas, frases cortas, cero permiso), sección custom «Completa el set» en Liquid para vender conjuntos, y estructura de colecciones pensada para crecer temporada a temporada.",
+      en: "Shopify as a solid base with the theme pushed to its limit: black-and-white visual direction with editorial photography from the real shoot, complete copy in the brand's voice (uppercase, short sentences, zero permission), a custom \"Complete the set\" Liquid section to sell sets, and a collection structure built to grow season after season.",
+      de: "Shopify als solide Basis, das Theme voll ausgereizt: Schwarz-Weiß-Bildsprache mit Editorial-Fotografie aus dem echten Shooting, kompletter Copy in der Markenstimme (Großbuchstaben, kurze Sätze, null Erlaubnis), eine maßgeschneiderte „Complete the set\"-Liquid-Sektion für Set-Verkäufe und eine Kollektionsstruktur, die Saison für Saison mitwächst.",
+    },
+    results: {
+      es: [
+        "Tienda Shopify completa lista para el lanzamiento",
+        "Sección «Completa el set» a medida para subir el ticket medio",
+        "Copy íntegro de la marca en todas las páginas",
+        "Catálogo y colecciones estructurados para escalar",
+      ],
+      en: [
+        "Complete Shopify store ready for launch",
+        "Custom \"Complete the set\" section to raise average order value",
+        "Full brand copy across every page",
+        "Catalogue and collections structured to scale",
+      ],
+      de: [
+        "Kompletter Shopify-Shop bereit zum Launch",
+        "Maßgeschneiderte „Complete the set\"-Sektion für höheren Warenkorbwert",
+        "Vollständiger Marken-Copy auf allen Seiten",
+        "Katalog und Kollektionen skalierbar strukturiert",
+      ],
+    },
+    features: {
+      es: [
+        "Personalización profunda del tema Shopify",
+        "Sección Liquid custom «Completa el set»",
+        "Copy completo: home, colecciones, sobre nosotros y productos",
+        "Dirección visual B/N con fotografía editorial real",
+        "Barra de anuncios, newsletter y navegación optimizadas",
+        "Preparada para multi-idioma y crecimiento por temporadas",
+      ],
+      en: [
+        "Deep Shopify theme customisation",
+        "Custom \"Complete the set\" Liquid section",
+        "Complete copy: home, collections, about and products",
+        "B/W visual direction with real editorial photography",
+        "Optimised announcement bar, newsletter and navigation",
+        "Ready for multi-language and seasonal growth",
+      ],
+      de: [
+        "Tiefe Shopify-Theme-Anpassung",
+        "Maßgeschneiderte „Complete the set\"-Liquid-Sektion",
+        "Kompletter Copy: Home, Kollektionen, Über uns und Produkte",
+        "S/W-Bildsprache mit echter Editorial-Fotografie",
+        "Optimierte Announcement-Bar, Newsletter und Navigation",
+        "Bereit für Mehrsprachigkeit und saisonales Wachstum",
+      ],
+    },
+    theme: {
+      bg: "#0c0c0c",
+      fg: "#f2ede3",
+      accent: "#59b7d4",
+      accentLight: "#a8dcEB",
+      font: "'Work Sans', 'Inter', -apple-system, sans-serif",
+      tagBg: "rgba(89,183,212,0.14)",
+      tagText: "#59b7d4",
+      heroGradient: "linear-gradient(135deg, #0c0c0c 0%, #16262c 55%, #59b7d430 100%)",
+    },
+    gallery: [
+      {
+        label: { es: "Home de la tienda", en: "Store home", de: "Shop-Startseite" },
+        description: {
+          es: "Hero «ELEVA TU ROLLO», best sellers y brand statement.",
+          en: "\"ELEVA TU ROLLO\" hero, best sellers and brand statement.",
+          de: "„ELEVA TU ROLLO\"-Hero, Bestseller und Brand-Statement.",
+        },
+      },
+      {
+        label: { es: "Completa el set", en: "Complete the set", de: "Complete the set" },
+        description: {
+          es: "Sección custom que sugiere la pieza que falta del conjunto.",
+          en: "Custom section suggesting the missing piece of the set.",
+          de: "Custom-Sektion, die das fehlende Teil des Sets vorschlägt.",
+        },
+      },
+      {
+        label: { es: "Fichas de producto", en: "Product pages", de: "Produktseiten" },
+        description: {
+          es: "Fotografía editorial y copy directo en cada prenda.",
+          en: "Editorial photography and direct copy on every piece.",
+          de: "Editorial-Fotografie und direkter Copy bei jedem Teil.",
+        },
+      },
+    ],
+  },
+  {
     slug: "davidwcoffe",
     id: "16",
     title: "David W. Coffe",
+    destacado: true,
     category: {
       es: "Web — Coach de mindset & hábitos",
       en: "Web — Mindset & habits coach",
@@ -690,6 +815,7 @@ export const projects: ProjectDetail[] = [
   },
   {
     slug: "wavepanel",
+    destacado: true,
     id: "02",
     title: "WavePanel",
     category: {
@@ -979,6 +1105,7 @@ export const projects: ProjectDetail[] = [
   },
   {
     slug: "noa",
+    destacado: true,
     id: "04",
     title: "Noa",
     category: {

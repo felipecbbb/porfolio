@@ -6,6 +6,7 @@ import { type ProjectDetail } from "@/data/projects";
 import { useLang } from "@/lib/i18n";
 import BlendNav from "@/components/BlendNav";
 import ProjectCardVertical from "@/components/ProjectCardVertical";
+import Destacados from "@/components/Destacados";
 import SiteFooter from "@/components/SiteFooter";
 import { INK, BG, CREAM, MUTED, LINE, Mark } from "@/lib/brand";
 
@@ -100,6 +101,7 @@ export default function ProyectosClient({ projects }: Props) {
     >
       <BlendNav active="projects" />
       <HeroBlock count={filtered.length} t={t} />
+      <Destacados projects={projects} />
       <FilterBar
         keys={getCategoryKeys(projects)}
         active={filter}

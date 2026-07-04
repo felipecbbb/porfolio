@@ -456,8 +456,14 @@ function Manifesto() {
 /* =========================================
    FEATURED PROJECTS (preview of 4)
    ========================================= */
+const DEST_LINK = {
+  es: "Destacados",
+  en: "Featured",
+  de: "Highlights",
+};
+
 function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   return (
     <section
       className="grid-paper"
@@ -501,6 +507,27 @@ function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
             {t.projects.title}
           </h2>
         </div>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+        <Link
+          href="/proyectos#destacados"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "14px 28px",
+            borderRadius: 999,
+            border: `1.5px solid ${INK}`,
+            color: BG,
+            background: INK,
+            textDecoration: "none",
+            fontSize: 14,
+            fontWeight: 600,
+            letterSpacing: "0.02em",
+            transition: "all 0.3s ease",
+          }}
+        >
+          {DEST_LINK[lang] ?? DEST_LINK.es} <span style={{ color: "#E9E44F" }}>✦</span>
+        </Link>
         <Link
           href="/proyectos"
           style={{
@@ -529,6 +556,7 @@ function FeaturedProjects({ projects }: { projects: ProjectDetail[] }) {
         >
           {t.projects.seeAll} <span>→</span>
         </Link>
+        </div>
       </div>
 
       <div

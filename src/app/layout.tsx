@@ -89,7 +89,15 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  // Iconos autodetectados por file convention (app/favicon.ico, app/icon.svg, app/apple-icon.png).
+  // Iconos con versión explícita (?v=2) para reventar la caché de favicon
+  // (el fc oficial ya estaba, pero los navegadores clavan la versión vieja).
+  icons: {
+    icon: [
+      { url: "/icon.svg?v=2", type: "image/svg+xml" },
+      { url: "/favicon.ico?v=2", sizes: "32x32" },
+    ],
+    apple: [{ url: "/apple-icon.png?v=2" }],
+  },
 };
 
 const jsonLd = {
