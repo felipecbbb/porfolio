@@ -1,0 +1,16 @@
+# Mantiene caliente el panel (panel.felippecamara.com) para que abra al
+# instante en el móvil: Vercel duerme las funciones sin tráfico y el
+# arranque en frío tarda ~2s. Un ping cada ~10 min lo evita.
+name: keep-warm panel
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping panel
+        run: |
+          curl -s -o /dev/null -w "login %{http_code} %{time_starttransfer}s\n" https://panel.felippecamara.com/login
+          curl -s -o /dev/null -w "app   %{http_code} %{time_starttransfer}s\n" https://panel.felippecamara.com/calendario
