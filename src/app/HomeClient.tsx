@@ -84,29 +84,6 @@ function HeroXXL() {
           >
             {t.hero.name}
           </span>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 10,
-              fontSize: 13,
-              fontWeight: 500,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: INK,
-            }}
-          >
-            <span
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "#15c28b",
-                boxShadow: "0 0 0 4px rgba(21,194,139,.2)",
-              }}
-            />
-            {t.hero.available}
-          </span>
         </div>
 
         <div

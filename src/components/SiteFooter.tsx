@@ -55,30 +55,6 @@ export default function SiteFooter() {
           >
             {t.hero.headPre} <Mark>{t.hero.headMark}</Mark> {t.hero.headPost}
           </p>
-          <div
-            style={{
-              marginTop: 22,
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 10,
-              fontSize: 13,
-              fontWeight: 500,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.7)",
-            }}
-          >
-            <span
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "#15c28b",
-                boxShadow: "0 0 0 4px rgba(21,194,139,.2)",
-              }}
-            />
-            {t.hero.available}
-          </div>
         </div>
 
         <FooterCol label={nav.label}>
