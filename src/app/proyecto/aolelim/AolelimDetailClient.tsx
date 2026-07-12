@@ -93,7 +93,7 @@ const T: Record<Lang, Dict> = {
     blocks: [
       {
         t: "Tema a medida, no plantilla",
-        d: "Personalización profunda del tema: tipografía Work Sans en mayúsculas, blanco y negro estricto y fotografía editorial del shooting real. Nada que delate un tema de serie.",
+        d: "Personalización profunda del tema: tipografía Work Sans en mayúsculas, base limpia y fotografía editorial a color del shooting real. Nada que delate un tema de serie.",
       },
       {
         t: "Copy íntegro de la marca",
@@ -160,7 +160,7 @@ const T: Record<Lang, Dict> = {
     blocks: [
       {
         t: "Custom theme, not template",
-        d: "Deep theme customisation: uppercase Work Sans, strict black & white and editorial photography from the real shoot. Nothing gives away a stock theme.",
+        d: "Deep theme customisation: uppercase Work Sans, a clean base and colour editorial photography from the real shoot. Nothing gives away a stock theme.",
       },
       {
         t: "Full brand copywriting",
@@ -227,7 +227,7 @@ const T: Record<Lang, Dict> = {
     blocks: [
       {
         t: "Custom-Theme, keine Vorlage",
-        d: "Tiefe Theme-Anpassung: Work Sans in Großbuchstaben, striktes Schwarz-Weiß und Editorial-Fotografie aus dem echten Shooting. Nichts verrät ein Stock-Theme.",
+        d: "Tiefe Theme-Anpassung: Work Sans in Großbuchstaben, eine cleane Basis und farbige Editorial-Fotografie aus dem echten Shooting. Nichts verrät ein Stock-Theme.",
       },
       {
         t: "Kompletter Marken-Copy",

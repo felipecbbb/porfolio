@@ -55,9 +55,9 @@ export const projects: ProjectDetail[] = [
       de: "E-Commerce — Bade- & Beachwear-Mode",
     },
     description: {
-      es: "Tienda Shopify completa para AOLELIM, la marca de baño y beachwear de Sofía. «Eleva tu rollo»: lujo minimalista en blanco y negro, copy íntegro de la marca, secciones a medida y catálogo listo para vender.",
-      en: "Complete Shopify store for AOLELIM, Sofía's swim & beachwear brand. \"Eleva tu rollo\": minimalist luxury in black and white, full brand copywriting, custom sections and a catalogue ready to sell.",
-      de: "Kompletter Shopify-Shop für AOLELIM, Sofías Bade- und Beachwear-Marke. „Eleva tu rollo\": minimalistischer Luxus in Schwarz-Weiß, komplettes Marken-Copywriting, maßgeschneiderte Sektionen und ein verkaufsfertiger Katalog.",
+      es: "Tienda Shopify completa para AOLELIM, la marca de baño y beachwear de Sofía. «Eleva tu rollo»: estética limpia y editorial a todo color, copy íntegro de la marca, secciones a medida y catálogo listo para vender.",
+      en: "Complete Shopify store for AOLELIM, Sofía's swim & beachwear brand. \"Eleva tu rollo\": a clean editorial look in full colour, full brand copywriting, custom sections and a catalogue ready to sell.",
+      de: "Kompletter Shopify-Shop für AOLELIM, Sofías Bade- und Beachwear-Marke. „Eleva tu rollo\": ein cleaner, editorialer Look in voller Farbe, komplettes Marken-Copywriting, maßgeschneiderte Sektionen und ein verkaufsfertiger Katalog.",
     },
     tags: ["Shopify", "Liquid", "E-commerce", "Copywriting", "Branding", "Secciones custom"],
     metrics: {
@@ -79,9 +79,9 @@ export const projects: ProjectDetail[] = [
       de: "Eine Modemarke von Null mit Gründerinnen-Budget launchen: ein Shop, der minimalistischen Luxus vermittelt, ohne nach Vorlage auszusehen, Copy im Ton der Marke (mutig, direkt) und echte Verkaufsmechaniken — nicht nur eine hübsche Website.",
     },
     solution: {
-      es: "Shopify como base sólida y el tema exprimido a fondo: dirección visual en blanco y negro con fotografía editorial del shooting real, copy completo en la voz de la marca (mayúsculas, frases cortas, cero permiso), sección custom «Completa el set» en Liquid para vender conjuntos, y estructura de colecciones pensada para crecer temporada a temporada.",
-      en: "Shopify as a solid base with the theme pushed to its limit: black-and-white visual direction with editorial photography from the real shoot, complete copy in the brand's voice (uppercase, short sentences, zero permission), a custom \"Complete the set\" Liquid section to sell sets, and a collection structure built to grow season after season.",
-      de: "Shopify als solide Basis, das Theme voll ausgereizt: Schwarz-Weiß-Bildsprache mit Editorial-Fotografie aus dem echten Shooting, kompletter Copy in der Markenstimme (Großbuchstaben, kurze Sätze, null Erlaubnis), eine maßgeschneiderte „Complete the set\"-Liquid-Sektion für Set-Verkäufe und eine Kollektionsstruktur, die Saison für Saison mitwächst.",
+      es: "Shopify como base sólida y el tema exprimido a fondo: dirección visual limpia y editorial con fotografía a color del shooting real, copy completo en la voz de la marca (mayúsculas, frases cortas, cero permiso), sección custom «Completa el set» en Liquid para vender conjuntos, y estructura de colecciones pensada para crecer temporada a temporada.",
+      en: "Shopify as a solid base with the theme pushed to its limit: clean, editorial visual direction with colour photography from the real shoot, complete copy in the brand's voice (uppercase, short sentences, zero permission), a custom \"Complete the set\" Liquid section to sell sets, and a collection structure built to grow season after season.",
+      de: "Shopify als solide Basis, das Theme voll ausgereizt: klare, editoriale Bildsprache mit Farbfotografie aus dem echten Shooting, kompletter Copy in der Markenstimme (Großbuchstaben, kurze Sätze, null Erlaubnis), eine maßgeschneiderte „Complete the set\"-Liquid-Sektion für Set-Verkäufe und eine Kollektionsstruktur, die Saison für Saison mitwächst.",
     },
     results: {
       es: [
