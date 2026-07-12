@@ -405,7 +405,7 @@ export default function IcaroDetailClient() {
           <Reveal delay={0.05}><p style={{ fontSize: "clamp(16px,1.4vw,19px)", lineHeight: 1.6, color: "rgba(255,255,255,0.7)", margin: "0 0 40px" }}>{t.ctaBody}</p></Reveal>
           <Reveal delay={0.1}>
             <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-              <Link href="/#contacto" style={{ background: WHITE, color: INK, padding: "16px 30px", borderRadius: 999, fontWeight: 600, fontSize: 14, letterSpacing: "0.04em", textTransform: "uppercase", textDecoration: "none" }}>{t.ctaPrimary} →</Link>
+              <Link href="/contacto" style={{ background: WHITE, color: INK, padding: "16px 30px", borderRadius: 999, fontWeight: 600, fontSize: 14, letterSpacing: "0.04em", textTransform: "uppercase", textDecoration: "none" }}>{t.ctaPrimary} →</Link>
               <a href="https://www.icarolab.es" target="_blank" rel="noopener noreferrer" style={{ border: "1.5px solid rgba(255,255,255,0.25)", color: WHITE, padding: "16px 30px", borderRadius: 999, fontWeight: 600, fontSize: 14, letterSpacing: "0.04em", textTransform: "uppercase", textDecoration: "none" }}>{t.viewShop} ↗</a>
             </div>
           </Reveal>

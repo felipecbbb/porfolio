@@ -168,7 +168,7 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
           <Link href="/sobre-mi" style={linkStyle(active === "about")}>
             {t.nav.about}
           </Link>
-          <Link href="/#contacto" style={linkStyle(active === "contact")}>
+          <Link href="/contacto" style={linkStyle(active === "contact")}>
             {t.nav.contact}
           </Link>
           <span
@@ -295,7 +295,7 @@ export default function BlendNav({ active = "none" }: { active?: Active }) {
           </Link>
           <Link
             onClick={() => setOpen(false)}
-            href="/#contacto"
+            href="/contacto"
             style={{ color: BG, textDecoration: "none", padding: "10px 0" }}
           >
             {t.nav.contact}

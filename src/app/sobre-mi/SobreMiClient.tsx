@@ -380,7 +380,7 @@ export default function SobreMiClient() {
           </motion.h2>
           <p className="mt-6 text-lg" style={{ color: "rgba(255,255,255,0.7)" }}>{t.closingP}</p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/#contacto" className="rounded-full px-7 py-3.5 font-semibold" style={{ background: YELLOW, color: INK }}>{t.cta}</Link>
+            <Link href="/contacto" className="rounded-full px-7 py-3.5 font-semibold" style={{ background: YELLOW, color: INK }}>{t.cta}</Link>
             <Link href="/proyectos" className="rounded-full px-7 py-3.5 font-semibold border" style={{ borderColor: "rgba(255,255,255,0.3)", color: BG }}>{t.ctaProjects}</Link>
           </div>
         </div>

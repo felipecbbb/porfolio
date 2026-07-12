@@ -696,7 +696,7 @@ export default function AolelimDetailClient() {
         </motion.p>
         <motion.div {...fade}>
           <Link
-            href="/#contacto"
+            href="/contacto"
             className="mt-8 inline-flex rounded-full px-8 py-4 transition hover:brightness-95"
             style={{ background: BONE, color: NOIR, fontWeight: 600 }}
           >

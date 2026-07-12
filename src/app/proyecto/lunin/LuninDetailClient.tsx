@@ -716,7 +716,7 @@ export default function LuninDetailClient() {
           <Reveal delay={0.1}>
             <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
               <Link
-                href="/#contacto"
+                href="/contacto"
                 style={{ background: GOLD, color: BLACK, padding: "16px 30px", borderRadius: 999, fontWeight: 600, fontSize: 15, textDecoration: "none" }}
               >
                 {t.ctaPrimary} →

@@ -415,7 +415,7 @@ export default function ProjectDetailClient({
           </h2>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="/#contacto"
+              href="/contacto"
               data-hover
               className="font-mono text-xs uppercase tracking-widest border px-8 py-4 hover:bg-white/10 transition-colors duration-300"
               style={{ borderColor: theme.bg + "40" }}

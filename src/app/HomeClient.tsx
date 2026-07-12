@@ -125,7 +125,7 @@ function HeroXXL() {
           }}
         >
           <Link
-            href="/#contacto"
+            href="/contacto"
             style={{
               display: "inline-flex",
               alignItems: "center",

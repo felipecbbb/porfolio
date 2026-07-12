@@ -17,6 +17,7 @@ const TO_EMAIL = "hola@felippecamara.com";
 type Answers = {
   name: string;
   email: string;
+  phone: string;
   project: string;
   budget: string;
   message: string;
@@ -25,6 +26,7 @@ type Answers = {
 const EMPTY: Answers = {
   name: "",
   email: "",
+  phone: "",
   project: "",
   budget: "",
   message: "",
@@ -126,9 +128,11 @@ export default function ContactForm() {
               from: "Sent from felipecamara.es",
             };
 
+    const telLabel = lang === "es" ? "Teléfono" : lang === "de" ? "Telefon" : "Phone";
     const body = [
       `${L.name}: ${data.name}`,
       `${L.email}: ${data.email}`,
+      `${telLabel}: ${data.phone.trim() || "—"}`,
       `${L.project}: ${data.project}`,
       `${L.budget}: ${data.budget}`,
       "",
@@ -325,6 +329,30 @@ export default function ContactForm() {
               <Question
                 text={t.form.steps.message.q}
                 hint={t.form.steps.message.optional}
+              />
+              <input
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                value={data.phone}
+                onChange={(e) => update("phone", e.target.value)}
+                placeholder={
+                  lang === "es"
+                    ? "Tu teléfono (opcional)"
+                    : lang === "de"
+                      ? "Deine Telefonnummer (optional)"
+                      : "Your phone (optional)"
+                }
+                style={{
+                  width: "100%",
+                  background: "transparent",
+                  border: `1px solid ${LINE_DARK}`,
+                  borderRadius: 12,
+                  color: BG,
+                  fontSize: 16,
+                  padding: "14px 16px",
+                  outline: "none",
+                }}
               />
               <BigTextarea
                 ref={textareaRef}

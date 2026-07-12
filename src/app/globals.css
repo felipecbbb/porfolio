@@ -150,4 +150,12 @@ h1, h2 {
   .dest-marquee { animation: none; }
 }
 
+/* Grid del bloque de contacto (home + /contacto): apila en móvil. */
+@media (max-width: 820px) {
+  .home-contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+}
+
 .lunin-carousel::-webkit-scrollbar { display: none; }

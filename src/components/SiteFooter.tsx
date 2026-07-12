@@ -9,9 +9,9 @@ export default function SiteFooter() {
   const { t, lang } = useLang();
 
   const nav = {
-    es: { label: "Navegación", items: [["Inicio", "/"], ["Proyectos", "/proyectos"], ["Contacto", "/#contacto"]] },
-    en: { label: "Navigation", items: [["Home", "/"], ["Work", "/proyectos"], ["Contact", "/#contacto"]] },
-    de: { label: "Navigation", items: [["Start", "/"], ["Projekte", "/proyectos"], ["Kontakt", "/#contacto"]] },
+    es: { label: "Navegación", items: [["Inicio", "/"], ["Proyectos", "/proyectos"], ["Contacto", "/contacto"]] },
+    en: { label: "Navigation", items: [["Home", "/"], ["Work", "/proyectos"], ["Contact", "/contacto"]] },
+    de: { label: "Navigation", items: [["Start", "/"], ["Projekte", "/proyectos"], ["Kontakt", "/contacto"]] },
   }[lang];
 
   const reachLabel = { es: "Contacto", en: "Get in touch", de: "Kontakt" }[lang];
