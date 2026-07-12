@@ -112,8 +112,8 @@ const T: Record<Lang, Dict> = {
     setTitle: "Completa el set.",
     setText:
       "La pieza clave de la tienda: si miras el top, la sección te enseña la braguita que le falta al conjunto — y viceversa. Vender el set completo, no la prenda suelta.",
-    setTop: "ISLA · Top",
-    setBottom: "ISLA · Braguita",
+    setTop: "KISSES · Top",
+    setBottom: "KISSES · Braguita",
     setEquals: "El set completo",
     setCta: "Así se ve en la ficha de producto",
     galLabel: "El universo de la marca",
@@ -179,8 +179,8 @@ const T: Record<Lang, Dict> = {
     setTitle: "Complete the set.",
     setText:
       "The store's key piece: if you're looking at the top, the section shows you the bottom the set is missing — and vice versa. Sell the full set, not the loose piece.",
-    setTop: "ISLA · Top",
-    setBottom: "ISLA · Bottom",
+    setTop: "KISSES · Top",
+    setBottom: "KISSES · Bottom",
     setEquals: "The full set",
     setCta: "How it looks on the product page",
     galLabel: "The brand universe",
@@ -246,8 +246,8 @@ const T: Record<Lang, Dict> = {
     setTitle: "Complete the set.",
     setText:
       "Das Schlüsselstück des Shops: Schaust du dir das Top an, zeigt dir die Sektion das fehlende Unterteil des Sets — und umgekehrt. Verkauft wird das ganze Set, nicht das lose Teil.",
-    setTop: "ISLA · Top",
-    setBottom: "ISLA · Slip",
+    setTop: "KISSES · Top",
+    setBottom: "KISSES · Slip",
     setEquals: "Das komplette Set",
     setCta: "So sieht es auf der Produktseite aus",
     galLabel: "Das Markenuniversum",
@@ -538,7 +538,7 @@ export default function AolelimDetailClient() {
           {/* Top */}
           <motion.figure {...fade} className="rounded-xl overflow-hidden" style={{ border: `1px solid ${LINE}` }}>
             <div className="relative aspect-[3/4]">
-              <Image src="/projects/aolelim/set-top.jpg" alt="ISLA top" fill quality={82} sizes="(max-width:768px) 100vw, 30vw" className="object-cover" />
+              <Image src="/projects/aolelim/set-top.jpg" alt="KISSES top" fill quality={82} sizes="(max-width:768px) 100vw, 30vw" className="object-cover" />
             </div>
             <figcaption className="px-4 py-3 text-[11px] uppercase tracking-[0.2em] flex justify-between" style={{ color: BODY }}>
               <span>{t.setTop}</span>
@@ -553,7 +553,7 @@ export default function AolelimDetailClient() {
           {/* Bottom */}
           <motion.figure {...fade} transition={{ ...fade.transition, delay: 0.1 }} className="rounded-xl overflow-hidden" style={{ border: `1px solid ${LINE}` }}>
             <div className="relative aspect-[3/4]">
-              <Image src="/projects/aolelim/set-bottom.jpg" alt="ISLA braguita" fill quality={82} sizes="(max-width:768px) 100vw, 30vw" className="object-cover" />
+              <Image src="/projects/aolelim/set-bottom.jpg" alt="KISSES braguita" fill quality={82} sizes="(max-width:768px) 100vw, 30vw" className="object-cover" />
             </div>
             <figcaption className="px-4 py-3 text-[11px] uppercase tracking-[0.2em] flex justify-between" style={{ color: BODY }}>
               <span>{t.setBottom}</span>
@@ -576,7 +576,7 @@ export default function AolelimDetailClient() {
               {t.setEquals}
             </span>
             <span className="mt-4" style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: "1.15rem", color: "rgba(11,11,11,0.7)" }}>
-              ISLA — black
+              KISSES — black
             </span>
             <span className="mt-8 text-[10px] uppercase tracking-[0.24em] px-4 py-2 rounded-full" style={{ border: `1px solid rgba(11,11,11,0.3)` }}>
               {t.setCta}
