@@ -136,4 +136,18 @@ h1, h2 {
   animation: mask-up 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
 }
 
+/* Marquee de Destacados — scroll continuo. Dos copias del texto → animar a
+   -50% hace un loop perfecto sin saltos ni corte. */
+@keyframes dest-marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.dest-marquee {
+  animation: dest-marquee-scroll 30s linear infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dest-marquee { animation: none; }
+}
+
 .lunin-carousel::-webkit-scrollbar { display: none; }

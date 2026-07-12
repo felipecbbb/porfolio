@@ -1142,7 +1142,7 @@ function ContactCTA() {
               {t.contact.body}
             </p>
             <a
-              href="mailto:felipegestion03@gmail.com"
+              href="mailto:hola@felippecamara.com"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -1174,7 +1174,7 @@ function ContactCTA() {
                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
               }}
             >
-              felipegestion03@gmail.com <span style={{ fontSize: 18 }}>→</span>
+              hola@felippecamara.com <span style={{ fontSize: 18 }}>→</span>
             </a>
             <div
               style={{

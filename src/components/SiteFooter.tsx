@@ -99,8 +99,8 @@ export default function SiteFooter() {
         </FooterCol>
 
         <FooterCol label={reachLabel}>
-          <FooterLink href="mailto:felipegestion03@gmail.com" external>
-            felipegestion03@gmail.com
+          <FooterLink href="mailto:hola@felippecamara.com" external>
+            hola@felippecamara.com
           </FooterLink>
           <span style={{ fontSize: 14, color: MUTED, marginTop: 4 }}>{t.hero.location}</span>
         </FooterCol>

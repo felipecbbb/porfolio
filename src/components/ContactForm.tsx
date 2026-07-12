@@ -12,7 +12,7 @@ const ERROR = "#ff8a80"; // rojo suave legible sobre oscuro
 const LINE_DARK = "rgba(255,255,255,0.18)";
 const LINE_DARK_SOFT = "rgba(255,255,255,0.08)";
 
-const TO_EMAIL = "felipegestion03@gmail.com";
+const TO_EMAIL = "hola@felippecamara.com";
 
 type Answers = {
   name: string;
