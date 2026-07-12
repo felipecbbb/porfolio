@@ -815,7 +815,7 @@ export const projects: ProjectDetail[] = [
   },
   {
     slug: "wavepanel",
-    destacado: true,
+    destacado: false,
     id: "02",
     title: "WavePanel",
     category: {
@@ -1105,7 +1105,7 @@ export const projects: ProjectDetail[] = [
   },
   {
     slug: "noa",
-    destacado: true,
+    destacado: false,
     id: "04",
     title: "Noa",
     category: {
@@ -1245,6 +1245,7 @@ export const projects: ProjectDetail[] = [
   },
   {
     slug: "lorena-amadio",
+    destacado: true,
     id: "05",
     title: "Lorena Amadio",
     category: {
@@ -2079,6 +2080,7 @@ export const projects: ProjectDetail[] = [
   },
   {
     slug: "jm-padel-academy",
+    destacado: true,
     id: "11",
     title: "JM Padel Academy",
     category: {
