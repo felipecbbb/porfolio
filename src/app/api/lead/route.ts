@@ -3,17 +3,20 @@ import { CONTACT_EMAIL, WORK_PHONE_DISPLAY } from "@/lib/config";
 
 /* =========================================================
    POST /api/lead — captura de leads del formulario de contacto.
-   Envía el lead por email vía Resend (usando fetch, sin dependencia).
+
+   Dos destinos (los dos best-effort, cualquiera basta para "éxito"):
+   1) PANEL: inserta el lead en la Supabase del dashboard (tablas
+      `leads` + `correos` con buzon "web") → aparece en Ventas ▸ Bandeja.
+   2) EMAIL: aviso por Resend (opcional, encima del panel).
 
    Estados que devuelve (el cliente decide el fallback):
-   - 200 { ok: true }                      -> enviado correctamente
-   - 400 { ok: false, error: "invalid" }   -> datos inválidos
-   - 503 { ok: false, reason: "not_configured" } -> falta RESEND_API_KEY
-   - 502 { ok: false }                      -> Resend falló
+   - 200 { ok: true }                             -> guardado (panel y/o email)
+   - 400 { ok: false, error: "invalid" }          -> datos inválidos
+   - 503 { ok: false, reason: "not_configured" }  -> nada configurado
+   - 502 { ok: false }                            -> todo falló
    En 5xx el cliente cae a `mailto:` para no perder NUNCA el lead.
    ========================================================= */
 
-// El handler lee el body en cada request: nunca se cachea.
 export const dynamic = "force-dynamic";
 
 type LeadBody = {
@@ -37,51 +40,107 @@ function esc(s: string): string {
     .replace(/"/g, "&quot;");
 }
 
-export async function POST(request: NextRequest) {
-  let body: LeadBody;
+type Lead = {
+  name: string;
+  email: string;
+  phone: string;
+  project: string;
+  budget: string;
+  message: string;
+};
+
+/**
+ * Inserta el lead en la Supabase del panel (misma BD que el dashboard) vía
+ * PostgREST, sin dependencias. Best-effort: si falta config o falla, devuelve
+ * false y el formulario sigue funcionando por email/mailto.
+ */
+async function saveToPanel(lead: Lead): Promise<boolean> {
+  // Server-side: SUPABASE_URL (runtime) preferido; NEXT_PUBLIC_* como fallback.
+  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SECRET_KEY;
+  if (!url || !key) return false;
+
+  const base = url.replace(/\/$/, "");
+  const headers = {
+    apikey: key,
+    Authorization: `Bearer ${key}`,
+    "Content-Type": "application/json",
+  };
+  const email = lead.email.toLowerCase();
+  const notas = [
+    `Proyecto: ${lead.project || "—"}`,
+    `Presupuesto: ${lead.budget || "—"}`,
+    `Teléfono: ${lead.phone || "—"}`,
+    "",
+    lead.message || "(sin mensaje)",
+  ].join("\n");
+
   try {
-    body = await request.json();
+    // 1) Lead en la pipeline (para tener id y emparejar el correo).
+    let leadId: string | null = null;
+    const leadRes = await fetch(`${base}/rest/v1/leads`, {
+      method: "POST",
+      headers: { ...headers, Prefer: "return=representation" },
+      body: JSON.stringify({
+        nombre: lead.name,
+        email,
+        telefono: lead.phone || null,
+        origen: "web",
+        estado: "nuevo",
+        notas,
+      }),
+    });
+    if (leadRes.ok) {
+      const rows = (await leadRes.json()) as { id?: string }[];
+      leadId = rows?.[0]?.id ?? null;
+    }
+
+    // 2) Correo en la Bandeja (esto es lo que se ve en el panel).
+    const texto = notas;
+    const correoRes = await fetch(`${base}/rest/v1/correos`, {
+      method: "POST",
+      headers: { ...headers, Prefer: "return=minimal" },
+      body: JSON.stringify({
+        message_id: `web-${crypto.randomUUID()}`,
+        buzon: "web",
+        from_email: email,
+        from_nombre: lead.name,
+        subject: `Nuevo lead · ${lead.name}`,
+        fecha: new Date().toISOString(),
+        texto,
+        tipo: "respuesta_lead",
+        estado: "nuevo",
+        lead_id: leadId,
+        es_caliente: true,
+        resumen: `Lead web${lead.budget ? ` · ${lead.budget}` : ""}`,
+        avisado: false,
+      }),
+    });
+    return correoRes.ok;
   } catch {
-    return Response.json({ ok: false, error: "invalid" }, { status: 400 });
+    return false;
   }
+}
 
-  const name = (body.name ?? "").trim();
-  const email = (body.email ?? "").trim();
-  const phone = (body.phone ?? "").trim();
-  const project = (body.project ?? "").trim();
-  const budget = (body.budget ?? "").trim();
-  const message = (body.message ?? "").trim();
-  const lang = (body.lang ?? "es").trim();
-  const source = (body.source ?? "web").trim();
-
-  if (name.length < 2 || !EMAIL_RE.test(email)) {
-    return Response.json({ ok: false, error: "invalid" }, { status: 400 });
-  }
-
+/** Envía el aviso por email con Resend. Devuelve true si se envió. */
+async function sendEmail(lead: Lead): Promise<boolean> {
   const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    // Sin key configurada: el cliente hará fallback a mailto.
-    return Response.json({ ok: false, reason: "not_configured" }, { status: 503 });
-  }
+  if (!apiKey) return false;
 
   const to = process.env.LEAD_TO_EMAIL || CONTACT_EMAIL;
-  // Remitente: idealmente un dominio verificado en Resend. Como fallback usamos
-  // el remitente de pruebas de Resend (solo entrega al email de tu cuenta).
   const from = process.env.LEAD_FROM_EMAIL || "Felipe Cámara <onboarding@resend.dev>";
 
   const rows: [string, string][] = [
-    ["Nombre", name],
-    ["Email", email],
-    ["Teléfono", phone || "—"],
-    ["Tipo de proyecto", project || "—"],
-    ["Presupuesto", budget || "—"],
-    ["Idioma", lang],
-    ["Origen", source],
+    ["Nombre", lead.name],
+    ["Email", lead.email],
+    ["Teléfono", lead.phone || "—"],
+    ["Tipo de proyecto", lead.project || "—"],
+    ["Presupuesto", lead.budget || "—"],
   ];
 
   const html = `
     <div style="font-family:system-ui,sans-serif;font-size:15px;color:#1c1b1b;line-height:1.6">
-      <h2 style="margin:0 0 16px">Nuevo lead · ${esc(name)}</h2>
+      <h2 style="margin:0 0 16px">Nuevo lead · ${esc(lead.name)}</h2>
       <table style="border-collapse:collapse">
         ${rows
           .map(
@@ -93,16 +152,18 @@ export async function POST(request: NextRequest) {
           .join("")}
       </table>
       <p style="margin:20px 0 6px;color:#8c8a82">Mensaje:</p>
-      <p style="margin:0;white-space:pre-wrap">${esc(message) || "(sin mensaje)"}</p>
-      <p style="margin:24px 0 0;font-size:12px;color:#8c8a82">Enviado desde felippecamara.com · Tel. ${esc(WORK_PHONE_DISPLAY)}</p>
+      <p style="margin:0;white-space:pre-wrap">${esc(lead.message) || "(sin mensaje)"}</p>
+      <p style="margin:24px 0 0;font-size:12px;color:#8c8a82">Enviado desde felippecamara.com · Tel. ${esc(
+        WORK_PHONE_DISPLAY
+      )}</p>
     </div>`;
 
   const text = [
-    `Nuevo lead · ${name}`,
+    `Nuevo lead · ${lead.name}`,
     ...rows.map(([k, v]) => `${k}: ${v}`),
     "",
     "Mensaje:",
-    message || "(sin mensaje)",
+    lead.message || "(sin mensaje)",
     "",
     `— Enviado desde felippecamara.com · Tel. ${WORK_PHONE_DISPLAY}`,
   ].join("\n");
@@ -117,18 +178,55 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         from,
         to: [to],
-        reply_to: email,
-        subject: `Nuevo lead · ${name}${budget ? ` · ${budget}` : ""}`,
+        reply_to: lead.email,
+        subject: `Nuevo lead · ${lead.name}${lead.budget ? ` · ${lead.budget}` : ""}`,
         html,
         text,
       }),
     });
-
-    if (!res.ok) {
-      return Response.json({ ok: false }, { status: 502 });
-    }
-    return Response.json({ ok: true });
+    return res.ok;
   } catch {
-    return Response.json({ ok: false }, { status: 502 });
+    return false;
   }
+}
+
+export async function POST(request: NextRequest) {
+  let body: LeadBody;
+  try {
+    body = await request.json();
+  } catch {
+    return Response.json({ ok: false, error: "invalid" }, { status: 400 });
+  }
+
+  const lead: Lead = {
+    name: (body.name ?? "").trim(),
+    email: (body.email ?? "").trim(),
+    phone: (body.phone ?? "").trim(),
+    project: (body.project ?? "").trim(),
+    budget: (body.budget ?? "").trim(),
+    message: (body.message ?? "").trim(),
+  };
+
+  if (lead.name.length < 2 || !EMAIL_RE.test(lead.email)) {
+    return Response.json({ ok: false, error: "invalid" }, { status: 400 });
+  }
+
+  // Los dos destinos en paralelo; cualquiera que funcione = lead capturado.
+  const [panelSaved, emailed] = await Promise.all([saveToPanel(lead), sendEmail(lead)]);
+
+  if (panelSaved || emailed) {
+    return Response.json({ ok: true });
+  }
+
+  const anyConfigured =
+    Boolean(process.env.RESEND_API_KEY) ||
+    Boolean(
+      (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL) &&
+        process.env.SUPABASE_SECRET_KEY
+    );
+
+  if (!anyConfigured) {
+    return Response.json({ ok: false, reason: "not_configured" }, { status: 503 });
+  }
+  return Response.json({ ok: false }, { status: 502 });
 }
