@@ -4,6 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "@/lib/i18n";
 
+/** Dispara el evento de conversión de Meta si el pixel está cargado. */
+function trackLead() {
+  if (typeof window === "undefined") return;
+  const w = window as unknown as { fbq?: (...args: unknown[]) => void };
+  w.fbq?.("track", "Lead");
+}
+
 const INK = "#1c1b1b";
 const BG = "#ffffff";
 const MUTED = "#949494";
@@ -40,6 +47,8 @@ export default function ContactForm() {
   const [data, setData] = useState<Answers>(EMPTY);
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [fallback, setFallback] = useState(false);
   const [direction, setDirection] = useState<1 | -1>(1);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -106,7 +115,7 @@ export default function ContactForm() {
             budget: "Presupuesto",
             message: "Mensaje",
             none: "(sin mensaje)",
-            from: "Enviado desde felipecamara.es",
+            from: "Enviado desde felippecamara.com",
           }
         : lang === "de"
           ? {
@@ -116,7 +125,7 @@ export default function ContactForm() {
               budget: "Budget",
               message: "Nachricht",
               none: "(keine Nachricht)",
-              from: "Gesendet von felipecamara.es",
+              from: "Gesendet von felippecamara.com",
             }
           : {
               name: "Name",
@@ -125,7 +134,7 @@ export default function ContactForm() {
               budget: "Budget",
               message: "Message",
               none: "(no message)",
-              from: "Sent from felipecamara.es",
+              from: "Sent from felippecamara.com",
             };
 
     const telLabel = lang === "es" ? "Teléfono" : lang === "de" ? "Telefon" : "Phone";
@@ -148,16 +157,43 @@ export default function ContactForm() {
     )}&body=${encodeURIComponent(body)}`;
   };
 
-  const submit = () => {
-    const url = buildMailto();
-    window.location.href = url;
-    setSent(true);
+  const submit = async () => {
+    if (sending) return;
+    setSending(true);
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, lang, source: "contact-form" }),
+      });
+      if (res.ok) {
+        // Lead entregado por backend: éxito real, sin depender del cliente de correo.
+        setFallback(false);
+        setSent(true);
+        trackLead();
+      } else {
+        // 5xx / backend no configurado -> fallback a mailto para no perder el lead.
+        setFallback(true);
+        setSent(true);
+        trackLead();
+        window.location.href = buildMailto();
+      }
+    } catch {
+      // Sin red / error inesperado -> mismo fallback.
+      setFallback(true);
+      setSent(true);
+      window.location.href = buildMailto();
+    } finally {
+      setSending(false);
+    }
   };
 
   const reset = () => {
     setData(EMPTY);
     setStep(0);
     setSent(false);
+    setSending(false);
+    setFallback(false);
     setError(null);
     setDirection(1);
   };
@@ -210,10 +246,11 @@ export default function ContactForm() {
               style={{ display: "flex", flexDirection: "column", flex: 1 }}
             >
               <SuccessView
-                title={t.form.success.title}
-                body={t.form.success.body}
+                title={fallback ? t.form.success.fallbackTitle : t.form.success.title}
+                body={fallback ? t.form.success.fallbackBody : t.form.success.body}
                 again={t.form.success.again}
                 open={t.form.success.open}
+                fallback={fallback}
                 onAgain={reset}
                 onOpen={() => {
                   window.location.href = buildMailto();
@@ -361,7 +398,12 @@ export default function ContactForm() {
                 placeholder={t.form.steps.message.placeholder}
               />
               <Summary data={data} />
-              <FooterNav onNext={submit} nextLabel={t.form.send} primary />
+              <FooterNav
+                onNext={submit}
+                nextLabel={sending ? t.form.sending : t.form.send}
+                busy={sending}
+                primary
+              />
             </motion.div>
           )}
         </AnimatePresence>
@@ -688,10 +730,12 @@ function FooterNav({
   onNext,
   nextLabel,
   primary,
+  busy,
 }: {
   onNext: () => void;
   nextLabel: string;
   primary?: boolean;
+  busy?: boolean;
 }) {
   return (
     <div
@@ -704,9 +748,11 @@ function FooterNav({
     >
       <motion.button
         type="button"
-        whileHover={{ y: -2 }}
-        whileTap={{ scale: 0.97 }}
+        whileHover={busy ? undefined : { y: -2 }}
+        whileTap={busy ? undefined : { scale: 0.97 }}
         onClick={onNext}
+        disabled={busy}
+        aria-busy={busy}
         style={{
           display: "inline-flex",
           alignItems: "center",
@@ -719,7 +765,8 @@ function FooterNav({
           fontSize: 15,
           fontWeight: 500,
           letterSpacing: "0.01em",
-          cursor: "pointer",
+          cursor: busy ? "wait" : "pointer",
+          opacity: busy ? 0.7 : 1,
           fontFamily: "inherit",
           boxShadow: primary ? "0 10px 30px rgba(0,0,0,.35)" : "none",
         }}
@@ -797,6 +844,7 @@ function SuccessView({
   body,
   again,
   open,
+  fallback,
   onAgain,
   onOpen,
 }: {
@@ -804,6 +852,7 @@ function SuccessView({
   body: string;
   again: string;
   open: string;
+  fallback?: boolean;
   onAgain: () => void;
   onOpen: () => void;
 }) {
@@ -868,32 +917,34 @@ function SuccessView({
           marginTop: 8,
         }}
       >
-        <button
-          type="button"
-          onClick={onOpen}
-          style={{
-            padding: "12px 22px",
-            borderRadius: 999,
-            background: ACCENT,
-            color: INK,
-            border: "none",
-            fontSize: 14,
-            fontWeight: 500,
-            cursor: "pointer",
-            fontFamily: "inherit",
-          }}
-        >
-          {open} →
-        </button>
+        {fallback ? (
+          <button
+            type="button"
+            onClick={onOpen}
+            style={{
+              padding: "12px 22px",
+              borderRadius: 999,
+              background: ACCENT,
+              color: INK,
+              border: "none",
+              fontSize: 14,
+              fontWeight: 500,
+              cursor: "pointer",
+              fontFamily: "inherit",
+            }}
+          >
+            {open} →
+          </button>
+        ) : null}
         <button
           type="button"
           onClick={onAgain}
           style={{
             padding: "12px 22px",
             borderRadius: 999,
-            background: "transparent",
-            color: BG,
-            border: `1.5px solid ${LINE_DARK}`,
+            background: fallback ? "transparent" : ACCENT,
+            color: fallback ? BG : INK,
+            border: fallback ? `1.5px solid ${LINE_DARK}` : "none",
             fontSize: 14,
             fontWeight: 500,
             cursor: "pointer",

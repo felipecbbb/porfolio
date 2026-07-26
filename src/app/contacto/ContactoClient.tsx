@@ -11,6 +11,7 @@ import { useLang } from "@/lib/i18n";
 import BlendNav from "@/components/BlendNav";
 import SiteFooter from "@/components/SiteFooter";
 import ContactForm from "@/components/ContactForm";
+import QuickContact from "@/components/QuickContact";
 import { INK, BG, YELLOW, MUTED, Serif } from "@/lib/brand";
 
 export default function ContactoClient() {
@@ -96,6 +97,7 @@ export default function ContactoClient() {
             <ContactForm />
 
             <div>
+              <QuickContact tone="dark" />
               <p
                 style={{
                   fontSize: 16,

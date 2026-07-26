@@ -8,6 +8,7 @@ import { useLang } from "@/lib/i18n";
 import BlendNav from "@/components/BlendNav";
 import ProjectCardVertical from "@/components/ProjectCardVertical";
 import ContactForm from "@/components/ContactForm";
+import QuickContact from "@/components/QuickContact";
 import SiteFooter from "@/components/SiteFooter";
 import { INK, BG, CREAM, YELLOW, MUTED, LINE, Mark, Serif } from "@/lib/brand";
 
@@ -964,8 +965,10 @@ function TestimonialsBlock() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
+          gridTemplateColumns:
+            t.testimonials.items.length === 1 ? "1fr" : "repeat(2, 1fr)",
           gap: "clamp(24px, 4vw, 60px)",
+          maxWidth: t.testimonials.items.length === 1 ? 900 : undefined,
         }}
         className="home-t-grid"
       >
@@ -1107,6 +1110,7 @@ function ContactCTA() {
           </motion.div>
 
           <div>
+            <QuickContact tone="dark" />
             <p
               style={{
                 fontSize: 16,

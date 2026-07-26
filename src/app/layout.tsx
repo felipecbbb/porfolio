@@ -3,6 +3,7 @@ import { Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n";
+import MetaPixel from "@/components/MetaPixel";
 
 // Tipografía principal de marca: Akzidenz-Grotesk BQ (Light / Medium / Bold).
 // Mantiene la variable --font-geist-sans para no tocar las referencias existentes.
@@ -168,6 +169,7 @@ export default function RootLayout({
         />
         <LanguageProvider>
           {children}
+          <MetaPixel />
         </LanguageProvider>
       </body>
     </html>

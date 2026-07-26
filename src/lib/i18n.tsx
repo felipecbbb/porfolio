@@ -76,6 +76,9 @@ type Dict = {
     titleAccent: string;
     body: string;
     follow: string;
+    scheduleCta: string;
+    whatsappCta: string;
+    orWrite: string;
   };
   form: {
     intro: string;
@@ -96,6 +99,8 @@ type Dict = {
     success: {
       title: string;
       body: string;
+      fallbackTitle: string;
+      fallbackBody: string;
       again: string;
       open: string;
     };
@@ -103,6 +108,12 @@ type Dict = {
   footer: {
     rights: string;
     seeProjects: string;
+  };
+  consent: {
+    text: string;
+    accept: string;
+    reject: string;
+    privacy: string;
   };
 };
 
@@ -202,7 +213,7 @@ const ES: Dict = {
       { num: "150+", label: "Proyectos entregados" },
       { num: "100+", label: "Clientes" },
       { num: "5", label: "Años en esto" },
-      { num: "∞", label: "Cafés" },
+      { num: "24h", label: "Respuesta media" },
     ],
     stack: "Stack principal",
   },
@@ -218,12 +229,6 @@ const ES: Dict = {
         name: "Víctor Bueno Ureña",
         role: "Fundador · Waya Surf · Gran Canaria",
       },
-      {
-        quote:
-          "La diferencia de trabajar con alguien que programa, diseña y entiende de negocio es brutal. Todo encaja.",
-        name: "Próximo testimonio",
-        role: "¿Serás tú?",
-      },
     ],
   },
   contact: {
@@ -234,13 +239,16 @@ const ES: Dict = {
     body:
       "Respuesta en menos de 24h. Cuéntame qué necesitas y te digo si soy la persona indicada — o te mando a alguien que sí.",
     follow: "Sígueme",
+    scheduleCta: "Agenda 15 min",
+    whatsappCta: "Escríbeme por WhatsApp",
+    orWrite: "o rellena el formulario",
   },
   form: {
     intro: "Cuéntamelo en 1 minuto",
     next: "Siguiente",
     back: "Atrás",
     send: "Enviar",
-    sending: "Abriendo email…",
+    sending: "Enviando…",
     enterHint: "pulsa Enter ↵",
     pickHint: "elige una opción",
     step: (n, total) => `Paso ${n} de ${total}`,
@@ -284,8 +292,10 @@ const ES: Dict = {
       },
     },
     success: {
-      title: "Listo. Mensaje preparado.",
-      body: "He abierto tu cliente de email con todo rellenado. Solo te falta darle a enviar.",
+      title: "Recibido. Te respondo en menos de 24h.",
+      body: "Gracias — tu mensaje me llega directo. Si prefieres ir más rápido, agenda una llamada o escríbeme por WhatsApp.",
+      fallbackTitle: "Ya casi. Dale a enviar.",
+      fallbackBody: "He abierto tu cliente de correo con todo rellenado. Solo te falta pulsar enviar.",
       again: "Enviar otro",
       open: "Abrir email otra vez",
     },
@@ -293,6 +303,12 @@ const ES: Dict = {
   footer: {
     rights: "© 2026 Felipe Cámara — Todos los derechos reservados",
     seeProjects: "Ver proyectos →",
+  },
+  consent: {
+    text: "Uso cookies de medición (Meta) para saber qué campañas funcionan.",
+    accept: "Aceptar",
+    reject: "Rechazar",
+    privacy: "Privacidad",
   },
 };
 
@@ -391,7 +407,7 @@ const EN: Dict = {
       { num: "150+", label: "Projects shipped" },
       { num: "100+", label: "Clients" },
       { num: "5", label: "Years doing this" },
-      { num: "∞", label: "Coffees" },
+      { num: "24h", label: "Avg. reply" },
     ],
     stack: "Core stack",
   },
@@ -407,12 +423,6 @@ const EN: Dict = {
         name: "Víctor Bueno Ureña",
         role: "Founder · Waya Surf · Gran Canaria",
       },
-      {
-        quote:
-          "Working with someone who codes, designs and gets business is a different league. Everything fits.",
-        name: "Next testimonial",
-        role: "Will it be you?",
-      },
     ],
   },
   contact: {
@@ -423,13 +433,16 @@ const EN: Dict = {
     body:
       "Reply in under 24h. Tell me what you need and I'll say if I'm the right person — or send you to someone who is.",
     follow: "Follow me",
+    scheduleCta: "Book 15 min",
+    whatsappCta: "Message me on WhatsApp",
+    orWrite: "or fill in the form",
   },
   form: {
     intro: "Tell me in 1 minute",
     next: "Next",
     back: "Back",
     send: "Send",
-    sending: "Opening email…",
+    sending: "Sending…",
     enterHint: "press Enter ↵",
     pickHint: "pick one",
     step: (n, total) => `Step ${n} of ${total}`,
@@ -473,8 +486,10 @@ const EN: Dict = {
       },
     },
     success: {
-      title: "Done. Message ready.",
-      body: "I opened your email client with everything filled in. Just hit send.",
+      title: "Got it. I'll reply within 24h.",
+      body: "Thanks — your message reaches me directly. If you'd rather go faster, book a call or message me on WhatsApp.",
+      fallbackTitle: "Almost there. Hit send.",
+      fallbackBody: "I opened your email client with everything filled in. Just hit send.",
       again: "Send another",
       open: "Open email again",
     },
@@ -482,6 +497,12 @@ const EN: Dict = {
   footer: {
     rights: "© 2026 Felipe Cámara — All rights reserved",
     seeProjects: "View projects →",
+  },
+  consent: {
+    text: "I use measurement cookies (Meta) to see which campaigns work.",
+    accept: "Accept",
+    reject: "Decline",
+    privacy: "Privacy",
   },
 };
 
@@ -580,7 +601,7 @@ const DE: Dict = {
       { num: "150+", label: "Gelieferte Projekte" },
       { num: "100+", label: "Kunden" },
       { num: "5", label: "Jahre dabei" },
-      { num: "∞", label: "Kaffees" },
+      { num: "24h", label: "Ø Antwort" },
     ],
     stack: "Haupt-Stack",
   },
@@ -596,12 +617,6 @@ const DE: Dict = {
         name: "Víctor Bueno Ureña",
         role: "Gründer · Waya Surf · Gran Canaria",
       },
-      {
-        quote:
-          "Mit jemandem zu arbeiten, der programmiert, gestaltet und Geschäft versteht, ist eine andere Liga. Alles passt.",
-        name: "Nächste Stimme",
-        role: "Wirst du es sein?",
-      },
     ],
   },
   contact: {
@@ -612,13 +627,16 @@ const DE: Dict = {
     body:
       "Antwort in unter 24h. Erzähl mir, was du brauchst — ich sage dir, ob ich die richtige Person bin oder leite dich an jemanden weiter.",
     follow: "Folge mir",
+    scheduleCta: "15 Min buchen",
+    whatsappCta: "Schreib mir auf WhatsApp",
+    orWrite: "oder fülle das Formular aus",
   },
   form: {
     intro: "Erzähl es mir in 1 Minute",
     next: "Weiter",
     back: "Zurück",
     send: "Senden",
-    sending: "E-Mail öffnen…",
+    sending: "Senden…",
     enterHint: "Enter drücken ↵",
     pickHint: "wähle eine Option",
     step: (n, total) => `Schritt ${n} von ${total}`,
@@ -662,8 +680,10 @@ const DE: Dict = {
       },
     },
     success: {
-      title: "Fertig. Nachricht bereit.",
-      body: "Ich habe dein E-Mail-Programm mit allem vorausgefüllt geöffnet. Nur noch senden.",
+      title: "Erhalten. Ich antworte in unter 24h.",
+      body: "Danke — deine Nachricht erreicht mich direkt. Wenn du schneller gehen willst, buche einen Call oder schreib mir auf WhatsApp.",
+      fallbackTitle: "Fast geschafft. Auf Senden klicken.",
+      fallbackBody: "Ich habe dein E-Mail-Programm mit allem vorausgefüllt geöffnet. Nur noch auf Senden klicken.",
       again: "Eine weitere senden",
       open: "E-Mail wieder öffnen",
     },
@@ -671,6 +691,12 @@ const DE: Dict = {
   footer: {
     rights: "© 2026 Felipe Cámara — Alle Rechte vorbehalten",
     seeProjects: "Projekte ansehen →",
+  },
+  consent: {
+    text: "Ich nutze Mess-Cookies (Meta), um zu sehen, welche Kampagnen funktionieren.",
+    accept: "Akzeptieren",
+    reject: "Ablehnen",
+    privacy: "Datenschutz",
   },
 };
 
